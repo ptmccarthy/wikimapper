@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "WikiCharter",
+  "description": "This extension tracks and graphs your reading of Wikipedia.",
+  "version": "0.1",
+
+  "permissions": [
+    "history"
+    "tabs"
+  ],
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  }
+}

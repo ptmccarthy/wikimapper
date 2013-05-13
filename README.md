@@ -1,0 +1,1 @@
+# WikiCharter: Tracks your navigation through Wikipedia articles.

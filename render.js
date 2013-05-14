@@ -12,10 +12,10 @@ db.readTransaction(function (tx) {
 		var i;
 		var msg = '';
 		for(i=0; i<len; i++) {
-			msg += '<p><a href="' + results.rows.item(i).url + '">' +
+			msg += '<p><a href="' + results.rows.item(i).url + '" target="_blank">' +
 										results.rows.item(i).title + '</a><br>' +
 										'Referred From: <a href="' +
-										results.rows.item(i).ref + '">' +
+										results.rows.item(i).ref + '" target="_blank">' +
 										results.rows.item(i).ref +
 										'</a></p>';
 		}

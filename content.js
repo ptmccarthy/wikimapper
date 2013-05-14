@@ -3,8 +3,8 @@ chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		if (request.greeting == "wikimapper")
 			data = { 	title: document.title,
-						url: document.URL,
-						ref: document.referrer
-					};
+								url: document.URL,
+								ref: document.referrer
+							};
 			sendResponse(data);
 	});

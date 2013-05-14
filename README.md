@@ -1,1 +1,1 @@
-## WikiMapper: Tracks your navigation through Wikipedia articles.
+## WikiMapper: A Chrome extension to map your Wikipedia navigation.

@@ -1,1 +1,1 @@
-# WikiCharter: Tracks your navigation through Wikipedia articles.
+## WikiMapper: Tracks your navigation through Wikipedia articles.

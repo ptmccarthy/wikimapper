@@ -15,7 +15,7 @@ function requestPageData() {
 			console.log(response.title);
 			console.log(response.url);
 			console.log(response.ref);
-			
+
 		})
 	})
 }

@@ -1,0 +1,18 @@
+/*
+Stylesheet for WikiMapper popup.html
+*/
+
+html{overflow-y:scroll;}
+
+body{
+	font-size:13px;
+	min-width:420px;
+}
+
+a:link,a:visited{
+	color:#4953C4;
+}
+
+a:hover,a:active{
+	color:#58B05E;
+}

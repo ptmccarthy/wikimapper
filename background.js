@@ -2,27 +2,20 @@
 
 // store wikipedia title tag to strip out later
 var titleTag = ' - Wikipedia, the free encyclopedia';
-var referrer;
 
 function checkForWikiUrl(tabId, changeInfo, tab) {
-	if (tab.url.indexOf('wikipedia.org/wiki') > -1 && tab.status == 'complete') {
-		// do some stuff
-		var page = {};
-		page.title = tab.title.replace(titleTag, "");
-		page.url = tab.url;
-
-		askForReferer(tab.id);
-
-		page.ref = referrer;
-		localStorage.setItem( 'page', JSON.stringify(page));
-		console.log( JSON.parse( localStorage.getItem('page') ) );
+	if (tab.url.indexOf('wikipedia.org') > -1 && tab.status == 'complete') {
+		requestPageData();
 	}
 }
 
-function askForReferer(tabId, changeInfo, tab) {
+function requestPageData() {
 	chrome.tabs.getSelected(null, function(tab) {
-		chrome.tabs.sendMessage(tab.id, {greeting: "referrer"}, function(response) {
-			referrer = response.ref;
+		chrome.tabs.sendMessage(tab.id, {greeting: "wikimapper"}, function(response) {
+			console.log(response.title);
+			console.log(response.url);
+			console.log(response.ref);
+			
 		})
 	})
 }

@@ -24,7 +24,9 @@ function recordPageData(response) {
 	page.title = response.title.replace(titleTag, "");
 	page.url = response.url;
 	page.ref = response.ref;
-	console.log(page);
+	storage.set(page, function() {
+		console.log('Saved', page.title, page.url, page.ref);
+	});
 }
 
 // Listen for any changes to the URL of any tab.

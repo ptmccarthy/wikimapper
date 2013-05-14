@@ -5,9 +5,19 @@
   "description": "This extension tracks and graphs your reading of Wikipedia.",
   "version": "0.1",
 
+  "background": { "scripts": ["background.js"] },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["content.js"]
+    }
+  ],
+  
   "permissions": [
-    "history",
     "tabs"
+    //"http://*/*",
+    //"https://*/*"
   ],
   "browser_action": {
     "default_icon": "clock.png",

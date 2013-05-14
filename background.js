@@ -25,7 +25,7 @@ function recordPageData(response) {
 	page.url = response.url;
 	page.ref = response.ref;
 	storage.set(page, function() {
-		console.log('Saved', page.title, page.url, page.ref);
+		console.log('Saved', page);
 	});
 }
 

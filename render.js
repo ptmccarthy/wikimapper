@@ -1,5 +1,5 @@
 // Script that does the querying and rendering of data
-
+var msg;
 var db = openDatabase(
 	'WikiMapper',
 	'0.1',
@@ -8,14 +8,16 @@ var db = openDatabase(
 );
 
 db.readTransaction(function (tx) {
-	tx.executeSql('SELECT * FROM pages', [], function(tx, results) {
+	tx.executeSql('SELECT * FROM pages ORDER BY date ASC', [], function(tx, results) {
 		var len = results.rows.length;
 		var i;
 		for(i=0; i<len; i++) {
-			console.log("Title: " + results.rows.item(i).title +
-									" URL: " + results.rows.item(i).url +
-									" Referer: " + results.rows.item(i).ref +
-									" UTC: " + results.rows.item(i).date);
+			msg = '<p>' + results.rows.item(i).title + '<br>' +
+										results.rows.item(i).url + '<br>' +
+										results.rows.item(i).ref +
+										'</p>';
+			
+			document.write(msg);
 		}
 	})
 })

@@ -4,7 +4,8 @@ chrome.runtime.onMessage.addListener(
 		if (request.greeting == "wikimapper")
 			data = { 	title: document.title,
 								url: document.URL,
-								ref: document.referrer
+								ref: document.referrer,
+								date: Date.now()
 							};
 			sendResponse(data);
 	});

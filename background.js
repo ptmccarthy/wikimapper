@@ -2,6 +2,7 @@
 
 // store wikipedia title tag to strip out later
 var titleTag = ' - Wikipedia, the free encyclopedia';
+var prevTitle
 
 // create database if does not already exist
 var db = window.openDatabase(
@@ -18,7 +19,7 @@ db.transaction(function (tx) {
 
 
 function checkForWikiUrl(details) {
-	if (details.url.indexOf('wikipedia.org')) {
+	if (details.url.indexOf('wikipedia.org') > -1) {
 		requestPageData(details.tabId, function(response) {
 			recordPageData(response);
 		});
@@ -36,14 +37,13 @@ function recordPageData(response) {
 	page.title = response.title.replace(titleTag, "");
 	page.url = response.url;
 	page.ref = response.ref;
-	page.date = Date.now();
+	page.date = response.date;
 	db.transaction(function (tx) {
 		tx.executeSql('INSERT INTO PAGES (title,url,ref,date) VALUES (?,?,?,?)', [page.title, page.url, page.ref, page.date]);
 	})	
 }
 
-// Listen for any changes to the URL of any tab.
-//chrome.tabs.onUpdated.addListener(checkForWikiUrl);
+// When a new page loads, check to see if it is Wikipedia, and if so, record page data
 chrome.webNavigation.onCompleted.addListener(function(details) {
 	checkForWikiUrl(details);
 });

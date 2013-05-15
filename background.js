@@ -2,7 +2,7 @@
 
 // store wikipedia title tag to strip out later
 var titleTag = ' - Wikipedia, the free encyclopedia';
-var prevTitle
+var prevPK;
 
 // create database if does not already exist
 var db = window.openDatabase(
@@ -38,8 +38,12 @@ function recordPageData(response) {
 	page.url = response.url;
 	page.ref = response.ref;
 	page.date = response.date;
-	db.transaction(function (tx) {
-		tx.executeSql('INSERT INTO PAGES (title,url,ref,date) VALUES (?,?,?,?)', [page.title, page.url, page.ref, page.date]);
+	db.transaction(function (tx, results) {
+		tx.executeSql('INSERT INTO PAGES (title,url,ref,date) VALUES (?,?,?,?)',
+									[page.title, page.url, page.ref, page.date], function(tx, results) {
+										prevPK = results.insertId;
+										console.log(prevPK);
+		})
 	})	
 }
 

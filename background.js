@@ -19,12 +19,11 @@ db.transaction(function (tx) {
 
 
 function checkForWikiUrl(details) {
-	if (details.url.indexOf('wikipedia.org') > -1) {
-		requestPageData(details.tabId, function(response) {
-			recordPageData(response);
-		});
-	}
+	requestPageData(details.tabId, function(response) {
+		recordPageData(response);
+	});
 }
+
 
 function requestPageData(tabId, callback) {
 	chrome.tabs.sendMessage(tabId, {greeting: "wikimapper"}, function(response) {
@@ -50,4 +49,5 @@ function recordPageData(response) {
 // When a new page loads, check to see if it is Wikipedia, and if so, record page data
 chrome.webNavigation.onCompleted.addListener(function(details) {
 	checkForWikiUrl(details);
-});
+	console.log('onCOmpleted event fired');
+}, {url: [{ hostSuffix: 'wikipedia.org'}]});

@@ -17,9 +17,9 @@ db.transaction(function (tx) {
 });
 
 
-function checkForWikiUrl(tabId, changeInfo, tab) {
-	if (tab.url.indexOf('wikipedia.org') > -1 && tab.status == 'complete') {
-		requestPageData(tab.id, function(response) {
+function checkForWikiUrl(details) {
+	if (details.url.indexOf('wikipedia.org')) {
+		requestPageData(details.tabId, function(response) {
 			recordPageData(response);
 		});
 	}
@@ -43,4 +43,7 @@ function recordPageData(response) {
 }
 
 // Listen for any changes to the URL of any tab.
-chrome.tabs.onUpdated.addListener(checkForWikiUrl);
+//chrome.tabs.onUpdated.addListener(checkForWikiUrl);
+chrome.webNavigation.onCompleted.addListener(function(details) {
+	checkForWikiUrl(details);
+});

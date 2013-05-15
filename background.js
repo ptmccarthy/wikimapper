@@ -18,7 +18,7 @@ db.transaction(function (tx) {
 });
 
 
-function checkForWikiUrl(details) {
+function checkIsWikiRoot(details) {
 	requestPageData(details.tabId, function(response) {
 		recordPageData(response);
 	});
@@ -32,11 +32,8 @@ function requestPageData(tabId, callback) {
 }
 
 function recordPageData(response) {
-	var page = {};
-	page.title = response.title.replace(titleTag, "");
-	page.url = response.url;
-	page.ref = response.ref;
-	page.date = response.date;
+	var page = response;
+	page.title = page.title.replace(titleTag, "");
 	db.transaction(function (tx, results) {
 		tx.executeSql('INSERT INTO PAGES (title,url,ref,date) VALUES (?,?,?,?)',
 									[page.title, page.url, page.ref, page.date], function(tx, results) {
@@ -48,6 +45,6 @@ function recordPageData(response) {
 
 // When a new page loads, check to see if it is Wikipedia, and if so, record page data
 chrome.webNavigation.onCompleted.addListener(function(details) {
-	checkForWikiUrl(details);
+	checkIsWikiRoot(details);
 	console.log('onCOmpleted event fired');
 }, {url: [{ hostSuffix: 'wikipedia.org'}]});

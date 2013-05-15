@@ -13,7 +13,7 @@ var db = window.openDatabase(
 
 // create table if does not already exist
 db.transaction(function (tx) {
-	tx.executeSql('CREATE TABLE IF NOT EXISTS PAGES (title, url, ref, date)');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS PAGES (id INTEGER NOT NULL PRIMARY KEY, title, url, ref, date)');
 });
 
 

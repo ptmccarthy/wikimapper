@@ -1,50 +1,104 @@
-// Listens for URL changes of any tabs and if wikipedia gathers info from them.
 
-// store wikipedia title tag to strip out later
-var titleTag = ' - Wikipedia, the free encyclopedia';
-var prevPK;
+var tabStatus = {};
+var data = {};
+var nodeIndex = 1;
 
-// create database if does not already exist
-var db = window.openDatabase(
-	'WikiMapper',			// db name
-	'0.1',						// version
-	'wikimapper',			// description
-	5*1024*1024			// db size in bytes
-);
+/* 
+JSON object format:
 
-// create table if does not already exist
-db.transaction(function (tx) {
-	tx.executeSql('CREATE TABLE IF NOT EXISTS PAGES (id INTEGER NOT NULL PRIMARY KEY, title, url, ref, date)');
-});
-
-
-function checkIsWikiRoot(details) {
-	requestPageData(details.tabId, function(response) {
-		recordPageData(response);
-	});
+json = {
+	"id" : , "node00"
+	"name" : "name",
+	"data" : {},
+	"children" : [ array of child nodes ]
+	}
 }
+*/
 
+function getPageData(tabId, openerId) {
+	var referrerTabId = tabId;
+	if (typeof openerId != 'undefined' && openerId != tabId) {
+		referrerTabId = openerId;
+	}
+	console.log('referring tab: ' + referrerTabId);
 
-function requestPageData(tabId, callback) {
 	chrome.tabs.sendMessage(tabId, {greeting: "wikimapper"}, function(response) {
-			callback(response);
+		var page = { data: {} };
+		page.name = response.title;
+		page.data.url = response.url;
+		page.data.ref = response.ref;
+		page.data.date = response.date;
+		page.children = [];
+
+		if (page.data.ref.indexOf('wikipedia.org') > -1) {
+			recordChildNode(page, tabId, referrerTabId);
+		} else {
+			recordRootNode(page, tabId);
+		}
 	})
 }
 
-function recordPageData(response) {
-	var page = response;
-	page.title = page.title.replace(titleTag, "");
-	db.transaction(function (tx, results) {
-		tx.executeSql('INSERT INTO PAGES (title,url,ref,date) VALUES (?,?,?,?)',
-									[page.title, page.url, page.ref, page.date], function(tx, results) {
-										prevPK = results.insertId;
-										console.log(prevPK);
-		})
-	})	
+function recordRootNode(page, tabId) {
+	console.log('recording root node');
+	setTabStatus(tabId, page);
+
+	data = page;
+	console.log(data);
+	tabStatus[tabId].nodeId = nodeIndex;
+	console.log(tabStatus);
+	nodeIndex += 1;
 }
 
-// When a new page loads, check to see if it is Wikipedia, and if so, record page data
+function recordChildNode(page, tabId, refTabId) {
+	console.log('recording child node');
+	page.nodeId = nodeIndex;
+
+	var parentNodeId = tabStatus[refTabId].nodeId;
+	console.log(parentNodeId);
+
+	parentNode = findNode(data, parentNodeId);
+	console.log(parentNode);
+
+	parentNode.children.push(page);
+	console.log(JSON.stringify(data));
+
+	nodeIndex += 1;
+	tabStatus[tabId] = page;
+	console.log(tabStatus);
+}
+
+function setTabStatus(tabId, page) {
+	tabStatus[tabId] = page;
+	console.log(tabStatus);
+}
+
+function findNode(tree, nodeId) {
+	console.log('tree.nodeId ' + tree.nodeId + ', passed nodeId ' + nodeId);
+   if (tree.nodeId === nodeId) return tree;
+
+   var result;
+   for (var i = 0; i < tree.children.length; i++) {
+      result = findNode(tree.children[i], nodeId);
+      if (result !== undefined) return result;
+   }
+}
+
+
+
+
 chrome.webNavigation.onCompleted.addListener(function(details) {
-	checkIsWikiRoot(details);
-	console.log('onCOmpleted event fired');
-}, {url: [{ hostSuffix: 'wikipedia.org'}]});
+	var openerId;
+	console.log('onCommitted');
+	console.log('newtab' + details.tabId);
+	chrome.tabs.get(details.tabId, function(tab) {
+		console.log('opener' + tab.openerTabId);
+		openerId = tab.openerTabId;
+		getPageData(details.tabId, openerId);
+	})
+
+	//tabStatus[details.tabId] = details.url;
+	//console.log(tabStatus);
+
+	
+
+}, {url: [{ hostSuffix: 'wikipedia.org' }]})

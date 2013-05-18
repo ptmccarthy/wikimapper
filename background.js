@@ -4,8 +4,6 @@ var data = {};
 var nodeIndex = 1;
 
 /* 
-JSON object format:
-
 json = {
 	"id" : , "node00"
 	"name" : "name",
@@ -16,12 +14,6 @@ json = {
 */
 
 function getPageData(tabId, openerId) {
-	var referrerTabId = tabId;
-	if (typeof openerId != 'undefined' && openerId != tabId) {
-		referrerTabId = openerId;
-	}
-	console.log('referring tab: ' + referrerTabId);
-
 	chrome.tabs.sendMessage(tabId, {greeting: "wikimapper"}, function(response) {
 		var page = { data: {} };
 		page.name = response.title;
@@ -30,22 +22,30 @@ function getPageData(tabId, openerId) {
 		page.data.date = response.date;
 		page.children = [];
 
-		if (page.data.ref.indexOf('wikipedia.org') > -1) {
-			recordChildNode(page, tabId, referrerTabId);
-		} else {
+		console.log('tabId' + tabStatus[tabId]);
+		console.log('openerId' + tabStatus[openerId]);
+		// if both tabs are not in tabStatus, it is a root page
+		if (tabStatus[tabId] == undefined && tabStatus[openerId] == undefined) {
 			recordRootNode(page, tabId);
+		}
+		// if tabId is in tabStatus, then it is the same tab
+		else if (tabStatus[tabId] != undefined) {
+			recordChildNode(page, tabId, tabId);
+		// if openerId is in tabStatus, then it is a new tab
+		}
+		else if (tabStatus[openerId] != undefined) {
+			recordChildNode(page, tabId, openerId);
 		}
 	})
 }
 
 function recordRootNode(page, tabId) {
 	console.log('recording root node');
+	page.nodeId = nodeIndex;
+	console.log(page.nodeId);
 	setTabStatus(tabId, page);
-
 	data = page;
 	console.log(data);
-	tabStatus[tabId].nodeId = nodeIndex;
-	console.log(tabStatus);
 	nodeIndex += 1;
 }
 
@@ -63,8 +63,7 @@ function recordChildNode(page, tabId, refTabId) {
 	console.log(JSON.stringify(data));
 
 	nodeIndex += 1;
-	tabStatus[tabId] = page;
-	console.log(tabStatus);
+	setTabStatus(tabId, page);
 }
 
 function setTabStatus(tabId, page) {
@@ -73,7 +72,6 @@ function setTabStatus(tabId, page) {
 }
 
 function findNode(tree, nodeId) {
-	console.log('tree.nodeId ' + tree.nodeId + ', passed nodeId ' + nodeId);
    if (tree.nodeId === nodeId) return tree;
 
    var result;
@@ -83,22 +81,10 @@ function findNode(tree, nodeId) {
    }
 }
 
-
-
-
 chrome.webNavigation.onCompleted.addListener(function(details) {
-	var openerId;
-	console.log('onCommitted');
 	console.log('newtab' + details.tabId);
 	chrome.tabs.get(details.tabId, function(tab) {
 		console.log('opener' + tab.openerTabId);
-		openerId = tab.openerTabId;
-		getPageData(details.tabId, openerId);
+		getPageData(details.tabId, tab.openerTabId);
 	})
-
-	//tabStatus[details.tabId] = details.url;
-	//console.log(tabStatus);
-
-	
-
 }, {url: [{ hostSuffix: 'wikipedia.org' }]})

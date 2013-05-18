@@ -2,16 +2,12 @@
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		if (request.greeting == "wikimapper") {
-			var referrer = document.referrer;
-			if (referrer == "") {
-				referrer = 'none';
-			}
 
 		var cleanedTitle = document.title.replace(' - Wikipedia, the free encyclopedia', '');
 
 			data = { 	title: cleanedTitle,
 								url: document.URL,
-								ref: referrer,
+								ref: document.referrer,
 								date: Date.now()
 							};
 			sendResponse(data);

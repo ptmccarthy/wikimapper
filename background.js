@@ -1,4 +1,3 @@
-
 var tabStatus = {};
 var data = {};
 var nodeIndex = 1;
@@ -41,8 +40,8 @@ function getPageData(tabId, openerId) {
 
 function recordRootNode(page, tabId) {
 	console.log('recording root node');
-	page.nodeId = nodeIndex;
-	console.log(page.nodeId);
+	page.id = nodeIndex;
+	console.log(page.id);
 	setTabStatus(tabId, page);
 	data = page;
 	console.log(data);
@@ -51,9 +50,9 @@ function recordRootNode(page, tabId) {
 
 function recordChildNode(page, tabId, refTabId) {
 	console.log('recording child node');
-	page.nodeId = nodeIndex;
+	page.id = nodeIndex;
 
-	var parentNodeId = tabStatus[refTabId].nodeId;
+	var parentNodeId = tabStatus[refTabId].id;
 	console.log(parentNodeId);
 
 	parentNode = findNode(data, parentNodeId);
@@ -72,7 +71,7 @@ function setTabStatus(tabId, page) {
 }
 
 function findNode(tree, nodeId) {
-   if (tree.nodeId === nodeId) return tree;
+   if (tree.id === nodeId) return tree;
 
    var result;
    for (var i = 0; i < tree.children.length; i++) {
@@ -81,6 +80,11 @@ function findNode(tree, nodeId) {
    }
 }
 
+chrome.runtime.onMessage.addListener(function(request, sender, response) {
+	if (request.greeting == "json")
+		response(data);
+})
+
 chrome.webNavigation.onCompleted.addListener(function(details) {
 	console.log('newtab' + details.tabId);
 	chrome.tabs.get(details.tabId, function(tab) {
@@ -88,3 +92,9 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
 		getPageData(details.tabId, tab.openerTabId);
 	})
 }, {url: [{ hostSuffix: 'wikipedia.org' }]})
+
+chrome.browserAction.onClicked.addListener(function(tab) {
+  chrome.tabs.create({'url': chrome.extension.getURL('html/example1.html')}, function(tab) {
+    // Tab opened.
+  });
+});

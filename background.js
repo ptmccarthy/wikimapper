@@ -94,7 +94,7 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
 }, {url: [{ hostSuffix: 'wikipedia.org' }]})
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.create({'url': chrome.extension.getURL('html/example1.html')}, function(tab) {
+  chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')}, function(tab) {
     // Tab opened.
   });
 });

@@ -41,8 +41,8 @@ function initGraph(root) {
       .attr("r", 4.5);
 
   node.append("text")
-      .attr("dx", function(d) { return d.children ? -8 : 8; })
-      .attr("dy", 3)
+      .attr("dx", function(d) { return d.children ? 40 : 100; })
+      .attr("dy", 18)
       .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
       .text(function(d) { return d.name; });
 

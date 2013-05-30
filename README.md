@@ -2,4 +2,4 @@
 
 Use WikiMapper to generate graphic views of your Wikipedia stumblings.
 
-[Issue Tracker](https://www.debugle.com/projects/3065)
+To install, enable 'Developer Mode' in your chrome://extensions control panel, and select 'Load unpacked extension', and point it at the entire unzipped Wikimapper folder.

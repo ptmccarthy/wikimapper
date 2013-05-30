@@ -2,6 +2,7 @@ var tabStatus = {};
 var data = {};
 var nodeIndex = 1;
 
+// required JSON object structure for using with JIT and d3.js
 /* 
 json = {
 	"id" : , "node00"

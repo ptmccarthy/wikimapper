@@ -44,27 +44,23 @@ function getPageData(tabId, openerId) {
 function recordRootNode(page, tabId) {
 	console.log('recording root node');
 	page.id = nodeIndex;
-	console.log(page.id);
 	setTabStatus(tabId, page);
 	data = page;
-	console.log(data);
+	localStorage.setItem(page.data.date, JSON.stringify(data));
 	nodeIndex += 1;
 }
 
 // function to record a new child node
 function recordChildNode(page, tabId, refTabId) {
 	console.log('recording child node');
+	// assign page an id from nodeIndex counter
 	page.id = nodeIndex;
-
+	// lookup parent node id from tabStatus, then find the parent node in the tree
 	var parentNodeId = tabStatus[refTabId].id;
-	console.log(parentNodeId);
-
 	parentNode = findNode(data, parentNodeId);
-	console.log(parentNode);
-
+	// and update the children of the parent
 	parentNode.children.push(page);
-	console.log(JSON.stringify(data));
-
+	localStorage.setItem(data.data.date, JSON.stringify(data));
 	nodeIndex += 1;
 	setTabStatus(tabId, page);
 }

@@ -12,6 +12,7 @@ json = {
 }
 */
 
+// function to request page data from a tab and record it appropriately
 function getPageData(tabId, openerId) {
 	chrome.tabs.sendMessage(tabId, {greeting: "wikimapper"}, function(response) {
 		var page = { data: {} };
@@ -38,6 +39,7 @@ function getPageData(tabId, openerId) {
 	})
 }
 
+// function to record a new root node
 function recordRootNode(page, tabId) {
 	console.log('recording root node');
 	page.id = nodeIndex;
@@ -48,6 +50,7 @@ function recordRootNode(page, tabId) {
 	nodeIndex += 1;
 }
 
+// function to record a new child node
 function recordChildNode(page, tabId, refTabId) {
 	console.log('recording child node');
 	page.id = nodeIndex;
@@ -65,11 +68,14 @@ function recordChildNode(page, tabId, refTabId) {
 	setTabStatus(tabId, page);
 }
 
+// function to update the tab status object with the page contents of tabId
 function setTabStatus(tabId, page) {
 	tabStatus[tabId] = page;
 	console.log(tabStatus);
 }
 
+
+// recursively look through the JSON tree for the specified node and return it
 function findNode(tree, nodeId) {
    if (tree.id === nodeId) return tree;
 
@@ -80,11 +86,13 @@ function findNode(tree, nodeId) {
    }
 }
 
+// listener for message requesting JSON tree
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
 	if (request.greeting == "json")
 		response(data);
 })
 
+// listener for completed navigation events
 chrome.webNavigation.onCompleted.addListener(function(details) {
 	console.log('newtab' + details.tabId);
 	chrome.tabs.get(details.tabId, function(tab) {
@@ -93,8 +101,8 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
 	})
 }, {url: [{ hostSuffix: 'wikipedia.org' }]})
 
+// listener for when the user clicks on the Wikimapper button
 chrome.browserAction.onClicked.addListener(function(tab) {
   chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')}, function(tab) {
-    // Tab opened.
   });
 });

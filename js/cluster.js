@@ -7,7 +7,7 @@ chrome.runtime.sendMessage({"greeting": "json"}, function(response) {
 
 function initGraph(root) {
 
-	var width = 1200,
+	var width = 1000,
 	    height = 700;
 
 	var cluster = d3.layout.cluster()
@@ -16,7 +16,7 @@ function initGraph(root) {
 	var diagonal = d3.svg.diagonal()
 	    .projection(function(d) { return [d.y, d.x]; });
 
-	var svg = d3.select("body").append("svg")
+	var svg = d3.select("#viz-body").append("svg")
 	    .attr("width", width)
 	    .attr("height", height)
 	  .append("g")
@@ -51,6 +51,8 @@ function initGraph(root) {
 	}
 }
 
-chrome.tabs.onUpdated.addListener(function(details) {
-  init();
-});
+init();
+
+//chrome.tabs.onUpdated.addListener(function(details) {
+//  init();
+//});

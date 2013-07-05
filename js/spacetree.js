@@ -173,6 +173,4 @@ function initSpaceTree(json) {
 
 }
 
-chrome.tabs.onUpdated.addListener(function(details) {
-        init();
-});
+init();

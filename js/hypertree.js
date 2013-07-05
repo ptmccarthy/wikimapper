@@ -124,6 +124,4 @@ function initGraph(json) {
     ht.controller.onComplete();
 }
 
-chrome.tabs.onUpdated.addListener(function(details) {
-        init();
-});
+init();

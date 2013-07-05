@@ -2,7 +2,6 @@ ul {
 	list-style-type:none;
 	margin: 0;
 	padding: 10;
-	overflow: hidden;
 }
 
 div#nav-title {
@@ -14,8 +13,15 @@ div#nav-title {
 
 div#viz-picker {
 	background-color: black;
+	color: #23A4FF;
 	float: left;
 	width: 120px;
 	height: 100%;
 	text-align: left;
+}
+
+div#viz-body {
+	overflow: scroll;
+	float: left;
+	width: 1000px;
 }

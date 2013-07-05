@@ -8,7 +8,7 @@
 </head>
 <body>
 
-
+<!--
 	<div id="viz-picker">
 		<div id="nav-title">WikiMapper</div>
 		<ul>
@@ -17,9 +17,28 @@
 		<li><a href="/html/hypertree.html">Hyper Tree</a></li>
 		</ul>
 	</div>
+-->
+
+	<div id="viz-picker">
+		<div id="nav-title">WikiMapper</div>
+		
+		<label class="radio inline">
+		<input id="cluster" type="radio" name="navopts" value="cluster" checked>
+			Cluster Tree
+		</label>
+		<br>
+		<label class="radio inline">
+		<input id="spacetree" type="radio" name="navopts" value="spacetree">
+			Space Tree
+		</label>
+		<br>
+		<label class="radio inline">
+		<input id="hypertree" type="radio" name="navopts" value="hypertree">
+			Hyper Tree
+	</label>
+	</div>
 
 	<div id="viz-body">
-
 	</div>
 </body>
 </html>

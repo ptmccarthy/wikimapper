@@ -15,9 +15,5 @@ function nav() {
 		if ( $(this).val() == 'spacetree' ) {
 			$('#viz-body').load('spacetree.html');
 		}
-
-		if ( $(this).val() == 'hypertree' ) {
-			$('#viz-body').load('hypertree.html');
-		}
 	})
 }

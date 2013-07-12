@@ -84,6 +84,12 @@ function findNode(tree, nodeId) {
    }
 }
 
+function clearHistory() {
+	tabStatus = {};
+	data = {};
+	localStorage.clear();
+}
+
 // message listener
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
 	// wikipedia page data sent from injected content script
@@ -101,6 +107,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 	// history page requesting localStorage object
 	if (request.payload == "localStorage") {
 		response(localStorage);
+	}
+	if (request.payload == "clear") {
+		clearHistory();
+		response("History Cleared");
 	}
 })
 

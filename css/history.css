@@ -1,0 +1,15 @@
+html, body {
+    margin:3px;
+    padding:3px;
+    font-family: "Lucida Grande", Verdana;
+    font-size: 0.9em;
+    background-color:#F2F2F2;
+}
+
+#clear {
+	background: #FF7D7D;
+	border-style: none;
+	width: 100px;
+	padding: 3px;
+	text-align: center;
+}

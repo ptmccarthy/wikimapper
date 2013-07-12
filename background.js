@@ -18,7 +18,7 @@ function savePageData(pageData) {
 	var page = { data: {} };
 	var tabId = pageData.tabId;
 	var openerId = pageData.openerId;
-	
+
 	page.name = pageData.title;
 	page.data.url = pageData.url;
 	page.data.ref = pageData.ref;
@@ -98,6 +98,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 	// visualization requesting json tree data
 	if (request.greeting == "json")
 		response(data);
+	// history page requesting localStorage object
+	if (request.payload == "localStorage") {
+		response(localStorage);
+	}
 })
 
 // listener for when the user clicks on the Wikimapper button

@@ -14,30 +14,31 @@ json = {
 */
 
 // function to request page data from a tab and record it appropriately
-function getPageData(tabId, openerId) {
-	chrome.tabs.sendMessage(tabId, {greeting: "wikimapper"}, function(response) {
-		var page = { data: {} };
-		page.name = response.title;
-		page.data.url = response.url;
-		page.data.ref = response.ref;
-		page.data.date = response.date;
-		page.children = [];
+function savePageData(pageData) {
+	var page = { data: {} };
+	var tabId = pageData.tabId;
+	var openerId = pageData.openerId;
+	
+	page.name = pageData.title;
+	page.data.url = pageData.url;
+	page.data.ref = pageData.ref;
+	page.data.date = pageData.date;
+	page.children = [];
 
-		console.log('tabId' + tabStatus[tabId]);
-		console.log('openerId' + tabStatus[openerId]);
-		// if both tabs are not in tabStatus, it is a root page
-		if (tabStatus[tabId] == undefined && tabStatus[openerId] == undefined) {
-			recordRootNode(page, tabId);
-		}
-		// if tabId is in tabStatus, then it is the same tab
-		else if (tabStatus[tabId] != undefined) {
-			recordChildNode(page, tabId, tabId);
-		// if openerId is in tabStatus, then it is a new tab
-		}
-		else if (tabStatus[openerId] != undefined) {
-			recordChildNode(page, tabId, openerId);
-		}
-	})
+	console.log('tabId' + tabStatus[tabId]);
+	console.log('openerId' + tabStatus[openerId]);
+	// if both tabs are not in tabStatus, it is a root page
+	if (tabStatus[tabId] == undefined && tabStatus[openerId] == undefined) {
+		recordRootNode(page, tabId);
+	}
+	// if tabId is in tabStatus, then it is the same tab
+	else if (tabStatus[tabId] != undefined) {
+		recordChildNode(page, tabId, tabId);
+	// if openerId is in tabStatus, then it is a new tab
+	}
+	else if (tabStatus[openerId] != undefined) {
+		recordChildNode(page, tabId, openerId);
+	}
 }
 
 // function to record a new root node
@@ -83,20 +84,21 @@ function findNode(tree, nodeId) {
    }
 }
 
-// listener for message requesting JSON tree
+// message listener
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
+	// wikipedia page data sent from injected content script
+	if (request.payload == "pageData") {
+		chrome.tabs.get(sender.tab.id, function(tab) {
+			request.pageData.openerId = tab.openerTabId;
+			request.pageData.tabId = sender.tab.id;
+			console.log(request.pageData);
+			savePageData(request.pageData);
+		});
+	}
+	// visualization requesting json tree data
 	if (request.greeting == "json")
 		response(data);
 })
-
-// listener for completed navigation events
-chrome.webNavigation.onCompleted.addListener(function(details) {
-	console.log('newtab' + details.tabId);
-	chrome.tabs.get(details.tabId, function(tab) {
-		console.log('opener' + tab.openerTabId);
-		getPageData(details.tabId, tab.openerTabId);
-	})
-}, {url: [{ hostSuffix: 'wikipedia.org' }]})
 
 // listener for when the user clicks on the Wikimapper button
 chrome.browserAction.onClicked.addListener(function(tab) {

@@ -12,6 +12,7 @@ a {
 }
 
 div#viz-body {
+	position: relative;
 	overflow-x: auto;
 	overflow-y: auto;
 }

@@ -41,9 +41,10 @@ function initGraph(root) {
       .attr("r", 4.5);
 
   node.append("text")
-      .attr("dx", function(d) { return d.children ? 40 : 100; })
+      //.attr("dx", function(d) { return d.children ? 20 : 100; })
+      //.attr("dx", -40)
       .attr("dy", 18)
-      .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+      .style("text-anchor", "middle")
       .text(function(d) { return d.name; });
 
 	d3.select(self.frameElement).style("height", height + "px");

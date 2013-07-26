@@ -6,6 +6,18 @@ html, body {
     background-color:#F2F2F2;
 }
 
+.history-item {
+	padding-top: 10px;
+}
+
+.load-button {
+	background: yellow;
+	border-style: none;
+	width: 100px;
+	padding: 3px;
+	text-align: center;
+}
+
 #clear {
 	background: #FF7D7D;
 	border-style: none;

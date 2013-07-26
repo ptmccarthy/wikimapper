@@ -19,3 +19,8 @@ div#viz-picker {
 	height: 100%;
 	text-align: left;
 }
+
+div#show-history {
+	text-align: center;
+	padding-top: 10px;
+}

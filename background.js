@@ -116,7 +116,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 
 		// history page load historical session
 		case "load":
-			console.log(request.key);
 			response(request.key);
 		break;
 

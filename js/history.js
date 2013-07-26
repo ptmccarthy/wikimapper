@@ -29,7 +29,7 @@ function clearHistory() {
 function viewHistoryItem() {
 	$(".load-button").click(function() {
 		chrome.runtime.sendMessage({payload: "load", key: $(this).attr('id')}, function(response) {
-			console.log(response);
+			alert(response);
 		})
 	})
 }

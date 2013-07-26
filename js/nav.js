@@ -16,4 +16,8 @@ function nav() {
 			$('#viz-body').load('spacetree.html');
 		}
 	})
+
+	$('#show-history').click(function() {
+		$('#viz-body').load('history.html');
+	})
 }

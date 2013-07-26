@@ -1,9 +1,9 @@
-html, body {
-    margin:3px;
-    padding:3px;
-    font-family: "Lucida Grande", Verdana;
-    font-size: 0.9em;
-    background-color:#F2F2F2;
+body {
+	text-align: left;
+}
+
+#history-content {
+	padding: 5px;
 }
 
 .history-item {

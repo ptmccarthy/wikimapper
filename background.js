@@ -84,6 +84,7 @@ function findNode(tree, nodeId) {
    }
 }
 
+// clears all history including current in-memory tree
 function clearHistory() {
 	tabStatus = {};
 	data = {};
@@ -108,6 +109,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 	if (request.payload == "localStorage") {
 		response(localStorage);
 	}
+	// history page requesting to clear all history
 	if (request.payload == "clear") {
 		clearHistory();
 		response("History Cleared");

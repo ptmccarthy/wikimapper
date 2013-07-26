@@ -15,9 +15,9 @@ function nav() {
 		if ( $(this).val() == 'spacetree' ) {
 			$('#viz-body').load('spacetree.html');
 		}
-	})
 
-	$('#show-history').click(function() {
-		$('#viz-body').load('history.html');
+		if ( $(this).val() == 'show-history' ) {
+			$('#viz-body').load('history.html');
+		}
 	})
 }

@@ -1,7 +1,7 @@
 function init() {
 
 var json;
-chrome.runtime.sendMessage({"greeting": "json"}, function(response) {
+chrome.runtime.sendMessage({"payload": "json"}, function(response) {
     initGraph(response);
 });
 

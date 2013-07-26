@@ -93,28 +93,35 @@ function clearHistory() {
 
 // message listener
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
-	// wikipedia page data sent from injected content script
-	if (request.payload == "pageData") {
-		chrome.tabs.get(sender.tab.id, function(tab) {
-			request.pageData.openerId = tab.openerTabId;
-			request.pageData.tabId = sender.tab.id;
-			console.log(request.pageData);
-			savePageData(request.pageData);
-		});
-	}
-	// visualization requesting json tree data
-	if (request.greeting == "json")
-		response(data);
-	// history page requesting localStorage object
-	if (request.payload == "localStorage") {
-		response(localStorage);
-	}
-	// history page requesting to clear all history
-	if (request.payload == "clear") {
-		clearHistory();
-		response("History Cleared");
+	switch (request.payload) {
+		// wikipedia page data sent from injected content script
+		case "pageData":
+			chrome.tabs.get(sender.tab.id, function(tab) {
+				request.pageData.openerId = tab.openerTabId;
+				request.pageData.tabId = sender.tab.id;
+				console.log(request.pageData);
+				savePageData(request.pageData);
+			});
+		break;
+
+		// visualization requesting json tree data
+		case "json":
+			response(data);
+		break;
+
+		// history page requesting localStorage object
+		case "localStorage":
+			response(localStorage);
+		break;
+
+		// history page requesting to clear all history
+		case "clear":
+			clearHistory();
+			response("History Cleared");
+		break;
 	}
 })
+
 
 // listener for when the user clicks on the Wikimapper button
 chrome.browserAction.onClicked.addListener(function(tab) {

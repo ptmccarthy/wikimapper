@@ -28,8 +28,9 @@ function clearHistory() {
 
 function viewHistoryItem() {
 	$(".load-button").click(function() {
-		var id = $(this).attr('id');
-		$(this).html(id);
+		chrome.runtime.sendMessage({payload: "load", key: $(this).attr('id')}, function(response) {
+			console.log(response);
+		})
 	})
 }
 

@@ -5,7 +5,7 @@ var nodeIndex = 1;
 // required JSON object structure for using with JIT and d3.js
 /* 
 json = {
-	"id" : , "node00"
+	"id" : , "node00",
 	"name" : "name",
 	"data" : {},
 	"children" : [ array of child nodes ]
@@ -116,7 +116,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 
 		// history page load historical session
 		case "load":
-			response("Loaded " + request);
+			console.log(request.key);
+			response(request.key);
+		break;
 
 		// history page requesting to clear all history
 		case "clear":

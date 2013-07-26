@@ -11,7 +11,7 @@ a {
     color:#23A4FF;
 }
 
-svg {
-    overflow: scroll;
+div#viz-body {
+	overflow-x: auto;
+	overflow-y: auto;
 }
-

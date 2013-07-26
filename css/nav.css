@@ -19,9 +19,3 @@ div#viz-picker {
 	height: 100%;
 	text-align: left;
 }
-
-div#viz-body {
-	overflow: scroll;
-	float: left;
-	width: 1000px;
-}

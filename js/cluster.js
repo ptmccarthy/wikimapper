@@ -19,7 +19,7 @@ function initGraph(root) {
 	var svg = d3.select("#viz-body").append("svg")
 	    .attr("width", width)
 	    .attr("height", height)
-	  .append("g")
+    .append("g")
 	    .attr("transform", "translate(40,0)");
 
   var nodes = cluster.nodes(root),
@@ -52,7 +52,3 @@ function initGraph(root) {
 }
 
 init();
-
-//chrome.tabs.onUpdated.addListener(function(details) {
-//  init();
-//});

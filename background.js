@@ -114,6 +114,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 			response(localStorage);
 		break;
 
+		// history page load historical session
+		case "load":
+			response("Loaded " + request);
+
 		// history page requesting to clear all history
 		case "clear":
 			clearHistory();

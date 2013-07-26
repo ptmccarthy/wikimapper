@@ -11,7 +11,7 @@ function displayHistory() {
 		date.setTime(key);
 
 		$("#history").append(	'<div class="history-item">' + date + ' '
-								+ session.name + '</div><div class="load-button">View</div>');
+								+ session.name + '</div><div class="load-button" id='+key+'>View</div>');
 	}
 	// once all items are populated, begin load-button listener
 	viewHistoryItem();
@@ -28,7 +28,8 @@ function clearHistory() {
 
 function viewHistoryItem() {
 	$(".load-button").click(function() {
-		alert("Load placeholder");
+		var id = $(this).attr('id');
+		$(this).html(id);
 	})
 }
 

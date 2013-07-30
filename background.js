@@ -104,19 +104,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 			});
 		break;
 
-		// visualization requesting json tree data
-		case "json":
-			response(data);
+		// page requesting json tree object
+		case "load":
+			// if the reuqest contains a key, return that tree from localstorage
+			if (request.key) {
+				response(request.key);
+			}
+			// else return current tree in memory
+			else response(data);
 		break;
 
 		// history page requesting localStorage object
 		case "localStorage":
 			response(localStorage);
-		break;
-
-		// history page load historical session
-		case "load":
-			response(request.key);
 		break;
 
 		// history page requesting to clear all history

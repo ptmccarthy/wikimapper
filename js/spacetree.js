@@ -28,7 +28,7 @@ var Log = {
 function init(){
     //init data
     var json = {};
-    chrome.runtime.sendMessage({"payload": "json"}, function(response) {
+    chrome.runtime.sendMessage({"payload": "load"}, function(response) {
         json = response;
         initSpaceTree(json)
     });

@@ -9,7 +9,9 @@ function nav() {
 	$('input:radio').change(function() {
 		
 		if ( $(this).val() == 'cluster' ) {
-			$('#viz-body').load('cluster.html');
+			chrome.runtime.sendMessage({ payload: "set" }, function() {
+				$('#viz-body').load('cluster.html');
+			});
 		}
 
 		if ( $(this).val() == 'spacetree' ) {

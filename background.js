@@ -1,6 +1,7 @@
 var tabStatus = {};
 var data = {};
 var nodeIndex = 1;
+var selectedTree;
 
 // required JSON object structure for using with JIT and d3.js
 /* 
@@ -104,14 +105,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 			});
 		break;
 
+		case "set":
+			if (request.key) {
+				selectedTree = JSON.parse(localStorage.getItem(request.key));
+			}
+			else {
+				selectedTree = data;
+			}
+			response();
+		break;
+
 		// page requesting json tree object
 		case "load":
-			// if the reuqest contains a key, return that tree from localstorage
-			if (request.key) {
-				response(request.key);
-			}
-			// else return current tree in memory
-			else response(data);
+			response(selectedTree)
 		break;
 
 		// history page requesting localStorage object

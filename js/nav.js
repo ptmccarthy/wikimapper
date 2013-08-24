@@ -10,16 +10,16 @@ function nav() {
 		
 		if ( $(this).val() == 'cluster' ) {
 			chrome.runtime.sendMessage({ payload: "set" }, function() {
+				$('#history').hide();
 				$('#viz-body').load('cluster.html');
+				$('#viz-body').show();
 			});
 		}
 
-		if ( $(this).val() == 'spacetree' ) {
-			$('#viz-body').load('spacetree.html');
-		}
-
 		if ( $(this).val() == 'show-history' ) {
-			$('#viz-body').load('history.html');
+			$('#viz-body').hide();
+			$('#history').load('history.html');
+			$('#history').show();
 		}
 	})
 }

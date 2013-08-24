@@ -14,8 +14,12 @@ div#nav-title {
 div#viz-picker {
 	background-color: black;
 	color: #23A4FF;
-	float: left;
-	width: 120px;
-	height: 100%;
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	z-index: 2;
+	width: 140px;
+	height: 100px;
 	text-align: left;
+	padding-left: 5px;
 }

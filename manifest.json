@@ -3,7 +3,7 @@
 
   "name": "WikiMapper",
   "description": "This extension tracks and graphs your reading of Wikipedia.",
-  "version": "0.2",
+  "version": "0.3",
 
   "background": { "scripts": ["background.js"] },
 

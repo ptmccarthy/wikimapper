@@ -1,7 +1,7 @@
 var tabStatus = {};
 var data = {};
 var nodeIndex = 1;
-var selectedTree;
+var selectedTree = {};
 
 // required JSON object structure for using with JIT and d3.js
 /* 

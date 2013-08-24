@@ -9,8 +9,7 @@ function displayHistory() {
 	for (var key in localStorage) {
 		var session = JSON.parse(localStorage[key]);
 		date.setTime(key);
-
-		$("#history").prepend(	'<div class="history-item">' + date + ' '
+		$("#history-content").prepend(	'<div class="history-item">' + date + ' '
 								+ session.name + '</div><div class="load-button" id='+key+'>View</div>');
 	}
 	// once all items are populated, begin load-button listener
@@ -26,10 +25,19 @@ function clearHistory() {
 	})
 }
 
+function goBack() {
+	$("#back").click(function() {
+		$("#viz-body").hide();
+		$("#history").load("history.html");
+	})
+}
+
 function viewHistoryItem() {
 	$(".load-button").click(function() {
 		chrome.runtime.sendMessage({payload: "set", key: $(this).attr('id')}, function(response) {
-			$("#history").load("cluster.html");
+			$("#history-content").hide();
+			$("#viz-body").load("cluster.html");
+			$("#viz-body").show();
 		})
 	})
 }
@@ -37,4 +45,5 @@ function viewHistoryItem() {
 $(document).ready(function() {
 	displayHistory();
 	clearHistory();
+	goBack();
 })

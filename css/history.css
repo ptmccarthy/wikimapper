@@ -2,8 +2,18 @@ body {
 	text-align: left;
 }
 
+#history-panel {
+	position: absolute;
+	top: 10px;
+	left: 170px;
+	width: 100px;
+	height: 100px;
+	z-index: 2;
+}
+
 #history-content {
-	padding: 5px;
+	padding-left: 10px;
+	padding-top: 150px;
 }
 
 .history-item {
@@ -18,10 +28,17 @@ body {
 	text-align: center;
 }
 
-#clear {
-	background: #FF7D7D;
+.button {
 	border-style: none;
 	width: 100px;
 	padding: 3px;
 	text-align: center;
+}
+
+#clear {
+	background: #FF7D7D;
+}
+
+#back {
+	background: #7ACF53;
 }

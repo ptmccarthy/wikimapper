@@ -20,7 +20,7 @@ function clearHistory() {
 	$("#clear").click(function() {
 		chrome.runtime.sendMessage({payload: "clear"}, function(response) {
 			$("#clear").html(response);
-			$("#history").html("");
+			$("#history-content").html("History cleared.");
 		})
 	})
 }

@@ -1,7 +1,9 @@
 // load default on document ready event and start nav function
 $(document).ready(function() {
 	$('#viz-body').load('cluster.html');
-	nav();
+	chrome.runtime.sendMessage({ payload: "set" }, function() {
+		nav();
+	})
 });
 
 // load different visualization when user switches view radio button

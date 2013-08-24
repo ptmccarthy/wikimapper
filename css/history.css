@@ -6,32 +6,35 @@ body {
 	position: absolute;
 	top: 10px;
 	left: 170px;
-	width: 100px;
+	width: 110px;
 	height: 100px;
 	z-index: 2;
 }
 
 #history-content {
 	padding-left: 10px;
-	padding-top: 150px;
+	padding-top: 140px;
 }
 
 .history-item {
+	border-radius: 10px;
 	padding-top: 10px;
 }
 
 .load-button {
-	background: yellow;
+	background: #63AFFF;
 	border-style: none;
-	width: 100px;
+	width: 90px;
 	padding: 3px;
+	border-radius: 10px;
 	text-align: center;
 }
 
 .button {
 	border-style: none;
-	width: 100px;
+	width: 110px;
 	padding: 3px;
+	border-radius: 10px;
 	text-align: center;
 }
 
@@ -40,5 +43,5 @@ body {
 }
 
 #back {
-	background: #7ACF53;
+	background: #9EE080;
 }

@@ -7,10 +7,6 @@ html, body {
     background-color:#F2F2F2;
 }
 
-a {
-    color:#23A4FF;
-}
-
 div#viz-body {
     position: absolute;
     top: 0px;

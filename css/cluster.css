@@ -13,3 +13,8 @@
 	stroke: #ccc;
 	stroke-width: 1.5px;
 }
+
+#null-message {
+	padding-top: 160px;
+	padding-left: 10px;
+}

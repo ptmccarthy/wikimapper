@@ -2,7 +2,11 @@ function init() {
 
 var json;
 chrome.runtime.sendMessage({"payload": "load"}, function(response) {
-    initGraph(response);
+    if (typeof(response.data) != 'undefined') {
+      initGraph(response);
+    } else {
+      $("#null-message").html("Start browsing Wikipedia to begin!");
+    }
 });
 
 function initGraph(root) {

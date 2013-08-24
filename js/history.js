@@ -28,6 +28,7 @@ function clearHistory() {
 function goBack() {
 	$("#back").click(function() {
 		$("#viz-body").hide();
+		$("#back").hide();
 		$("#history").load("history.html");
 	})
 }
@@ -36,6 +37,7 @@ function viewHistoryItem() {
 	$(".load-button").click(function() {
 		chrome.runtime.sendMessage({payload: "set", key: $(this).attr('id')}, function(response) {
 			$("#history-content").hide();
+			$("#back").show();
 			$("#viz-body").load("cluster.html");
 			$("#viz-body").show();
 		})

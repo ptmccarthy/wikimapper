@@ -1,5 +1,5 @@
 ### WikiMapper: A Chrome extension to map your Wikipedia navigation.
 
-Use WikiMapper to generate graphic views of your Wikipedia stumblings.
+WikiMapper creates a historical tree of your Wikipedia browsing so that you can see just exactly how you spontaneously wasted 45 minutes and ended up reading about the history of Agriculture in Uzbekistan.
 
-To install, enable 'Developer Mode' in your chrome://extensions control panel, and select 'Load unpacked extension', and point it at the entire unzipped Wikimapper folder.
+WikiMapper is available for free in the Chrome Web Store! [Click here.](https://chrome.google.com/webstore/detail/wikimapper/feiheebgoilmbkaddngcoocjbogfchlb/details?hl=en&gl=US)

@@ -9,7 +9,7 @@ function displayHistory() {
 	for (var key in localStorage) {
 		var session = JSON.parse(localStorage[key]);
 		date.setTime(key);
-		$("#history-content").prepend(	'<div class="history-item">' + date + ' '
+		$("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
 								+ session.name + '</div><div class="load-button" id='+key+'>View</div>');
 	}
 	// once all items are populated, begin load-button listener
@@ -42,6 +42,10 @@ function viewHistoryItem() {
 			$("#viz-body").show();
 		})
 	})
+}
+
+function formatDate(date) {
+	return date.getMonth() + '/' + date.getDate()  + '/' + date.getFullYear() + ' at ' + date.getHours() + ':' + date.getMinutes();
 }
 
 $(document).ready(function() {

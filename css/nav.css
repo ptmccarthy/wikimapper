@@ -6,9 +6,26 @@ ul {
 
 div#nav-title {
 	color: #E6E6E6;
-	padding: 10;
 	text-align: center;
 	font-size: 18;
+}
+
+div#nav-logo {
+	position: absolute;
+	top: 18px;
+	left: 20px;
+}
+
+div#nav-title-text {
+	position: absolute;
+	top: 35px;
+	left: 75px;
+}
+
+div#nav-buttons {
+	position: absolute;
+	top: 75px;
+	padding-left: 40px;
 }
 
 div#viz-picker {
@@ -18,8 +35,8 @@ div#viz-picker {
 	left: 10px;
 	top: 10px;
 	z-index: 2;
-	width: 140px;
-	height: 100px;
+	width: 200px;
+	height: 120px;
 	text-align: left;
 	padding-left: 5px;
 	border-radius: 10px;

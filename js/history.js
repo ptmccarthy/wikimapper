@@ -26,17 +26,27 @@ function clearHistory() {
 				$("#clear-all-confirm").hide();
 			})
 		})
+
 		$("#all-no").click(function() {
 			$("#clear-all-confirm").hide();
 		})
 	})
 }
 
-function clearCurrent() {
+function clearCurrent(key) {
 	$("#clear-current").click(function() {
 		$("#clear-current-confirm").show();
 		$("#current-yes").click(function() {
-			// placeholder for later
+			chrome.runtime.sendMessage({payload: "delete", key: key}, function(response) {
+				$("#clear-current").html(response);
+				$("#viz-body").hide();
+				$("#history-content").html(response);
+				$("#history-content").show();
+				$("#clear-current-confirm").hide();
+			});
+		})
+		$("#current-no").click(function() {
+			$("#clear-current-confirm").hide();
 		})
 	})
 }
@@ -52,10 +62,11 @@ function goBack() {
 
 function viewHistoryItem() {
 	$(".load-button").click(function() {
-		chrome.runtime.sendMessage({payload: "set", key: $(this).attr('id')}, function(response) {
+		var key = $(this).attr('id');
+		chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
 			$("#history-content").hide();
-			// placeholder for later
-			// $("#clear-current").show();
+			$("#clear-current").show();
+			clearCurrent(key);
 			$("#back").show();
 			$("#viz-body").load("cluster.html");
 			$("#viz-body").show();

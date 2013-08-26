@@ -85,6 +85,10 @@ function findNode(tree, nodeId) {
    }
 }
 
+function deleteHistoryItem(key) {
+	localStorage.removeItem(key);
+}
+
 // clears all history including current in-memory tree
 function clearHistory() {
 	tabStatus = {};
@@ -123,6 +127,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 		// history page requesting localStorage object
 		case "localStorage":
 			response(localStorage);
+		break;
+
+		// history page requestion to remove a specific tree by key
+		case "delete":
+			deleteHistoryItem(request.key);
+			response("Tree Deleted");
 		break;
 
 		// history page requesting to clear all history

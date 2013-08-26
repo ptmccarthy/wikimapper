@@ -82,7 +82,7 @@ body {
 
 #clear-current {
 	top: 49px;
-
+	background: #FF7D7D;
 }
 
 #clear-current-confirm {
@@ -92,12 +92,12 @@ body {
 }
 
 #current-yes {
-	top: 73px;
+	top: 24px;
 	left: 0px;
 }
 
 #current-no {
-	top: 73px;
+	top: 24px;
 	left: 65px;
 }
 

@@ -32,16 +32,26 @@ body {
 
 .button {
 	border-style: none;
-	width: 110px;
+	width: 120px;
 	padding: 3px;
 	border-radius: 10px;
 	text-align: center;
 }
 
-#clear {
+#clear-all {
+	position: absolute;
+	top: 0px;
+	background: #FF7D7D;
+}
+
+#clear-current {
+	position: absolute;
+	top: 49px;
 	background: #FF7D7D;
 }
 
 #back {
+	position: absolute;
+	top: 98px;
 	background: #9EE080;
 }

@@ -21,10 +21,8 @@
 #null-message {
 	position: absolute;
 	width: 500px;
-	top: 0px;
-	left: 0px;
+	top: 160px;
+	left: 30px;
 	z-index: 1;
 	text-align: justify;
-	padding-top: 160px;
-	padding-left: 30px;
 }

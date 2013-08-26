@@ -14,13 +14,17 @@
 	stroke-width: 1.5px;
 }
 
+.h2 {
+	font-size: 14pt;
+}
+
 #null-message {
 	position: absolute;
-	width: 250px;
+	width: 500px;
 	top: 0px;
 	left: 0px;
 	z-index: 1;
-	text-align: left;
+	text-align: justify;
 	padding-top: 160px;
 	padding-left: 30px;
 }

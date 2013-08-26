@@ -5,7 +5,7 @@ chrome.runtime.sendMessage({"payload": "load"}, function(response) {
     if (typeof(response.data) != 'undefined') {
       initGraph(response);
     } else {
-      $("#null-message").html("Start browsing Wikipedia to begin!");
+      $("#null-message").load("../html/intro.html");
     }
 });
 

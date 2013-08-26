@@ -18,12 +18,29 @@ function displayHistory() {
 
 function clearHistory() {
 	$("#clear-all").click(function() {
-		chrome.runtime.sendMessage({payload: "clear"}, function(response) {
-			$("#clear-all").html(response);
-			$("#history-content").html(response);
+		$("#clear-all-confirm").show();
+		$("#all-yes").click(function() {
+			chrome.runtime.sendMessage({payload: "clear"}, function(response) {
+				$("#clear-all").html(response);
+				$("#history-content").html(response);
+				$("#clear-all-confirm").hide();
+			})
+		})
+		$("#all-no").click(function() {
+			$("#clear-all-confirm").hide();
 		})
 	})
 }
+
+function clearCurrent() {
+	$("#clear-current").click(function() {
+		$("#clear-current-confirm").show();
+		$("#current-yes").click(function() {
+			// placeholder for later
+		})
+	})
+}
+
 
 function goBack() {
 	$("#back").click(function() {
@@ -37,7 +54,7 @@ function viewHistoryItem() {
 	$(".load-button").click(function() {
 		chrome.runtime.sendMessage({payload: "set", key: $(this).attr('id')}, function(response) {
 			$("#history-content").hide();
-			// commented out for later implementation
+			// placeholder for later
 			// $("#clear-current").show();
 			$("#back").show();
 			$("#viz-body").load("cluster.html");

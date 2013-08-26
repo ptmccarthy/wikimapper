@@ -31,6 +31,7 @@ body {
 }
 
 .button {
+	position: absolute;
 	border-style: none;
 	width: 120px;
 	padding: 3px;
@@ -38,20 +39,69 @@ body {
 	text-align: center;
 }
 
-#clear-all {
+.button-yes {
 	position: absolute;
+	border-style: none;
+	width: 55px;
+	padding: 3px;
+	border-radius: 10px;
+	text-align: center;
+	background: #FF7D7D;
+}
+
+.button-no {
+	position: absolute;
+	border-style: none;
+	width: 55px;
+	padding: 3px;
+	border-radius: 10px;
+	text-align: center;
+	background: #9EE080;
+}
+
+#clear-all {
 	top: 0px;
 	background: #FF7D7D;
 }
 
+#clear-all-confirm {
+	top: 0px;
+	left: 120px;
+	background: #F2F266;
+}
+
+#all-yes {
+	top: 24px;
+	left: 0px;
+}
+
+#all-no {
+	top: 24px;
+	left: 65px;
+}
+
 #clear-current {
-	position: absolute;
 	top: 49px;
-	background: #FF7D7D;
+
+}
+
+#clear-current-confirm {
+	top: 49px;
+	left: 120px;
+	background: #F2F266;
+}
+
+#current-yes {
+	top: 73px;
+	left: 0px;
+}
+
+#current-no {
+	top: 73px;
+	left: 65px;
 }
 
 #back {
-	position: absolute;
 	top: 98px;
 	background: #9EE080;
 }

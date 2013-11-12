@@ -14,12 +14,13 @@ json = {
 }
 */
 
-// function to request page data from a tab and record it appropriately
+// function to receive page data from a tab and record it appropriately
 function savePageData(pageData) {
 	var page = { data: {} };
 	var tabId = pageData.tabId;
 	var openerId = pageData.openerId;
 
+	// populate page data json object
 	page.name = pageData.title;
 	page.data.url = pageData.url;
 	page.data.ref = pageData.ref;

@@ -34,11 +34,11 @@ function savePageData(pageData) {
 		recordRootNode(page, tabId);
 	}
 	// if tabId is in tabStatus, then it is the same tab
-	else if (tabStatus[tabId] != undefined) {
+	else if (tabStatus[tabId] !== undefined) {
 		recordChildNode(page, tabId, tabId);
 	// if openerId is in tabStatus, then it is a new tab
 	}
-	else if (tabStatus[openerId] != undefined) {
+	else if (tabStatus[openerId] !== undefined) {
 		recordChildNode(page, tabId, openerId);
 	}
 }

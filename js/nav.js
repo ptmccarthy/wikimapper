@@ -1,6 +1,6 @@
 // load default on document ready event and start nav function
 $(document).ready(function() {
-	$('#viz-body').load('cluster.html');
+	$('#viz-body').load('tree.html');
 	chrome.runtime.sendMessage({ payload: "set" }, function() {
 		nav();
 	})
@@ -13,7 +13,7 @@ function nav() {
 		if ( $(this).val() == 'cluster' ) {
 			chrome.runtime.sendMessage({ payload: "set" }, function() {
 				$('#history').hide();
-				$('#viz-body').load('cluster.html');
+				$('#viz-body').load('tree.html');
 				$('#viz-body').show();
 			});
 		}

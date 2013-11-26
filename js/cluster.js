@@ -23,7 +23,7 @@ function initGraph(root) {
 	var svg = d3.select("#viz-body").append("svg")
 	    .attr("width", width)
 	    .attr("height", height)
-    .append("g")
+      .append("g")
 	    .attr("transform", "translate(40,0)");
 
   var nodes = cluster.nodes(root),
@@ -31,13 +31,13 @@ function initGraph(root) {
 
   var link = svg.selectAll(".link")
       .data(links)
-    .enter().append("path")
+      .enter().append("path")
       .attr("class", "link")
       .attr("d", diagonal);
 
   var node = svg.selectAll(".node")
       .data(nodes)
-    .enter().append("g")
+      .enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
 

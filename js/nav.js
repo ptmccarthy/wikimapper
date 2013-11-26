@@ -10,7 +10,7 @@ $(document).ready(function() {
 function nav() {
 	$('input:radio').change(function() {
 		
-		if ( $(this).val() == 'cluster' ) {
+		if ( $(this).val() == 'tree' ) {
 			chrome.runtime.sendMessage({ payload: "set" }, function() {
 				$('#history').hide();
 				$('#viz-body').load('tree.html');

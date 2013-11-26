@@ -68,7 +68,7 @@ function viewHistoryItem() {
 			$("#clear-current").show();
 			clearCurrent(key);
 			$("#back").show();
-			$("#viz-body").load("cluster.html");
+			$("#viz-body").load("tree.html");
 			$("#viz-body").show();
 		})
 	})

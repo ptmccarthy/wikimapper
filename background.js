@@ -30,7 +30,7 @@ function savePageData(pageData) {
 	console.log('tabId' + tabStatus[tabId]);
 	console.log('openerId' + tabStatus[openerId]);
 	// if both tabs are not in tabStatus, it is a root page
-	if (tabStatus[tabId] == undefined && tabStatus[openerId] == undefined) {
+	if (tabStatus[tabId] === undefined && tabStatus[openerId] === undefined) {
 		recordRootNode(page, tabId);
 	}
 	// if tabId is in tabStatus, then it is the same tab

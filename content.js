@@ -1,6 +1,6 @@
 var cleanedTitle = document.title.replace(' - Wikipedia, the free encyclopedia', '');
 
-var data = { 	title: cleanedTitle,
+var data = {    title: cleanedTitle,
 				url: document.URL,
 				ref: document.referrer,
 				date: Date.now(),

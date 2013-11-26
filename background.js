@@ -81,8 +81,8 @@ function findNode(tree, nodeId) {
 
    var result;
    for (var i = 0; i < tree.children.length; i++) {
-      result = findNode(tree.children[i], nodeId);
-      if (result !== undefined) return result;
+	  result = findNode(tree.children[i], nodeId);
+	  if (result !== undefined) return result;
    }
 }
 
@@ -147,6 +147,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 
 // listener for when the user clicks on the Wikimapper button
 chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')}, function(tab) {
-  });
+	chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')}, function(tab) {
+	});
 });

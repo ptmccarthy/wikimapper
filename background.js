@@ -130,7 +130,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 			response(localStorage);
 		break;
 
-		// history page requestion to remove a specific tree by key
+		// history page requesting to remove a specific tree by key
 		case "delete":
 			deleteHistoryItem(request.key);
 			response("Tree Deleted");

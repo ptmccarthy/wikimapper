@@ -17,8 +17,12 @@ json = {
 function sessionHandler(commitData) {
 	var sessionId = findSessionOf(commitData);
 
-	createPageObject(sessionId, commitData, function(newPage) {
-		recordPage(newPage);
+	createPageObject(sessionId, commitData, function(page) {
+		if (page.id == 1) {
+			recordRoot(page);
+		} else {
+			recordChild(page);
+		}
 	});
 
 	console.log("Sessions: " + JSON.stringify(sessions));
@@ -80,7 +84,13 @@ function createPageObject(sessionId, commitData, callback) {
 	})
 }
 
-function recordPage(page) {
+function recordRoot(page) {
+	console.log('root');
+	console.log(page);
+}
+
+function recordChild(page) {
+	console.log('child');
 	console.log(page);
 }
 
@@ -94,16 +104,23 @@ var createGUID = function() {
 
 
 // Navigation Event Listener
-chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
-	// get the parent tab id of the tab that the nav event occurs in
-	// and add it as an additional key in commitData
-	var commitData = details;
-	chrome.tabs.get(details.tabId, function(tab) {
-		if (tab.openerTabId !== undefined) {
-			commitData.parentId = tab.openerTabId;
-		} else {
-			commitData.parentId = 0;
-		}
-		sessionHandler(commitData);
-	});
+chrome.webNavigation.onCommitted.addListener(function(details) {
+	// check that this event is a link or typed address
+	// filter out back, reload, etc events
+	if (details.transitionType == "link" ||
+		details.transitionType == "typed") {
+
+		// get the parent tab id of the tab that the nav event occurs in
+		// and add it as an additional key in commitData
+		var commitData = details;
+		console.log(commitData);
+		chrome.tabs.get(details.tabId, function(tab) {
+			if (tab.openerTabId !== undefined) {
+				commitData.parentId = tab.openerTabId;
+			} else {
+				commitData.parentId = 0;
+			}
+			sessionHandler(commitData);
+		});
+	}
 }, { url: [{ urlContains: ".wikipedia.org/wiki" }]});

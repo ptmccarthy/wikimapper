@@ -1,3 +1,4 @@
+/*
 var cleanedTitle = document.title.replace(' - Wikipedia, the free encyclopedia', '');
 
 var data = {    title: cleanedTitle,
@@ -9,3 +10,4 @@ var data = {    title: cleanedTitle,
 chrome.runtime.sendMessage({payload: "pageData", pageData: data}, function(response) {
 	console.log(response);
 });
+*/

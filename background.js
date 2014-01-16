@@ -16,7 +16,11 @@ json = {
 // take in event commitData, direct it to the correct session
 function sessionHandler(commitData) {
 	var sessionId = findSessionOf(commitData);
-	recordPage(sessionId, commitData);
+
+	createPageObject(sessionId, commitData, function(newPage) {
+		recordPage(newPage);
+	});
+
 	console.log("Sessions: " + JSON.stringify(sessions));
 }
 
@@ -60,22 +64,24 @@ function createNewSession(commitData) {
 }
 
 
-function recordPage(sessionId, commitData) {
-	var nodeId;
+function createPageObject(sessionId, commitData, callback) {
 	sessions.forEach(function(session) {
 		if (session.id == sessionId) {
-			var page = { data: {	"nodeId": session.nodeIndex,
-									"sessionId": session.id,
-									"data": { 	"url": commitData.url,
-												"date": commitData.date,
-											},
-									"children": [],
-									}}
+			var page = { 	"id": session.nodeIndex,
+							"sessionId": session.id,
+							"data": { 	"url": commitData.url,
+										"date": commitData.timeStamp,
+									},
+							"children": [],
+						}
 			session.nodeIndex += 1;
+			callback(page);
 		}
 	})
+}
 
-
+function recordPage(page) {
+	console.log(page);
 }
 
 // GUID generator pulled from StackOverflow

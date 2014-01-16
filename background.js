@@ -16,8 +16,8 @@ json = {
 // take in event commitData, direct it to the correct session
 function sessionHandler(commitData) {
 	var sessionId = findSessionOf(commitData);
-	console.log("Sessions: " + JSON.stringify(sessions));
 	recordPage(sessionId, commitData);
+	console.log("Sessions: " + JSON.stringify(sessions));
 }
 
 // Session Finder

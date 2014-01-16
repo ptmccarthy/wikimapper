@@ -61,15 +61,20 @@ function createNewSession(commitData) {
 
 
 function recordPage(sessionId, commitData) {
-	//sessions.
+	var nodeId;
+	sessions.forEach(function(session) {
+		if (session.id == sessionId) {
+			var page = { data: {	"nodeId": session.nodeIndex,
+									"sessionId": session.id,
+									"data": { 	"url": commitData.url,
+												"date": commitData.date,
+											},
+									"children": [],
+									}}
+			session.nodeIndex += 1;
+		}
+	})
 
-	var page = { data: {	"id": sessions.nodeIndex,
-							"data": { "url": commitData.url,
-									"date": commitData.date,
-								},
-							"children": [],
-						}
-				};
 
 }
 

@@ -237,7 +237,8 @@ chrome.webNavigation.onCommitted.addListener(function(details) {
 	// check that this event is a link or typed address
 	// filter out back, reload, etc events
 	if (details.transitionType == "link" ||
-		details.transitionType == "typed") {
+		details.transitionType == "typed" ||
+		details.transitionType == "form_submit" ) {
 
 		// get the parent tab id of the tab that the nav event occurs in
 		// and add it as an additional key in commitData

@@ -19,9 +19,9 @@ function displayHistory() {
 function displayHistory() {
 	for (var key in localStorage) {
 		var session = JSON.parse(localStorage[key]);
-		date.setTime(session.data.date);
+		date.setTime(key);
 		$("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
-							+ session.data.url + '</div><div class="load-button" id='+key+'>View</div>');
+							+ session.name + '</div><div class="load-button" id='+key+'>View</div>');
 	}
 	// once all items are populated, begin load-button listener
 	viewHistoryItem();

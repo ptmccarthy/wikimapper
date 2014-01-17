@@ -71,7 +71,7 @@ function findSessionOf(commitData) {
 // make a new session object and assign it a GUID
 // return the id of the created session
 function createNewSession(commitData) {
-	var session = {		"id": createGUID(),
+	var session = {		"id": Date.now(),
 						"tabs": [ commitData.tabId ],
 						"nodeIndex": 1,
 				}
@@ -87,7 +87,7 @@ function createPageObject(session, commitData, callback) {
 		if (activeSession.id == session.id) {
 			var page = { 	"id": activeSession.nodeIndex,
 							// to do: retrieve name from content.js
-							"name": commitData.url,
+							"name": shortenURL(commitData.url),
 							"data": { 	"url": commitData.url,
 										"date": commitData.timeStamp,
 										"sessionId": session.id,
@@ -145,14 +145,6 @@ function setTabStatus(tabId, page) {
 	tabStatus[tabId] = page;
 }
 
-// GUID generator pulled from StackOverflow
-var createGUID = function() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
-}
-
 function deleteHistoryItem(key) {
 	localStorage.removeItem(key);
 }
@@ -164,6 +156,21 @@ function clearHistory() {
 	localStorage.clear();
 }
 
+// trim url to just the page name from the url
+// this returns a placeholder value for node.name until the
+// loaded page DOM can be queried for its real name
+function shortenURL(url) {
+	return /[^/]*$/.exec(url)[0];
+}
+
+// GUID generator pulled from StackOverflow
+var createGUID = function() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+}
+
 // message listener
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
 	switch (request.payload) {
@@ -172,14 +179,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 				selectedTree = JSON.parse(localStorage.getItem(request.key));
 			}
 			else {
-				selectedTree = data;
+				var recent = sessions.length - 1;
+				recent = sessions[recent].id;
+				selectedTree = JSON.parse(localStorage.getItem(recent));
 			}
 			response();
 		break;
 
 		// page requesting json tree object
 		case "load":
-			response(selectedTree)
+			response(selectedTree);
 		break;
 
 		// history page requesting localStorage object

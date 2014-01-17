@@ -45,7 +45,6 @@ function findSessionOf(commitData) {
 		else if(commitData.parentId !== undefined) {
 			var index = session.tabs.indexOf(commitData.parentId)
 			if (index >= 0) {
-				console.log('found parent');
 				ret.id = session.id;
 				ret.parentNode = tabStatus[commitData.parentId].id;
 				session.tabs.push(commitData.tabId);

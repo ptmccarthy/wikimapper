@@ -10,4 +10,4 @@ Bugfixes:
 - Recording a new root node no longer reset the entire tree
 
 Github Issues Closed:
-- #1, #33, #34, #37, #38, #39, #41, #42
+- #1 , #33 , #34 , #37 , #38 , #39 , #41 , #42

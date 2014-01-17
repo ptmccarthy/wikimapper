@@ -1,3 +1,10 @@
+## 0.5.1 (01-17-2014)
+Bugfixes:
+- Added "form_submit" to the transitionType filter for recording
+
+Github Issues Closed:
+- #44
+
 ## 0.5.0 (01-17-2014)
 
 Features:

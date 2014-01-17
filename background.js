@@ -31,7 +31,7 @@ function sessionHandler(commitData) {
 // does logic to determine which wikipedia 'session' the
 // navigation event's commitData belongs to.
 // creates new session if needed
-// returns guid and parentNode of session object
+// returns id (timestamp) and parentNode of session object
 function findSessionOf(commitData) {
 	var ret = {	"id": "",
 				"parentNode": "",
@@ -72,12 +72,13 @@ function createNewSession(commitData) {
 	return { "id": session.id, "parentNode": "" };
 }
 
-
+// Create Page Object
+// create a new page object that will get inserted into
+// the tree data structure
 function createPageObject(session, commitData, callback) {
 	sessions.forEach(function(activeSession) {
 		if (activeSession.id == session.id) {
 			var page = { 	"id": activeSession.nodeIndex,
-							// to do: retrieve name from content.js
 							"name": shortenURL(commitData.url),
 							"data": { 	"url": commitData.url,
 										"date": commitData.timeStamp,
@@ -112,12 +113,11 @@ function recordChild(page) {
 	// record the modified tree to localStorage
 	localStorage.setItem(page.data.sessionId, JSON.stringify(tree));
 }
-)
+
 
 // Find Node
 // recursively look through a JSON tree for the specified node and return it
 function findNode(tree, nodeId) {
-   console.log('looking for ' + nodeId + ' in ' + JSON.stringify(tree));
    if (tree.id === nodeId) return tree;
 
    var result;
@@ -127,12 +127,41 @@ function findNode(tree, nodeId) {
    }
 }
 
+// Find Node By URL
+// recursively look through a JSON tree for first node with a matching url
+// TODO: improve this by comparing URLs AND tabIds for a more precise match
+function findNodeByURL(tree, url) {
+	if (tree.data.url == url) return tree;
+
+	var result;
+	for (var i = 0; i < tree.children.length; i++) {
+		result = findNodeByURL(tree.children[i], url);
+		if (result !== undefined) return result;
+	}
+}
+
 // Set TabStatus
 // function to update the tab status object with the page contents of tabId
 function setTabStatus(tabId, page) {
 	tabStatus[tabId] = page;
 }
 
+// Update Name
+// function to find the session and node of a page
+// and to update the node's name with the proper document name
+function updateName(tab, name) {
+	sessions.forEach(function(s) {
+		if( s.tabs.indexOf(tab.id) >= 0 ) {
+			// i know the session id to go find this node in
+			var tree = JSON.parse(localStorage[s.id]);
+			var node = findNodeByURL(tree, tab.url);
+			node.name = name;
+			localStorage.setItem(s.id, JSON.stringify(tree));
+		}
+	})
+}
+	
+// deletes a specific key from localStorage
 function deleteHistoryItem(key) {
 	localStorage.removeItem(key);
 }
@@ -177,6 +206,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 		// tree page requesting json tree object
 		case "load":
 			response(selectedTree);
+		break;
+
+		case "update":
+			updateName(sender.tab, request.name);
 		break;
 
 		// history page requesting localStorage object

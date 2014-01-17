@@ -1,6 +1,7 @@
 var sessions = [];
 var tabStatus = {};
 var data = {};
+var selectedTree = {};
 // required JSON object structure for using with JIT and d3.js
 /* 
 json = {
@@ -54,8 +55,7 @@ function findSessionOf(commitData) {
 				ret.parentNode = tabStatus[commitData.parentId].id;
 				session.tabs.push(commitData.tabId);
 			}
-		}
-		
+		}		
 	})
 
 	if (ret.id != "") {
@@ -86,6 +86,7 @@ function createPageObject(session, commitData, callback) {
 	sessions.forEach(function(activeSession) {
 		if (activeSession.id == session.id) {
 			var page = { 	"id": activeSession.nodeIndex,
+							"name": commitData.url,
 							"data": { 	"url": commitData.url,
 										"date": commitData.timeStamp,
 										"sessionId": session.id,
@@ -125,7 +126,7 @@ function recordChild(page) {
 }
 
 // Find Node
-// recursively look through the JSON tree for the specified node and return it
+// recursively look through a JSON tree for the specified node and return it
 function findNode(tree, nodeId) {
    console.log('looking for ' + nodeId + ' in ' + JSON.stringify(tree));
    if (tree.id === nodeId) return tree;
@@ -141,7 +142,6 @@ function findNode(tree, nodeId) {
 // function to update the tab status object with the page contents of tabId
 function setTabStatus(tabId, page) {
 	tabStatus[tabId] = page;
-	console.log(tabStatus);
 }
 
 // GUID generator pulled from StackOverflow
@@ -151,6 +151,54 @@ var createGUID = function() {
         return v.toString(16);
     });
 }
+
+function deleteHistoryItem(key) {
+	localStorage.removeItem(key);
+}
+
+// clears all history including current in-memory tree
+function clearHistory() {
+	tabStatus = {};
+	data = {};
+	localStorage.clear();
+}
+
+// message listener
+chrome.runtime.onMessage.addListener(function(request, sender, response) {
+	switch (request.payload) {
+		case "set":
+			if (request.key) {
+				selectedTree = JSON.parse(localStorage.getItem(request.key));
+			}
+			else {
+				selectedTree = data;
+			}
+			response();
+		break;
+
+		// page requesting json tree object
+		case "load":
+			response(selectedTree)
+		break;
+
+		// history page requesting localStorage object
+		case "localStorage":
+			response(localStorage);
+		break;
+
+		// history page requesting to remove a specific tree by key
+		case "delete":
+			deleteHistoryItem(request.key);
+			response("Tree Deleted");
+		break;
+
+		// history page requesting to clear all history
+		case "clear":
+			clearHistory();
+			response("History Cleared");
+		break;
+	}
+})
 
 
 // Navigation Event Listener

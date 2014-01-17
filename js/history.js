@@ -4,13 +4,24 @@ var date = new Date();
 chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
 	localStorage = response;
 })
-
+/*
 function displayHistory() {
 	for (var key in localStorage) {
 		var session = JSON.parse(localStorage[key]);
 		date.setTime(key);
 		$("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
 								+ session.name + '</div><div class="load-button" id='+key+'>View</div>');
+	}
+	// once all items are populated, begin load-button listener
+	viewHistoryItem();
+}
+*/
+function displayHistory() {
+	for (var key in localStorage) {
+		var session = JSON.parse(localStorage[key]);
+		date.setTime(session.data.date);
+		$("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
+							+ session.data.url + '</div><div class="load-button" id='+key+'>View</div>');
 	}
 	// once all items are populated, begin load-button listener
 	viewHistoryItem();

@@ -1,6 +1,6 @@
 var sessions = [];
+var tabStatus = {};
 var data = {};
-
 // required JSON object structure for using with JIT and d3.js
 /* 
 json = {
@@ -15,13 +15,14 @@ json = {
 // Session Handler
 // take in event commitData, direct it to the correct session
 function sessionHandler(commitData) {
-	var sessionId = findSessionOf(commitData);
+	var session = findSessionOf(commitData);
 
-	createPageObject(sessionId, commitData, function(page) {
+	createPageObject(session, commitData, function(page) {
+		console.log('evaluate ' + JSON.stringify(page));
 		if (page.id == 1) {
 			recordRoot(page);
 		} else {
-			recordChild(page);
+			recordChild(page);	
 		}
 	});
 
@@ -32,21 +33,34 @@ function sessionHandler(commitData) {
 // does logic to determine which wikipedia 'session' the
 // navigation event's commitData belongs to.
 // creates new session if needed
-// returns guid of session object
+// returns guid and parentNode of session object
 function findSessionOf(commitData) {
-	var id = "";
+	var ret = {	"id": "",
+				"parentNode": "",
+			}
+	var parentNode;
 	sessions.forEach(function(session) {
 		if (session.tabs.indexOf(commitData.tabId) >= 0) {
-			id = session.id;
+			console.log('found self ' + commitData.tabId);
+			ret.id = session.id;
+			ret.parentNode = tabStatus[commitData.tabId].id;
 		}
-		else if (session.tabs.indexOf(commitData.parentId) >= 0) {
-			session.tabs.push(commitData.tabId);
-			id = session.id;
+		else if(commitData.parentId !== undefined) {
+			console.log('looking for parent ' + commitData.parentId);
+			var index = session.tabs.indexOf(commitData.parentId)
+			if (index >= 0) {
+				console.log('found parent');
+				ret.id = session.id;
+				ret.parentNode = tabStatus[commitData.parentId].id;
+				session.tabs.push(commitData.tabId);
+			}
 		}
+		
 	})
 
-	if (id != "") {
-		return id;
+	if (ret.id != "") {
+		console.log('returning session ' + JSON.stringify(ret));
+		return ret;
 	}
 	else {
 		return createNewSession(commitData);
@@ -63,22 +77,24 @@ function createNewSession(commitData) {
 				}
 	console.log('creating session:' + JSON.stringify(session))
 	sessions.push(session);
-
-	return session.id;
+	return { "id": session.id, "parentNode": "" };
 }
 
 
-function createPageObject(sessionId, commitData, callback) {
-	sessions.forEach(function(session) {
-		if (session.id == sessionId) {
-			var page = { 	"id": session.nodeIndex,
-							"sessionId": session.id,
+function createPageObject(session, commitData, callback) {
+	console.log('creating page object');
+	sessions.forEach(function(activeSession) {
+		if (activeSession.id == session.id) {
+			var page = { 	"id": activeSession.nodeIndex,
 							"data": { 	"url": commitData.url,
 										"date": commitData.timeStamp,
+										"sessionId": session.id,
+										"tabId": commitData.tabId,
+										"parentId": session.parentNode,
 									},
 							"children": [],
 						}
-			session.nodeIndex += 1;
+			activeSession.nodeIndex += 1;
 			callback(page);
 		}
 	})
@@ -86,12 +102,46 @@ function createPageObject(sessionId, commitData, callback) {
 
 function recordRoot(page) {
 	console.log('root');
-	console.log(page);
+	// set the tabStatus of this tabId to the page content
+	setTabStatus(page.data.tabId, page);
+	// record new session and root node to localStorage
+	localStorage.setItem(page.data.sessionId, JSON.stringify(page));
 }
 
 function recordChild(page) {
 	console.log('child');
-	console.log(page);
+	// set the tabStatus of this tabId to the page content
+	setTabStatus(page.data.tabId, page);
+	// retrieve the tree for this session from localStorage
+	var tree = JSON.parse(localStorage.getItem(page.data.sessionId));
+	// find the parent node
+	var parent = findNode(tree, page.data.parentId);
+	console.log('found node ' + parent);
+	// add this node as a child
+	parent.children.push(page);
+	console.log('modified node ' + JSON.stringify(parent));
+	// record the modified tree to localStorage
+	localStorage.setItem(page.data.sessionId, JSON.stringify(tree));
+}
+
+// Find Node
+// recursively look through the JSON tree for the specified node and return it
+function findNode(tree, nodeId) {
+   console.log('looking for ' + nodeId + ' in ' + JSON.stringify(tree));
+   if (tree.id === nodeId) return tree;
+
+   var result;
+   for (var i = 0; i < tree.children.length; i++) {
+	  result = findNode(tree.children[i], nodeId);
+	  if (result !== undefined) return result;
+   }
+}
+
+// Set TabStatus
+// function to update the tab status object with the page contents of tabId
+function setTabStatus(tabId, page) {
+	tabStatus[tabId] = page;
+	console.log(tabStatus);
 }
 
 // GUID generator pulled from StackOverflow
@@ -115,12 +165,14 @@ chrome.webNavigation.onCommitted.addListener(function(details) {
 		var commitData = details;
 		console.log(commitData);
 		chrome.tabs.get(details.tabId, function(tab) {
-			if (tab.openerTabId !== undefined) {
-				commitData.parentId = tab.openerTabId;
-			} else {
-				commitData.parentId = 0;
-			}
+			commitData.parentId = tab.openerTabId;
 			sessionHandler(commitData);
 		});
 	}
 }, { url: [{ urlContains: ".wikipedia.org/wiki" }]});
+
+// Listener for when the user clicks on the Wikimapper button
+chrome.browserAction.onClicked.addListener(function(tab) {
+	chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')}, function(tab) {
+	});
+});

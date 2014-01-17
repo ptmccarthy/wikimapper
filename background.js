@@ -86,6 +86,7 @@ function createPageObject(session, commitData, callback) {
 	sessions.forEach(function(activeSession) {
 		if (activeSession.id == session.id) {
 			var page = { 	"id": activeSession.nodeIndex,
+							// to do: retrieve name from content.js
 							"name": commitData.url,
 							"data": { 	"url": commitData.url,
 										"date": commitData.timeStamp,

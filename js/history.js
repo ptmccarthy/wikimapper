@@ -87,7 +87,11 @@ function viewHistoryItem() {
 
 // take date object and return it as a string of format "MM/DD/YYYY at HH:MM"
 function formatDate(date) {
-	return date.getMonth() + '/' + date.getDate()  + '/' + date.getFullYear() + ' at ' +
+	// getMonth returns zero-based index of month, so need +1
+	month = date.getMonth()
+	month += 1;
+
+	return month + '/' + date.getDate()  + '/' + date.getFullYear() + ' at ' +
 		date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes();
 }
 

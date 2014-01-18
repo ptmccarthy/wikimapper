@@ -248,7 +248,8 @@ chrome.webNavigation.onCommitted.addListener(function(details) {
 			sessionHandler(commitData);
 		});
 	}
-}, { url: [{ urlContains: ".wikipedia.org/wiki" }]});
+}, { url: [	{ urlContains: ".wikipedia.org/wiki" },
+			{ urlContains: ".wiktionary.org/wiki"}]});
 
 // Listener for when the user clicks on the Wikimapper button
 chrome.browserAction.onClicked.addListener(function(tab) {

@@ -3,7 +3,7 @@
 
 	"name": "WikiMapper",
 	"description": "This extension tracks and graphs your reading of Wikipedia.",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"icons": {
 		"16": "resources/wikimapper-16.png",
 		"48": "resources/wikimapper-48.png",
@@ -17,7 +17,8 @@
 
 	"content_scripts": [
 		{
-			"matches": ["*://*.wikipedia.org/wiki*"],
+			"matches": ["*://*.wikipedia.org/wiki*",
+						"*://*.wiktionary.org/wiki*"],
 			"js": ["content.js"],
 			"run_at": "document_end"
 		}

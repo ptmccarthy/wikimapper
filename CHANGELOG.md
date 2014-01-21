@@ -2,6 +2,9 @@
 Features:
 - Wikimapper now tracks pages visited on Wiktionary alongside Wikipedia.
 
+Github Issues Closed:
+- #
+
 ## 0.5.1 (01-17-2014)
 Bugfixes:
 - Added "form_submit" to the transitionType filter for recording

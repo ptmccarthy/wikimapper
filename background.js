@@ -61,7 +61,7 @@ function findSessionOf(commitData) {
 }
 
 // Create New Session
-// make a new session object and assign it a GUID
+// make a new session object and assign it an ID from its timestamp
 // return the id of the created session
 function createNewSession(commitData) {
 	var session = {		"id": Date.now(),
@@ -178,14 +178,6 @@ function clearHistory() {
 // loaded page DOM can be queried for its real name
 function shortenURL(url) {
 	return /[^/]*$/.exec(url)[0];
-}
-
-// GUID generator pulled from StackOverflow
-var createGUID = function() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
 }
 
 // message listener

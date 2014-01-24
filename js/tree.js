@@ -1,5 +1,5 @@
-var margin = {top: 20, right: 120, bottom: 20, left: 120},
-		width = 960 - margin.right - margin.left,
+var margin = {top: 30, right: 0, bottom: 0, left: 120},
+		width = 1980 - margin.right - margin.left,
 		height = 800 - margin.top - margin.bottom;
 		
 var i = 0,
@@ -27,9 +27,8 @@ function init() {
 
 function initGraph(json) {
 	root = json;
-
 	svg = d3.select("#viz-body").append("svg")
-		.attr("width", width + margin.right + margin.left)
+		//.attr("width", width + margin.right + margin.left)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -46,6 +45,7 @@ function initGraph(json) {
 	}
 
 	update(root);
+
 }
 
 function update(source) {
@@ -54,8 +54,12 @@ function update(source) {
 	var nodes = tree.nodes(root).reverse(),
 		links = tree.links(nodes);
 
+	var depth = 0;
 	// Normalize for fixed-depth.
-	nodes.forEach(function(d) { d.y = d.depth * 180; });
+	nodes.forEach(function(d) { 
+		d.y = d.depth * 250;
+		if (d.depth > depth) depth = d.depth;
+	});
 
 	// Update the nodes…
 	var node = svg.selectAll("g.node")
@@ -135,6 +139,7 @@ function update(source) {
 	});
 
 	d3.select(self.frameElement).style("height", "800px");
+	d3.select("svg").attr("width", 250 + depth*250);
 }
 
 // Toggle children on click.

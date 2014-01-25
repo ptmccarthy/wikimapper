@@ -1,3 +1,15 @@
+## 0.6.0 (01-24-2014)
+Features:
+- Revamped, better-looking, more minimalistic interface
+- Dynamic horizontal SVG sizing based on tree depth
+- Enhanced interactive tree rendering for collapsing/expanding nodes and improved readability
+
+Bugfixes:
+- Fixed an issue where deleting the last tree in localStorage would cause errors and the welcome message to not appear as it should.
+
+Github Issues Closed:
+- #27, #30, #35, #45
+
 ## 0.5.2 (01-20-2014)
 Features:
 - Wikimapper now tracks pages visited on Wiktionary alongside Wikipedia.

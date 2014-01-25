@@ -4,24 +4,13 @@ var date = new Date();
 chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
 	localStorage = response;
 })
-/*
+
 function displayHistory() {
 	for (var key in localStorage) {
 		var session = JSON.parse(localStorage[key]);
 		date.setTime(key);
 		$("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
-								+ session.name + '</div><div class="load-button" id='+key+'>View</div>');
-	}
-	// once all items are populated, begin load-button listener
-	viewHistoryItem();
-}
-*/
-function displayHistory() {
-	for (var key in localStorage) {
-		var session = JSON.parse(localStorage[key]);
-		date.setTime(key);
-		$("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
-							+ session.name + '</div><div class="load-button" id='+key+'>View</div>');
+							+ session.name + '<div class="load-button" id='+key+'>View</div>' + '</div>');
 	}
 	// once all items are populated, begin load-button listener
 	viewHistoryItem();
@@ -54,6 +43,8 @@ function clearCurrent(key) {
 				$("#history-content").html(response);
 				$("#history-content").show();
 				$("#clear-current-confirm").hide();
+				$("#history").load("history.html");
+				$("#viz-body").hide();				
 			});
 		})
 		$("#current-no").click(function() {
@@ -62,12 +53,11 @@ function clearCurrent(key) {
 	})
 }
 
-
 function goBack() {
 	$("#back").click(function() {
+		$("#history").load("history.html");
 		$("#viz-body").hide();
 		$("#back").hide();
-		$("#history").load("history.html");
 	})
 }
 
@@ -75,12 +65,12 @@ function viewHistoryItem() {
 	$(".load-button").click(function() {
 		var key = $(this).attr('id');
 		chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
-			$("#history-content").hide();
 			$("#clear-current").show();
 			clearCurrent(key);
-			$("#back").show();
 			$("#viz-body").load("tree.html");
+			$("#history-content").hide();
 			$("#viz-body").show();
+			$("#back").show();
 		})
 	})
 }

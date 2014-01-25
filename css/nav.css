@@ -1,43 +1,69 @@
 ul {
 	list-style-type:none;
 	margin: 0;
-	padding: 10;
+	padding: 0;
+	overflow: hidden;
+}
+
+li {
+	float: left;
+}
+
+a:link, a:visited {
+	display: block;
+	width: 100;
+	height: 30px;
+	line-height: 30px;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 18;
+	font-weight: bold;
+	padding: 0px;
+	text-decoration: none;
+}
+
+a:hover {
+	background-color: #04690B;
+	color: white;
 }
 
 div#nav-title {
-	color: #E6E6E6;
-	text-align: center;
-	font-size: 18;
+	width: 160px;
+	height: 30px;
 }
 
 div#nav-logo {
 	position: absolute;
-	top: 18px;
-	left: 20px;
+	top: 7px;
+	left: 7px;
 }
 
 div#nav-title-text {
-	position: absolute;
-	top: 35px;
-	left: 75px;
+	color: white;
+	text-align: center;
+	line-height: 30px;
+	font-size: 18;
+	font-weight: bold;
 }
 
 div#nav-buttons {
 	position: absolute;
-	top: 73px;
-	padding-left: 40px;
+	top: 0px;
+	padding-left: 160px;
+}
+
+a[state=active] {
+	background-color: white;
+	color: black;
 }
 
 div#viz-picker {
 	background-color: #04690B;
 	color: #E6E6E6;
 	position: absolute;
-	left: 10px;
-	top: 10px;
+	left: 0px;
+	top: 0px;
 	z-index: 2;
-	width: 200px;
-	height: 120px;
-	text-align: left;
-	padding-left: 5px;
-	border-radius: 10px;
+	width: 360px;
+	height: 30px;
 }

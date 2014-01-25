@@ -7,21 +7,21 @@ $(document).ready(function() {
 });
 
 // load different visualization when user switches view radio button
-function nav() {
-	$('input:radio').change(function() {
-		
-		if ( $(this).val() == 'tree' ) {
-			chrome.runtime.sendMessage({ payload: "set" }, function() {
-				$('#history').hide();
-				$('#viz-body').load('tree.html');
-				$('#viz-body').show();
-			});
-		}
 
-		if ( $(this).val() == 'show-history' ) {
-			$('#viz-body').hide();
-			$('#history').load('history.html');
-			$('#history').show();
-		}
+function nav() {
+	$('#current').click(function() {
+		$(this).attr("state", "active");
+		$('#show-history').attr("state", "inactive");
+		$('#viz-body').load('tree.html');
+		$('#history').hide();
+		$('#viz-body').show();
+	});
+
+	$('#show-history').click(function() {
+		$(this).attr("state", "active");
+		$('#current').attr("state", "inactive");
+		$('#history').load('history.html');
+		$('#viz-body').hide();
+		$('#history').show();		
 	})
 }

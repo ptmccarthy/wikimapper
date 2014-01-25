@@ -10,24 +10,16 @@
 
 	<div id="viz-picker">
 		<div id="nav-title">
-			<div id="nav-logo">
-				<img src="../resources/wikimapper-48.png">
-			</div>
 			<div id="nav-title-text">
 				WikiMapper
 			</div>
 		</div>
 
 		<div id="nav-buttons">
-			<label class="radio inline">
-			<input id="tree" type="radio" name="navopts" value="tree" checked>
-				Current Session
-			</label>
-			<br>
-			<label class="radio inline">
-			<input id="show-history" type="radio" name="navopts" value="show-history">
-				Show History
-			</label>
+			<ul>
+				<li><a id="current" state="active" href="#">Current</a></li>
+				<li><a id="show-history" state="inactive" href="#">History</a></li>			
+			</ul>
 		</div>
 	</div>
 	<div id="history">

@@ -12,9 +12,12 @@ function nav() {
 	$('#current').click(function() {
 		$(this).attr("state", "active");
 		$('#show-history').attr("state", "inactive");
-		$('#viz-body').load('tree.html');
-		$('#history').hide();
-		$('#viz-body').show();
+
+		chrome.runtime.sendMessage({ payload: "set"}, function() {
+			$('#viz-body').load('tree.html');
+			$('#history').hide();
+			$('#viz-body').show();
+		})
 	});
 
 	$('#show-history').click(function() {

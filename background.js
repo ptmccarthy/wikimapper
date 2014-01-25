@@ -163,13 +163,18 @@ function updateName(tab, name) {
 	
 // deletes a specific key from localStorage
 function deleteHistoryItem(key) {
-	localStorage.removeItem(key);
+	console.log(localStorage.length);
+	if (localStorage.length == 1) {
+		clearHistory();
+	}
+	else localStorage.removeItem(key);
 }
 
 // clears all history including current in-memory tree
 function clearHistory() {
 	tabStatus = {};
-	data = {};
+	sessions = [];
+	selectedTree = {};
 	localStorage.clear();
 }
 
@@ -187,12 +192,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 			if (request.key) {
 				selectedTree = JSON.parse(localStorage.getItem(request.key));
 			}
+			else if (sessions.length == 0) selectedTree = {};
 			else {
-				var recent = sessions.length - 1;
-				recent = sessions[recent].id;
-				selectedTree = JSON.parse(localStorage.getItem(recent));
+				if (localStorage.length > 0) 
+					var recent = 0;
+					for (key in localStorage) {
+						if (key > recent) recent = key;
+					}
+					selectedTree = JSON.parse(localStorage.getItem(recent));
 			}
-			response();
+			response(selectedTree);
 		break;
 
 		// tree page requesting json tree object

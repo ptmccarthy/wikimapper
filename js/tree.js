@@ -4,6 +4,7 @@ var margin = {top: 30, right: 0, bottom: 0, left: 120},
 		
 var i = 0,
 	duration = 750,
+	depth = 0,
 	root,
 	svg;
 
@@ -55,7 +56,7 @@ function update(source) {
 	var nodes = tree.nodes(root).reverse(),
 		links = tree.links(nodes);
 
-	var depth = 0;
+	//var depth = 0;
 	// Normalize for fixed-depth.
 	nodes.forEach(function(d) { 
 		d.y = d.depth * 250;

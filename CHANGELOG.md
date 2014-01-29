@@ -1,3 +1,14 @@
+## 0.6.1 (01-28-2014)
+Bugfixes:
+- Fixed an issue when collapsing a node that caused the svg to get horizontally resized before the animation completed
+
+Updates:
+- Updated jQuery from 2.0.3 to 2.1.0
+- Updated D3 from 3.1.7 to 3.4.1
+
+Github Issues Closed:
+- #25, #43, #47, #48, #49
+
 ## 0.6.0 (01-24-2014)
 Features:
 - Revamped, better-looking, more minimalistic interface

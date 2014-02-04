@@ -1,3 +1,11 @@
+## 0.6.2 (02-03-2014)
+Features:
+- Added a message listener for chrome.runtime.onInstalled for a first-run welcome message
+- Minor UI tweaks
+
+Bugfixes:
+- Removed an extraneous log message that was printed on the console every time tree.js was loaded
+
 ## 0.6.1 (01-28-2014)
 Bugfixes:
 - Fixed an issue when collapsing a node that caused the svg to get horizontally resized before the animation completed

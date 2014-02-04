@@ -18,7 +18,6 @@ init();
 
 function init() {
 	chrome.runtime.sendMessage({"payload": "load"}, function(response) {
-		console.log(response);
 		if (!response.data) {
 			$("#null-message").load("../html/intro.html");
 		} else {

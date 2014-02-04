@@ -163,7 +163,6 @@ function updateName(tab, name) {
 	
 // deletes a specific key from localStorage
 function deleteHistoryItem(key) {
-	console.log(localStorage.length);
 	if (localStorage.length == 1) {
 		clearHistory();
 	}
@@ -257,3 +256,10 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 	chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')}, function(tab) {
 	});
 });
+
+// Listener for first install
+chrome.runtime.onInstalled.addListener(function(details) {
+	if(details.reason == "install") {
+		chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')});
+	}
+})

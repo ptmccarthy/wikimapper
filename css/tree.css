@@ -14,12 +14,3 @@ path.link {
   stroke: #ccc;
   stroke-width: 1.5px;
 }
-
-#null-message {
-	position: absolute;
-	width: 500px;
-	top: 160px;
-	left: 30px;
-	z-index: 1;
-	text-align: justify;
-}

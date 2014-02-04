@@ -13,3 +13,17 @@ div#viz-body {
     left: 0px;
     z-index: 1;
 }
+
+div#intro {
+    font-size: 16px;
+    line-height: 20px;
+}
+
+div#null-message {
+    position: absolute;
+    width: 700px;
+    top: 60px;
+    left: 80px;
+    z-index: 1;
+    text-align: justify;
+}

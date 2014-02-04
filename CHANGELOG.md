@@ -6,6 +6,9 @@ Features:
 Bugfixes:
 - Removed an extraneous log message that was printed on the console every time tree.js was loaded
 
+Github Issues Closed:
+- #50
+
 ## 0.6.1 (01-28-2014)
 Bugfixes:
 - Fixed an issue when collapsing a node that caused the svg to get horizontally resized before the animation completed

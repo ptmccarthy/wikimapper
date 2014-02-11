@@ -121,7 +121,8 @@ function findNode(tree, nodeId) {
    if (tree.id === nodeId) return tree;
 
    var result;
-   for (var i = 0; i < tree.children.length; i++) {
+   var len = tree.children.length;
+   for (var i = 0; i < len; i++) {
 	  result = findNode(tree.children[i], nodeId);
 	  if (result !== undefined) return result;
    }
@@ -134,7 +135,8 @@ function findNodeByURL(tree, url) {
 	if (tree.data.url == url) return tree;
 
 	var result;
-	for (var i = 0; i < tree.children.length; i++) {
+	var len = tree.children.length;
+	for (var i = 0; i < len; i++) {
 		result = findNodeByURL(tree.children[i], url);
 		if (result !== undefined) return result;
 	}

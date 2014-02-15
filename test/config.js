@@ -2,4 +2,4 @@ require.config({
 	baseUrl: "../",
 });
 
-console.log('require config.js loaded');
+console.log('config.js loaded');

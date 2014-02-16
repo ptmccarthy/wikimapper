@@ -1,28 +1,7 @@
 describe("history", function() {
-	beforeEach(function() {
-		chrome = {
-			runtime: {
-				sendMessage: function(){},
-			}
-		}
-
-		// retrieve fake localStorage data from support files
-		// note: do this synchronously
-		var localStoarge = (function () {
-	    var localStorage = null;
-	    $.ajax({
-	        'async': false,
-	        'global': false,
-	        'url': 'support/localStorage.json',
-	        'dataType': "json",
-	        'success': function (data) {
-	            localStorage = data;
-	        }
-	    });
-	    return localStorage;
-		})(); 
-
-		spyOn(chrome.runtime, "sendMessage").and.returnValue(localStorage);
+	beforeEach(function(done) {
+		spyOn(chrome.runtime, "sendMessage").and.callThrough();
+		done();
 	});
 
 	it("expects to send a message requesting localStorage", function(done) {
@@ -34,8 +13,10 @@ describe("history", function() {
 
 	it("expects to receive a response containing localStorage data", function(done) {
 		require(['../js/history'], function() {
-			expect(localStorage).toBe(localStorage);
-			done();
+			setTimeout(function(){
+				expect(JSON.stringify(storage)).toBe(JSON.stringify(localStorage));
+				done();
+			}, 300);
 		})
 	});
 

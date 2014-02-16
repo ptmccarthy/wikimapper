@@ -1,13 +1,13 @@
-var localStorage;
+var storage = {};
 var date = new Date();
 
 chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
-	localStorage = response;
+	storage = response;
 })
 
 function displayHistory() {
-	for (var key in localStorage) {
-		var session = JSON.parse(localStorage[key]);
+	for (var key in storage) {
+		var session = JSON.parse(storage[key]);
 		date.setTime(key);
 		$("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
 							+ session.name + '<div class="load-button" id='+key+'>View</div>' + '</div>');

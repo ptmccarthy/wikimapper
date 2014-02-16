@@ -3,14 +3,7 @@ describe("content", function() {
 		// stub document.title
 		document.title = "Unit Test - Wikipedia, the free encyclopedia";
 
-		// stub chrome.runtime.sendMessage
-		chrome = {
-			runtime: {
-				sendMessage: function(){},
-			}
-		}
-
-		spyOn(chrome.runtime, "sendMessage");
+		spyOn(chrome.runtime, "sendMessage").and.callThrough();
 	});
 
 	afterEach(function() {

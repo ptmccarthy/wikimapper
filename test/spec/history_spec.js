@@ -16,7 +16,7 @@ describe("history", function() {
 			setTimeout(function(){
 				expect(JSON.stringify(storage)).toBe(JSON.stringify(localStorage));
 				done();
-			}, 300);
+			}, 100);
 		})
 	});
 

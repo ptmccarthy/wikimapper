@@ -1,5 +1,7 @@
 describe("tree visualization", function() {
-	it("expects true to be true", function() {
-		expect(true).toBe(true);
+	it("expects to render an svg", function() {
+		require(['../js/tree'], function(done) {
+			console.log(d3);
+		});
 	});
 });

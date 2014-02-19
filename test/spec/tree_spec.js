@@ -1,7 +1,9 @@
+
 describe("tree visualization", function() {
-	it("expects to render an svg", function() {
-		require(['../js/tree'], function(done) {
-			console.log(d3);
+	it("expects d3 to be available", function(done) {
+		require(['../js/tree', 'lib/d3.v3.min'], function(tree, d3) {
+			expect(d3.version).toBe('3.4.1');
+			done();
 		});
 	});
 });

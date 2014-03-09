@@ -1,3 +1,12 @@
+## 0.6.3 (03-08-2014)
+Bugfixes:
+- Fixed an issue where page names would not get formatted correctly if the same page had been previously visited in a session.
+- Added a proper 19x19 toolbar icon rather than upscaling a 16x16 icon
+
+Github Issues Closed:
+- #43, 52
+
+
 ## 0.6.2 (02-03-2014)
 Features:
 - Added a message listener for chrome.runtime.onInstalled for a first-run welcome message

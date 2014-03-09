@@ -3,10 +3,13 @@ var date = new Date();
 
 chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
 	storage = response;
+	displayHistory();
+	clearHistory();
+	goBack();	
 })
 
 function displayHistory() {
-	for (var key in storage) {
+	for (var key in storage) {		
 		var session = JSON.parse(storage[key]);
 		date.setTime(key);
 		$("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
@@ -84,9 +87,8 @@ function formatDate(date) {
 	return month + '/' + date.getDate()  + '/' + date.getFullYear() + ' at ' +
 		date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes();
 }
-
+/*
 $(document).ready(function() {
-	displayHistory();
-	clearHistory();
-	goBack();
+
 })
+*/

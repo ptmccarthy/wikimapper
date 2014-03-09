@@ -157,7 +157,9 @@ function updateName(tab, name) {
 			// i know the session id to go find this node in
 			var tree = JSON.parse(localStorage[s.id]);
 			var node = findNodeByURLAndName(tree, tab.url, name);
-			node.name = name;
+			if (node != undefined) {
+        node.name = name;
+      }
 			localStorage.setItem(s.id, JSON.stringify(tree));
 		}
 	})
@@ -216,6 +218,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 
 		// history page requesting localStorage object
 		case "localStorage":
+      console.log('localStorage message received');
 			response(localStorage);
 		break;
 

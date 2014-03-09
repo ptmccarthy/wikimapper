@@ -1,3 +1,10 @@
+## 0.6.4 (03-09-2014)
+Bugfixes:
+- Fixed a race condition bug when displaying the WikiMapper history that would cause the history page to be blank, despite localStorage correctly containing the history.
+
+Github Issues Closed:
+- #53
+
 ## 0.6.3 (03-08-2014)
 Bugfixes:
 - Fixed an issue where page names would not get formatted correctly if the same page had been previously visited in a session.

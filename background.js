@@ -131,13 +131,13 @@ function findNode(tree, nodeId) {
 // Find Node By URL
 // recursively look through a JSON tree for first node with a matching url
 // TODO: improve this by comparing URLs AND tabIds for a more precise match
-function findNodeByURL(tree, url) {
-	if (tree.data.url == url) return tree;
+function findNodeByURLAndName(tree, url, name) {
+	if (tree.data.url == url && tree.name != name) return tree;
 
 	var result;
 	var len = tree.children.length;
 	for (var i = 0; i < len; i++) {
-		result = findNodeByURL(tree.children[i], url);
+		result = findNodeByURLAndName(tree.children[i], url, name);
 		if (result !== undefined) return result;
 	}
 }
@@ -153,10 +153,10 @@ function setTabStatus(tabId, page) {
 // and to update the node's name with the proper document name
 function updateName(tab, name) {
 	sessions.forEach(function(s) {
-		if( s.tabs.indexOf(tab.id) >= 0 ) {
+		 if ( s.tabs.indexOf(tab.id) >= 0 ) {
 			// i know the session id to go find this node in
 			var tree = JSON.parse(localStorage[s.id]);
-			var node = findNodeByURL(tree, tab.url);
+			var node = findNodeByURLAndName(tree, tab.url, name);
 			node.name = name;
 			localStorage.setItem(s.id, JSON.stringify(tree));
 		}

@@ -87,8 +87,3 @@ function formatDate(date) {
 	return month + '/' + date.getDate()  + '/' + date.getFullYear() + ' at ' +
 		date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes();
 }
-/*
-$(document).ready(function() {
-
-})
-*/

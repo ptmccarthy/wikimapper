@@ -9,6 +9,12 @@
   font-size: 11px;
 }
 
+.label {
+  font-size: 11px;
+  text-align: center;
+  word-wrap: normal;
+}
+
 path.link {
   fill: none;
   stroke: #ccc;

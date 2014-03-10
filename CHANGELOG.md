@@ -1,6 +1,7 @@
 ## 0.6.5 (03-10-2014)
 Features:
 - The graph's height is now calculated from the browser window's height when drawn
+
 Bugfixes:
 - Node labels changed from SVG text element to SVG foreignObject containing a div of class label, allowing for word wrap.
 

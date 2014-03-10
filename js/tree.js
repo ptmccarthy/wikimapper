@@ -1,12 +1,13 @@
 var margin = {top: 30, right: 0, bottom: 0, left: 120},
-  width = 1980 - margin.right - margin.left,
-  height = 800 - margin.top - margin.bottom;
+  width = 0
   
 var i = 0,
   duration = 750,
   depth = 0,
   root,
   svg;
+
+var height = $(window).height() - margin.top;
 
 var tree = d3.layout.tree()
   .size([height, width]);

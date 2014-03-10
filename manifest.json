@@ -1,37 +1,37 @@
 {
-	"manifest_version": 2,
+  "manifest_version": 2,
 
-	"name": "WikiMapper",
-	"description": "This extension tracks and graphs your reading of Wikipedia.",
-	"version": "0.6.4",
-	"icons": {
-		"16": "resources/wikimapper-16.png",
-		"48": "resources/wikimapper-48.png",
-		"128": "resources/wikimapper-128.png"
-	},
-	"author": "Patrick McCarthy",
+  "name": "WikiMapper",
+  "description": "This extension tracks and graphs your reading of Wikipedia.",
+  "version": "0.6.4",
+  "icons": {
+    "16": "resources/wikimapper-16.png",
+    "48": "resources/wikimapper-48.png",
+    "128": "resources/wikimapper-128.png"
+  },
+  "author": "Patrick McCarthy",
 
-	"background": { "scripts": ["background.js"] },
+  "background": { "scripts": ["background.js"] },
 
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
-	"content_scripts": [
-		{
-			"matches": ["*://*.wikipedia.org/wiki*",
-						"*://*.wiktionary.org/wiki*"],
-			"js": ["content.js"],
-			"run_at": "document_end"
-		}
-	],
-	
-	"permissions": [
-		"tabs",
-		"storage",
-		"webNavigation"
-	],
+  "content_scripts": [
+    {
+      "matches": ["*://*.wikipedia.org/wiki*",
+            "*://*.wiktionary.org/wiki*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "permissions": [
+    "tabs",
+    "storage",
+    "webNavigation"
+  ],
 
-	"browser_action": {
-		"default_title": "WikiMapper",
-		"default_icon": "resources/wikimapper-19.png"
-	}
+  "browser_action": {
+    "default_title": "WikiMapper",
+    "default_icon": "resources/wikimapper-19.png"
+  }
 }

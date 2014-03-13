@@ -68,19 +68,19 @@ function update(source) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
     .attr("class", "node")
-    .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-    .on("click", click);
+    .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; });
 
   nodeEnter.append("circle")
     .attr("r", 1e-6)
-    .style("fill", function(d) { return !isEmpty(d._children) ? "lightsteelblue" : "#fff"; });
+    .style("fill", function(d) { return !isEmpty(d._children) ? "lightsteelblue" : "#fff"; })
+    .on("click", click);
 
   nodeEnter.append("foreignObject")
     .attr("transform", "translate(-100,5)")
     .attr("height", 60)
     .attr("width", 200)
     .html(function(d) {
-      return "<div class=\"label\">" + d.name + "</div>";
+      return '<div class="label"><a class="node" target="_blank" href="' + d.data.url + '">' + d.name + '</a></div>';
     });
     
   // Transition nodes to their new position.
@@ -92,8 +92,8 @@ function update(source) {
     .attr("r", 4.5)
     .style("fill", function(d) { return !isEmpty(d._children) ? "lightsteelblue" : "#fff"; });
 
-  nodeUpdate.select("text")
-    .style("fill-opacity", 1);
+//  nodeUpdate.select("text")
+//    .style("fill-opacity", 1);
 
   // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
@@ -104,8 +104,8 @@ function update(source) {
   nodeExit.select("circle")
     .attr("r", 1e-6);
 
-  nodeExit.select("text")
-    .style("fill-opacity", 1e-6);
+//  nodeExit.select("text")
+//    .style("fill-opacity", 1e-6);
 
   // Update the links…
   var link = svg.selectAll("path.link")

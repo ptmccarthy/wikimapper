@@ -5,10 +5,6 @@
   stroke-width: 1.5px;
 }
 
-.node text {
-  font-size: 11px;
-}
-
 .label {
   font-size: 11px;
   text-align: center;
@@ -19,4 +15,8 @@ path.link {
   fill: none;
   stroke: #ccc;
   stroke-width: 1.5px;
+}
+
+a.node:link, a.node:visited {
+  text-decoration: none;
 }

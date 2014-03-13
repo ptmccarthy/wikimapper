@@ -218,7 +218,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 
     // history page requesting localStorage object
     case "localStorage":
-      console.log('localStorage message received');
       response(localStorage);
     break;
 

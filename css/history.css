@@ -29,6 +29,7 @@ body {
   border-radius: 10px;
   text-align: center;
   position: relative;
+  cursor: pointer;
 }
 
 .clear-item {
@@ -48,6 +49,7 @@ body {
   padding: 3px;
   border-radius: 10px;
   text-align: center;
+  cursor: pointer;
 }
 
 .button-yes {
@@ -58,6 +60,7 @@ body {
   border-radius: 10px;
   text-align: center;
   background: #FF7D7D;
+  cursor: pointer;
 }
 
 .button-no {
@@ -68,6 +71,7 @@ body {
   border-radius: 10px;
   text-align: center;
   background: #9EE080;
+  cursor: pointer;
 }
 
 #clear-all {
@@ -79,6 +83,7 @@ body {
   top: 0px;
   left: 120px;
   background: #F2F266;
+  cursor: default;
 }
 
 #all-yes {
@@ -100,6 +105,7 @@ body {
   top: 49px;
   left: 120px;
   background: #F2F266;
+  cursor: default;
 }
 
 #current-yes {

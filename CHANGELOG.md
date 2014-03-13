@@ -1,3 +1,11 @@
+## 0.6.6 (03-13-2014)
+Features:
+- Node labels on graphs are now a link to the associated Wikipedia page
+- Cursor changes to a pointer when hovering over buttons
+
+GitHub Issues Closed:
+- #55, #56
+
 ## 0.6.5 (03-10-2014)
 Features:
 - The graph's height is now calculated from the browser window's height when drawn

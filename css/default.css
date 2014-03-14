@@ -19,7 +19,7 @@ li {
   float: left;
   margin: 0;
   padding: 0;
-  width: 10em;
+  width: 8em;
   line-height: 1.5em;
   text-align: center;
 }
@@ -40,7 +40,7 @@ div#nav {
   z-index: 2;
   background-color: #04690B;
   color: white;
-  width: 30em;
+  width: 24em;
 }
 
 div#intro {
@@ -62,8 +62,4 @@ div#content {
   top: 0;
   left: 0;
   z-index: 0;
-}
-
-.redx {
-  height: 1em;
 }

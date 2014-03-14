@@ -4,8 +4,8 @@ body {
 
 #history-panel {
   position: absolute;
-  top: 3em;
-  left: 39.5em;
+  top: 3.3em;
+  left: 41em;
   width: 5em;
   z-index: 3;
 }
@@ -34,8 +34,8 @@ body {
 .history-item {
   cursor: pointer;
   display: block;
-  padding: 5px;
-  font-size: 14px;
+  padding: 0.3em;
+  font-size: 1em;
 }
 
 .history-item:hover {
@@ -56,8 +56,7 @@ body {
 .button {
   position: absolute;
   border-style: none;
-  width: 8em;
-  padding: 0.3em;
+  width: 7em;
   border-radius: 0.7em;
   text-align: center;
   cursor: pointer;
@@ -86,12 +85,13 @@ body {
 }
 
 #clear-all {
-  color: white;
-  background: #04690B;
+  color: black;
+  background: white;
+  padding: 0.2em;
 }
 
 #clear-all:hover {
-  background: #54C54C;
+  background: pink;
 }
 
 #clear-all-confirm {
@@ -136,4 +136,14 @@ body {
 #back {
   top: 98px;
   background: #9EE080;
+}
+
+img.all {
+  height: 0.8em;
+  padding-left: 0.5em;
+}
+
+img.list {
+  height: 1.3em;
+  float: right;
 }

@@ -15,7 +15,8 @@ function displayHistory() {
     var session = JSON.parse(storage[key]);
     date.setTime(key);
     $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
-                       + formatDate(date) + ' &#8212; ' + session.name + '</div>');
+                      + formatDate(date) + ' &#8212; ' + session.name
+                      + '<img class="list" src="../resources/redx.png"></div>');
   }
   // once all items are populated, begin load-button listener
   viewHistoryItem();

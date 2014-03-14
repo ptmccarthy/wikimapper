@@ -27,7 +27,7 @@ li {
 li:hover {
   cursor: pointer;
   color: white;
-  background: #78E78E;
+  background: #54C54C;
 }
 
 li[state=active] {
@@ -37,7 +37,7 @@ li[state=active] {
 
 div#nav {
   background-color: #04690B;
-  color: #E6E6E6;
+  color: white;
   width: 33em;
 }
 

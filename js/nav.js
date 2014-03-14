@@ -1,13 +1,20 @@
 // load default on document ready event and start nav function
 $(document).ready(function() {
   $('#viz-body').load('tree.html');
-  chrome.runtime.sendMessage({ payload: "set" }, function() {
+  chrome.runtime.sendMessage({ payload: "set" }, function(response) {
+    if (response === null) {
+      $('#content').load('about.html');
+    }
+    else {
+      $('#content').load('tree.html');
+    }
+
     nav();
   })
 });
 
-// load different visualization when user switches view radio button
-
+// navigation button listener function
+// changes content displayed in content div
 function nav() {
   $('#current').click(function() {
     deactivateAll();

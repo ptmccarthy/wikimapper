@@ -191,6 +191,11 @@ function shortenURL(url) {
 // message listener
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   switch (request.payload) {
+    case "status":
+      if (sessions.length == 0) response();
+      else response("active");
+    break;
+
     case "set":
       if (request.key) {
         selectedTree = JSON.parse(localStorage.getItem(request.key));

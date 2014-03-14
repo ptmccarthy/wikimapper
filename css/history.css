@@ -5,7 +5,7 @@ body {
 #history-panel {
   position: absolute;
   top: 3.3em;
-  left: 41em;
+  left: 41.5em;
   width: 5em;
   z-index: 3;
 }
@@ -56,7 +56,7 @@ body {
 .button {
   position: absolute;
   border-style: none;
-  width: 7em;
+  width: 6.5em;
   border-radius: 0.7em;
   text-align: center;
   cursor: pointer;
@@ -144,6 +144,9 @@ img.all {
 }
 
 img.list {
-  height: 1.3em;
+  height: 1em;
+  padding: 0.1em;
+  border-radius: 1em;
+  background-color: white;
   float: right;
 }

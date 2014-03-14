@@ -43,6 +43,10 @@ div#nav {
   width: 24em;
 }
 
+div#about {
+  padding: 4em;
+}
+
 div#intro {
   font-size: 16px;
   line-height: 20px;

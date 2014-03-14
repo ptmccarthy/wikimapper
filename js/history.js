@@ -12,8 +12,9 @@ function displayHistory() {
   for (var key in storage) {    
     var session = JSON.parse(storage[key]);
     date.setTime(key);
-    $("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
-              + session.name + '<div class="load-button" id='+key+'>View</div>' + '</div>');
+    $("#history-content").prepend('<div class="history-item" id=' + key + '>'
+                       + formatDate(date) + ' - ' + session.name + '</div><br>');
+
   }
   // once all items are populated, begin load-button listener
   viewHistoryItem();
@@ -65,7 +66,7 @@ function goBack() {
 }
 
 function viewHistoryItem() {
-  $(".load-button").click(function() {
+  $(".history-item").click(function() {
     var key = $(this).attr('id');
     chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
       $("#clear-current").show();

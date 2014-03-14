@@ -8,28 +8,27 @@ body {
   left: 0px;
   width: 160px;
   height: 40px;
-  padding-left: 20px;
+  padding-left: 50px;
   z-index: 2;
 }
 
 #history-content {
-  padding-left: 30px;
+  padding-left: 50px;
   padding-top: 100px;
 }
 
 .history-item {
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px;
   border-radius: 10px;
-  padding-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.load-button {
-  background: #63AFFF;
-  border-style: none;
-  width: 90px;
-  border-radius: 10px;
-  text-align: center;
-  position: relative;
-  cursor: pointer;
+.history-item:hover {
+  background: #04690B;
+  color: white;
 }
 
 .clear-item {

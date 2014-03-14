@@ -29,7 +29,7 @@ function init() {
 
 function initGraph(json) {
   root = json;
-  svg = d3.select("#viz-body").append("svg")
+  svg = d3.select("#content").append("svg")
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");

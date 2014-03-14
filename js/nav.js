@@ -10,21 +10,26 @@ $(document).ready(function() {
 
 function nav() {
   $('#current').click(function() {
+    deactivateAll();
     $(this).attr("state", "active");
-    $('#show-history').attr("state", "inactive");
-
-    chrome.runtime.sendMessage({ payload: "set"}, function() {
-      $('#viz-body').load('tree.html');
-      $('#history').hide();
-      $('#viz-body').show();
+    chrome.runtime.sendMessage({ payload: "set"}, function() {      
+      $('#content').load('tree.html');
     })
   });
 
   $('#show-history').click(function() {
+    deactivateAll();
     $(this).attr("state", "active");
-    $('#current').attr("state", "inactive");
-    $('#history').load('history.html');
-    $('#viz-body').hide();
-    $('#history').show();   
+    $('#content').load('history.html'); 
   })
+
+  $('#about').click(function() {
+    deactivateAll();
+    $(this).attr("state", "active")
+    $('#content').load('about.html');
+  })
+}
+
+function deactivateAll() {
+  $('.header').removeAttr("state");
 }

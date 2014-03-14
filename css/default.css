@@ -4,7 +4,7 @@ html, body {
     font-family: "Lucida Grande", "Verdana";
     font-size: 1em;
     text-align: center;
-    background-color:#FFFFFF;
+    background-color: white;
 }
 
 ul {
@@ -62,4 +62,8 @@ div#content {
   top: 0;
   left: 0;
   z-index: 0;
+}
+
+.redx {
+  height: 1em;
 }

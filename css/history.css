@@ -90,6 +90,10 @@ body {
   background: #04690B;
 }
 
+#clear-all:hover {
+  background: #54C54C;
+}
+
 #clear-all-confirm {
   top: 0px;
   left: 120px;

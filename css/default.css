@@ -2,7 +2,7 @@ html, body {
     margin:0;
     padding:0;
     font-family: "Lucida Grande", "Verdana";
-    font-size: 0.9em;
+    font-size: 1em;
     text-align: center;
     background-color:#FFFFFF;
 }
@@ -19,8 +19,8 @@ li {
   float: left;
   margin: 0;
   padding: 0;
-  width: 11em;
-  line-height: 2em;
+  width: 10em;
+  line-height: 1.5em;
   text-align: center;
 }
 
@@ -36,30 +36,30 @@ li[state=active] {
 }
 
 div#nav {
+  position: absolute;
+  z-index: 2;
   background-color: #04690B;
   color: white;
-  width: 33em;
-}
-
-
-
-div#viz-body {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 1;
+  width: 30em;
 }
 
 div#intro {
-    font-size: 16px;
-    line-height: 20px;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 div#null-message {
-    position: absolute;
-    width: 700px;
-    top: 60px;
-    left: 80px;
-    z-index: 1;
-    text-align: justify;
+  position: absolute;
+  width: 700px;
+  top: 60px;
+  left: 80px;
+  z-index: 1;
+  text-align: justify;
+}
+
+div#content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }

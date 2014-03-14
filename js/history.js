@@ -9,12 +9,13 @@ chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
 })
 
 function displayHistory() {
+  $("#history-content").append('<div id="history-title">History Viewer</div>');
+  $("#history-content").append('<div id="history-item-list">');
   for (var key in storage) {    
     var session = JSON.parse(storage[key]);
     date.setTime(key);
-    $("#history-content").prepend('<div class="history-item" id=' + key + '>'
-                       + formatDate(date) + ' - ' + session.name + '</div><br>');
-
+    $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
+                       + formatDate(date) + ' &#8212; ' + session.name + '</div>');
   }
   // once all items are populated, begin load-button listener
   viewHistoryItem();
@@ -43,12 +44,8 @@ function clearCurrent(key) {
     $("#current-yes").click(function() {
       chrome.runtime.sendMessage({payload: "delete", key: key}, function(response) {
         $("#clear-current").html(response);
-        $("#viz-body").hide();
-        $("#history-content").html(response);
-        $("#history-content").show();
         $("#clear-current-confirm").hide();
-        $("#history").load("history.html");
-        $("#viz-body").hide();        
+    
       });
     })
     $("#current-no").click(function() {
@@ -59,8 +56,7 @@ function clearCurrent(key) {
 
 function goBack() {
   $("#back").click(function() {
-    $("#history").load("history.html");
-    $("#viz-body").hide();
+    $("#content").load("history.html");
     $("#back").hide();
   })
 }
@@ -69,11 +65,10 @@ function viewHistoryItem() {
   $(".history-item").click(function() {
     var key = $(this).attr('id');
     chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
-      $("#clear-current").show();
       clearCurrent(key);
-      $("#viz-body").load("tree.html");
-      $("#history-content").hide();
-      $("#viz-body").show();
+      $("#history-content").load("tree.html");
+      $("#clear-all").hide()
+      $("#clear-current").show();
       $("#back").show();
     })
   })

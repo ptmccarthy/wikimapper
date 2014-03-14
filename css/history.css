@@ -4,26 +4,38 @@ body {
 
 #history-panel {
   position: absolute;
-  top: 50px;
-  left: 0px;
-  width: 160px;
-  height: 40px;
-  padding-left: 50px;
-  z-index: 2;
+  top: 3em;
+  left: 39.5em;
+  width: 5em;
+  z-index: 3;
 }
 
 #history-content {
-  padding-left: 50px;
-  padding-top: 100px;
+  z-index: 0;
+}
+
+#history-title {
+  position: absolute;
+  width: 10em;
+  font-size: 1.5em;
+  top: 2em;
+  left: 2em;
+}
+
+#history-item-list {
+  position: absolute;
+  width: 45em;
+  border: 1px solid;
+  top: 6em;
+  left: 3em;
+  overflow: hidden;
 }
 
 .history-item {
   cursor: pointer;
-  display: inline-block;
-  padding: 10px;
-  border-radius: 10px;
+  display: block;
+  padding: 5px;
   font-size: 14px;
-  font-weight: bold;
 }
 
 .history-item:hover {
@@ -44,9 +56,9 @@ body {
 .button {
   position: absolute;
   border-style: none;
-  width: 120px;
-  padding: 3px;
-  border-radius: 10px;
+  width: 8em;
+  padding: 0.3em;
+  border-radius: 0.7em;
   text-align: center;
   cursor: pointer;
 }
@@ -74,8 +86,8 @@ body {
 }
 
 #clear-all {
-  top: 0px;
-  background: #FF7D7D;
+  color: white;
+  background: #04690B;
 }
 
 #clear-all-confirm {

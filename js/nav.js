@@ -1,7 +1,7 @@
 // load default on document ready event and start nav function
 $(document).ready(function() {
   chrome.runtime.sendMessage({ payload: "set" }, function(response) {
-    if (response === null) {
+    if (response.name == null) {
       deactivateAll();
       $('#about').attr("state", "active");
       $('#content').load('about.html').show();
@@ -36,6 +36,8 @@ function nav() {
     $(this).attr("state", "active");
     $('#content').load('history.html'); 
   });
+
+  $('#nav').show();
 }
 
 function deactivateAll() {

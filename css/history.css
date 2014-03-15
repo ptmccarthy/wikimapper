@@ -2,14 +2,6 @@ body {
   text-align: left;
 }
 
-#history-panel {
-  position: absolute;
-  top: 3.3em;
-  left: 41.5em;
-  width: 5em;
-  z-index: 3;
-}
-
 #history-content {
   z-index: 0;
 }
@@ -57,58 +49,43 @@ body {
   position: absolute;
   border-style: none;
   width: 6.5em;
-  border-radius: 0.7em;
   text-align: center;
   cursor: pointer;
 }
 
 .button-yes {
-  position: absolute;
-  border-style: none;
-  width: 55px;
-  padding: 3px;
-  border-radius: 10px;
-  text-align: center;
-  background: #FF7D7D;
+  display: none;
+  float: left;
+  width: 3.3em;
   cursor: pointer;
 }
 
 .button-no {
-  position: absolute;
-  border-style: none;
-  width: 55px;
-  padding: 3px;
-  border-radius: 10px;
-  text-align: center;
-  background: #9EE080;
+  display: none;
+  float: left;
+  width: 3.3em;
   cursor: pointer;
 }
 
+.button-yes:hover, .button-no:hover {
+  background: white;
+  font-weight: bold;
+}
+
 #clear-all {
+  display: none;
   color: black;
   background: white;
+  position: absolute;
+  top: 3em;
+  left: 41.5em;
   padding: 0.2em;
+  width: 7em;
+  z-index: 3;
 }
 
 #clear-all:hover {
   background: pink;
-}
-
-#clear-all-confirm {
-  top: 0px;
-  left: 120px;
-  background: #F2F266;
-  cursor: default;
-}
-
-#all-yes {
-  top: 24px;
-  left: 0px;
-}
-
-#all-no {
-  top: 24px;
-  left: 65px;
 }
 
 #clear-current {

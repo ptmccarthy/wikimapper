@@ -23,17 +23,19 @@ function displayHistory() {
 }
 
 function clearHistory() {
-  $("#clear-all").click(function() {
-    $("#clear-all-confirm").show();
-    $("#all-yes").click(function() {
+  $("#clear-all").show().click(function() {
+    $("clear-all").off('click')
+    $("#clear-span").text("Are you sure?")
+    $(".button-yes").show().click(function() {
       chrome.runtime.sendMessage({payload: "clear"}, function(response) {
         $("#clear-all").html(response);
-        $("#history-content").html(response);
-        $("#clear-all-confirm").hide();
-      })
+      });
+    });
+    $(".button-no").show().click(function() {
+      $("#content").load("history.html");
     })
 
-    $("#all-no").click(function() {
+    $(".button-no").click(function() {
       $("#clear-all-confirm").hide();
     })
   })
@@ -67,10 +69,9 @@ function viewHistoryItem() {
     var key = $(this).attr('id');
     chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
       clearCurrent(key);
+
+      $("#clear-all").hide();
       $("#history-content").load("tree.html");
-      $("#clear-all").hide()
-      $("#clear-current").show();
-      $("#back").show();
     })
   })
 }

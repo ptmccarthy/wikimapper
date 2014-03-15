@@ -1,12 +1,15 @@
 var storage = {};
 var date = new Date();
 
-chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
-  storage = response;
-  displayHistory();
-  clearHistory();
-  goBack(); 
-})
+$(document).ready(function() {
+  chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
+    storage = response;
+    displayHistory();
+    clearHistoryButton();
+    $("#content").show();
+    $("#clear-all").show();
+  });
+});
 
 function displayHistory() {
   $("#history-content").append('<div id="history-title">History Viewer</div>');
@@ -22,23 +25,30 @@ function displayHistory() {
   viewHistoryItem();
 }
 
-function clearHistory() {
-  $("#clear-all").show().click(function() {
-    $("clear-all").off('click')
+function clearHistoryButton() {
+  $("#clear-all").click(function() {
+    $(this).off('click');
+    $(this).css("cursor", "default");
     $("#clear-span").text("Are you sure?")
-    $(".button-yes").show().click(function() {
-      chrome.runtime.sendMessage({payload: "clear"}, function(response) {
-        $("#clear-all").html(response);
-      });
-    });
-    $(".button-no").show().click(function() {
-      $("#content").load("history.html");
-    })
 
-    $(".button-no").click(function() {
-      $("#clear-all-confirm").hide();
-    })
-  })
+    $(".button-yes").show().click(function() { clearAllYes() });
+
+    $(".button-no").show().click(function() { clearAllNo() });
+
+  });
+}
+
+function clearAllYes() {
+  chrome.runtime.sendMessage({payload: "clear"}, function(response) {
+    $("#clear-all").html(function(response) {
+      $(this).hide();
+      $("#content").load("history.html");
+    });
+  });
+}
+
+function clearAllNo() {
+  $("#content").load("history.html");
 }
 
 function clearCurrent(key) {

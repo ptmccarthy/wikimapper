@@ -52,7 +52,7 @@ div#intro {
   line-height: 20px;
 }
 
-div#null-message {
+div#intro, .no_current {
   position: absolute;
   width: 700px;
   top: 60px;

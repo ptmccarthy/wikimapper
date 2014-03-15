@@ -20,7 +20,7 @@ init();
 function init() {
   chrome.runtime.sendMessage({"payload": "load"}, function(response) {
   if (!response.data) {
-    $("#null-message").load("../html/intro.html");
+    $("#content").load("../html/no_current.html");
   } else {
     initGraph(response);
   }

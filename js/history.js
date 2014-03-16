@@ -25,46 +25,56 @@ function displayHistory() {
   viewHistoryItem();
 }
 
+function confirmButtons(element, key) {
+  $(element).css('cursor', 'default');
+  var top = $(element).css("top");
+  var left = $(element).css("left");
+  $('.confirmation').css("top", top).css("left", left).show();
+  $(element).find('.button-yes').click(function() { clearYes(this.id, key); });
+  $(element).find('.button-no').click(function() { clearNo(this.id, key); });
+}
+
 function clearHistoryButton() {
   $("#clear-all").click(function() {
-    $(this).off('click');
-    $(this).css("cursor", "default");
-    $("#clear-span").text("Are you sure?")
-
-    $(".button-yes").show().click(function() { clearAllYes() });
-
-    $(".button-no").show().click(function() { clearAllNo() });
-
+    confirmButtons(this);
   });
 }
 
-function clearAllYes() {
-  chrome.runtime.sendMessage({payload: "clear"}, function(response) {
-    $("#clear-all").html(function(response) {
-      $(this).hide();
+function clearCurrentButton(key) {
+  $("#clear-current").show().click(function() {
+    confirmButtons(this, key)
+  });
+}
+
+function clearYes(id, key) {
+  
+  if (id == 'all-yes') {
+    chrome.runtime.sendMessage({payload: "clear"}, function(response) {
+      $("#clear-all").html(function(response) {
+        $(this).hide();
+        $("#content").load("history.html");
+      });
+    });
+  }
+
+  if (id == 'current-yes') {
+    chrome.runtime.sendMessage({payload: "delete", key: key}, function(response) {
       $("#content").load("history.html");
     });
-  });
+  }
 }
 
-function clearAllNo() {
-  $("#content").load("history.html");
-}
-
-function clearCurrent(key) {
-  $("#clear-current").click(function() {
-    $("#clear-current-confirm").show();
-    $("#current-yes").click(function() {
-      chrome.runtime.sendMessage({payload: "delete", key: key}, function(response) {
-        $("#clear-current").html(response);
-        $("#clear-current-confirm").hide();
-    
-      });
-    })
-    $("#current-no").click(function() {
-      $("#clear-current-confirm").hide();
-    })
-  })
+function clearNo(id, key) {
+  if (id == 'all-no') {
+    $("#clear-all").hide();
+    $("#content").load("history.html");
+  }
+  if (id == 'current-no') {
+    $("#"+id).hide();
+    $("#"+id).siblings('.button-yes').hide();
+    $("#"+id).siblings('.clear-span').html('<img class="tree-view" src="../resources/redx.png">Delete This Tree');
+  }
+  
 }
 
 function goBack() {
@@ -78,10 +88,9 @@ function viewHistoryItem() {
   $(".history-item").click(function() {
     var key = $(this).attr('id');
     chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
-      clearCurrent(key);
-
       $("#clear-all").hide();
       $("#history-content").load("tree.html");
+      clearCurrentButton(key);
     })
   })
 }

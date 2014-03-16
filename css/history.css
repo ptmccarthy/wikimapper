@@ -49,13 +49,14 @@ body {
   position: absolute;
   border-style: none;
   width: 6.5em;
+  border-radius: 0.2em;
   text-align: center;
   cursor: pointer;
 }
 
 .button-yes {
   display: none;
-  float: left;
+  text-align: center;
   width: 3.5em;
   border-radius: 0.2em;  
   cursor: pointer;
@@ -63,7 +64,7 @@ body {
 
 .button-no {
   display: none;
-  float: left;
+  text-align: center;
   width: 3.5em;
   border-radius: 0.2em;
   cursor: pointer;
@@ -75,41 +76,30 @@ body {
 }
 
 #clear-all {
-  color: black;
   background: white;
   position: absolute;
   top: 3em;
-  left: 41.5em;
+  left: 41.25em;
   padding: 0.2em;
   width: 7em;
-  border-radius: 0.2em;
   z-index: 3;
 }
 
-#clear-all:hover {
+#clear-all:hover, #clear-current:hover {
   background: pink;
 }
 
 #clear-current {
-  top: 49px;
-  background: #FF7D7D;
+  top: 2em;
+  left: 2em;
+  width: 10em;
+  padding: 0.2em;
+  z-index: 3;
 }
 
-#clear-current-confirm {
-  top: 49px;
-  left: 120px;
-  background: #F2F266;
-  cursor: default;
-}
-
-#current-yes {
-  top: 24px;
-  left: 0px;
-}
-
-#current-no {
-  top: 24px;
-  left: 65px;
+#confirmation {
+  position: absolute;
+  z-index: 4;
 }
 
 #back {
@@ -128,4 +118,9 @@ img.list {
   border-radius: 1em;
   background-color: white;
   float: right;
+}
+
+img.tree-view {
+  height: 0.8em;
+  padding-right: 0.5em;
 }

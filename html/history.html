@@ -2,13 +2,23 @@
   <link type="text/css" href="../css/history.css" rel="stylesheet" />
   <script language="javascript" type="text/javascript" src="../js/history.js"></script>
 </head>
-
+<div>
 <div class="button" id="clear-all" style="display:none">
-  <span id="clear-span">Clear All<img class="all" src="../resources/redx.png"></span>
-  <div class="button-yes" id="all-yes">Yes</div><div class="button-no" id="all-no">No</div>
+  <span class="clear-span">Clear All<img class="all" src="../resources/redx.png"></span>
+</div>
+  <div class="confirmation" style="display:none">
+    <span class="confirmation">Are you sure?</span>
+    <div class="button-yes" id="all-yes">Yes</div><div class="button-no" id="all-no">No</div>
+  </div>
 </div>
 
-
+<div class="button" id="clear-current" style="display:none">
+  <span class="clear-span"><img class="tree-view" src="../resources/redx.png">Delete This Tree</span>
+  <div class="confirmation" style="display:none">
+    <span class="confirm-span">Are you sure?</span>
+    <div class="button-yes" id="current-yes">Yes</div><div class="button-no" id="current-no">No</div>
+  </div>  
+</div>
 
 <!-- derp
   <div class="button" id="clear-all-confirm" style="display: none">Are you sure?

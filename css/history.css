@@ -62,7 +62,6 @@ body {
 
 .button {
   position: absolute;
-  border-style: none;
   width: 6.5em;
   border-radius: 0.2em;
   text-align: center;
@@ -86,7 +85,7 @@ body {
 
 #clear-this {
   top: 2em;
-  left: 2em;
+  left: 2.7em;
   width: 9em;
   padding: 0.2em;
   background: pink;
@@ -94,7 +93,7 @@ body {
 
 #go-back {
   top: 4em;
-  left: 2em;
+  left: 2.7em;
   width: 9em;
   padding: 0.2em;
   background: #9EE080;

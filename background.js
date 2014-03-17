@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-});
+}());
 
 var sessions = [];
 var tabStatus = {};
@@ -200,13 +200,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     break;
 
     case "set":
+      var recent = 0;
       if (request.key) {
         selectedTree = JSON.parse(localStorage.getItem(request.key));
       }
       else if (sessions.length === 0) selectedTree = {};
       else {
         if (localStorage.length > 0) 
-          var recent = 0;
           for (var key in localStorage) {
             if (key > recent) recent = key;
           }

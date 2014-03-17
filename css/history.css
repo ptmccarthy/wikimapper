@@ -20,19 +20,34 @@ body {
   border: 1px solid;
   top: 6em;
   left: 3em;
+  font-size: 1em;
   overflow: hidden;
 }
 
 .history-item {
   cursor: pointer;
-  display: block;
+  display: inline-block;
+  float: left;
+  width: 42.4em;
   padding: 0.3em;
-  font-size: 1em;
 }
 
 .history-item:hover {
   background: #54C54C;
   color: white;
+}
+
+.del-list-item {
+  cursor: pointer;
+  display: inline-block;
+  float: right;
+  width: 1.4em;
+  padding: 0.3em;
+  text-align: center;
+}
+
+.del-list-item:hover {
+  background: pink;
 }
 
 .clear-item {
@@ -54,28 +69,8 @@ body {
   cursor: pointer;
 }
 
-.button-yes {
-  display: none;
-  text-align: center;
-  width: 3.5em;
-  border-radius: 0.2em;  
-  cursor: pointer;
-}
-
-.button-no {
-  display: none;
-  text-align: center;
-  width: 3.5em;
-  border-radius: 0.2em;
-  cursor: pointer;
-}
-
-.button-yes:hover, .button-no:hover {
-  background: white;
-  font-weight: bold;
-}
-
 #clear-all {
+  display: none;
   background: white;
   position: absolute;
   top: 3em;
@@ -89,21 +84,19 @@ body {
   background: pink;
 }
 
-#clear-current {
+#clear-this {
   top: 2em;
   left: 2em;
-  width: 10em;
+  width: 9em;
   padding: 0.2em;
-  z-index: 3;
+  background: pink;
 }
 
-#confirmation {
-  position: absolute;
-  z-index: 4;
-}
-
-#back {
-  top: 98px;
+#go-back {
+  top: 4em;
+  left: 2em;
+  width: 9em;
+  padding: 0.2em;
   background: #9EE080;
 }
 
@@ -112,12 +105,9 @@ img.all {
   padding-left: 0.5em;
 }
 
-img.list {
-  height: 1em;
-  padding: 0.1em;
-  border-radius: 1em;
-  background-color: white;
-  float: right;
+img.list-x {
+  font-size: 1.0em;
+  height: 1.15em;
 }
 
 img.tree-view {

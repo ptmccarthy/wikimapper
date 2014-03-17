@@ -1,13 +1,17 @@
 var storage = {};
 var date = new Date();
 
+alertify.set({ labels: { ok: "Yes", cancel: "No" }, buttonFocus: "cancel" });
+
 $(document).ready(function() {
   chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
     storage = response;
     displayHistory();
-    clearHistoryButton();
     $("#content").show();
-    $("#clear-all").show();
+
+    viewHistoryItem();
+    deleteHistoryItem();  
+    clearHistoryButton();
   });
 });
 
@@ -19,66 +23,40 @@ function displayHistory() {
     date.setTime(key);
     $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
           + formatDate(date) + ' &#8212; ' + session.name
-          + '<img class="list" src="../resources/redx.png"></div>');
+          + '</div><div class="del-list-item" id=' + key + '><img class="list-x" src="../resources/redx.png"></div>');
   }
-  // once all items are populated, begin load-button listener
-  viewHistoryItem();
-}
-
-function confirmButtons(element, key) {
-  $(element).css('cursor', 'default');
-  var top = $(element).css("top");
-  var left = $(element).css("left");
-  $('.confirmation').css("top", top).css("left", left).show();
-  $(element).find('.button-yes').click(function() { clearYes(this.id, key); });
-  $(element).find('.button-no').click(function() { clearNo(this.id, key); });
 }
 
 function clearHistoryButton() {
-  $("#clear-all").click(function() {
-    confirmButtons(this);
+  $("#clear-all").show().click(function() {
+    alertify.confirm("Are you sure you want to clear ALL WikiMapper history?", function(yes) {
+      if (yes) { clearHistory(); }
+    });
   });
 }
 
-function clearCurrentButton(key) {
-  $("#clear-current").show().click(function() {
-    confirmButtons(this, key)
-  });
-}
-
-function clearYes(id, key) {
-  
-  if (id == 'all-yes') {
-    chrome.runtime.sendMessage({payload: "clear"}, function(response) {
-      $("#clear-all").html(function(response) {
-        $(this).hide();
-        $("#content").load("history.html");
-      });
-    });
-  }
-
-  if (id == 'current-yes') {
-    chrome.runtime.sendMessage({payload: "delete", key: key}, function(response) {
-      $("#content").load("history.html");
-    });
-  }
-}
-
-function clearNo(id, key) {
-  if (id == 'all-no') {
-    $("#clear-all").hide();
+function clearHistory() {
+  chrome.runtime.sendMessage({ payload: "clear" }, function(response) {
     $("#content").load("history.html");
-  }
-  if (id == 'current-no') {
-    $("#"+id).hide();
-    $("#"+id).siblings('.button-yes').hide();
-    $("#"+id).siblings('.clear-span').html('<img class="tree-view" src="../resources/redx.png">Delete This Tree');
-  }
-  
+    alertify.error(response);
+  });
 }
 
-function goBack() {
-  $("#back").click(function() {
+function deleteThisTreeButton(key) {
+  $("#clear-this").show().click(function() {
+    alertify.confirm("Are you sure you want to delete this tree?", function(yes) {
+      if (yes) {
+        chrome.runtime.sendMessage({ payload: "delete", key: key }, function(response) {
+          $("#content").load("history.html");
+          alertify.error(response);
+        });
+      }
+    });
+  });
+}
+
+function goBackButton() {
+  $("#go-back").show().click(function() {
     $("#content").load("history.html");
     $("#back").hide();
   })
@@ -86,12 +64,27 @@ function goBack() {
 
 function viewHistoryItem() {
   $(".history-item").click(function() {
+    $("#clear-all").hide();
     var key = $(this).attr('id');
     chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
-      $("#clear-all").hide();
       $("#history-content").load("tree.html");
-      clearCurrentButton(key);
+      goBackButton();  
+      deleteThisTreeButton(key);    
     })
+  })
+}
+
+function deleteHistoryItem() {
+  $(".del-list-item").click(function() {
+    var key = $(this).attr('id');
+    alertify.confirm("Are you sure you want to delete this item?", function(yes) {
+      if (yes) { 
+        chrome.runtime.sendMessage({ payload: "delete", key: key }, function(response) {
+          $("#content").load("history.html");
+          alertify.error(response);
+        })
+      }
+    });
   })
 }
 

@@ -232,7 +232,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     // history page requesting to remove a specific tree by key
     case "delete":
       deleteHistoryItem(request.key);
-      response("Tree Deleted");
+      response("History Item Deleted");
     break;
 
     // history page requesting to clear all history

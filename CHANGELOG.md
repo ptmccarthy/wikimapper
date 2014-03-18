@@ -1,3 +1,9 @@
+## 0.7.2 (03-17-2014)
+Bugfixes:
+- Always display 2-digit hour in timestamp (I'm an idiot, previous release didn't fix it).
+
+Github Issues Closed: #59
+
 ## 0.7.1 (03-17-2014)
 Bugfixes:
 - Always display 2-digit hour in timestamp

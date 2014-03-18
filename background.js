@@ -1,6 +1,9 @@
+(function() {
+  'use strict';
+}());
+
 var sessions = [];
 var tabStatus = {};
-var data = {};
 var selectedTree = {};
 // required JSON object structure for using with JIT and d3.js
 /* 
@@ -35,24 +38,24 @@ function sessionHandler(commitData) {
 function findSessionOf(commitData) {
   var ret = { "id": "",
         "parentNode": "",
-      }
-  var parentNode;
+      };
+
   sessions.forEach(function(session) {
     if (session.tabs.indexOf(commitData.tabId) >= 0) {
       ret.id = session.id;
       ret.parentNode = tabStatus[commitData.tabId].id;
     }
     else if(commitData.parentId !== undefined) {
-      var index = session.tabs.indexOf(commitData.parentId)
+      var index = session.tabs.indexOf(commitData.parentId);
       if (index >= 0) {
         ret.id = session.id;
         ret.parentNode = tabStatus[commitData.parentId].id;
         session.tabs.push(commitData.tabId);
       }
     }   
-  })
+  });
 
-  if (ret.id != "") {
+  if (ret.id !== "") {
     return ret;
   }
   else {
@@ -67,7 +70,7 @@ function createNewSession(commitData) {
   var session = {   "id": Date.now(),
             "tabs": [ commitData.tabId ],
             "nodeIndex": 1,
-        }
+        };
   sessions.push(session);
   return { "id": session.id, "parentNode": "" };
 }
@@ -87,11 +90,11 @@ function createPageObject(session, commitData, callback) {
                     "parentId": session.parentNode,
                   },
               "children": [],
-            }
+            };
       activeSession.nodeIndex += 1;
       callback(page);
     }
-  })
+  });
 }
 
 function recordRoot(page) {
@@ -157,12 +160,12 @@ function updateName(tab, name) {
       // i know the session id to go find this node in
       var tree = JSON.parse(localStorage[s.id]);
       var node = findNodeByURLAndName(tree, tab.url, name);
-      if (node != undefined) {
+      if (node !== undefined) {
         node.name = name;
       }
       localStorage.setItem(s.id, JSON.stringify(tree));
     }
-  })
+  });
 }
   
 // deletes a specific key from localStorage
@@ -191,15 +194,20 @@ function shortenURL(url) {
 // message listener
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   switch (request.payload) {
+    case "status":
+      if (sessions.length === 0) response();
+      else response("active");
+    break;
+
     case "set":
+      var recent = 0;
       if (request.key) {
         selectedTree = JSON.parse(localStorage.getItem(request.key));
       }
-      else if (sessions.length == 0) selectedTree = {};
+      else if (sessions.length === 0) selectedTree = {};
       else {
         if (localStorage.length > 0) 
-          var recent = 0;
-          for (key in localStorage) {
+          for (var key in localStorage) {
             if (key > recent) recent = key;
           }
           selectedTree = JSON.parse(localStorage.getItem(recent));
@@ -224,7 +232,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     // history page requesting to remove a specific tree by key
     case "delete":
       deleteHistoryItem(request.key);
-      response("Tree Deleted");
+      response("History Item Deleted");
     break;
 
     // history page requesting to clear all history
@@ -233,7 +241,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
       response("History Cleared");
     break;
   }
-})
+});
 
 
 // Navigation Event Listener
@@ -256,8 +264,8 @@ chrome.webNavigation.onCommitted.addListener(function(details) {
       { urlContains: ".wiktionary.org/wiki"}]});
 
 // Listener for when the user clicks on the Wikimapper button
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')}, function(tab) {
+chrome.browserAction.onClicked.addListener(function() {
+  chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')}, function() {
   });
 });
 
@@ -266,4 +274,4 @@ chrome.runtime.onInstalled.addListener(function(details) {
   if(details.reason == "install") {
     chrome.tabs.create({'url': chrome.extension.getURL('html/index.html')});
   }
-})
+});

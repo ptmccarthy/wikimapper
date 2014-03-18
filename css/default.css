@@ -7,6 +7,15 @@ html, body {
     background-color: white;
 }
 
+a {
+  text-decoration: none;
+  color: #006BBB;
+}
+
+a:hover {
+  color: #599EFF;
+}
+
 ul {
   list-style-type: none;
   margin: 0;

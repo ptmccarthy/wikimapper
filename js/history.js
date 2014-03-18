@@ -1,80 +1,90 @@
 var storage = {};
 var date = new Date();
 
-chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
-  storage = response;
-  displayHistory();
-  clearHistory();
-  goBack(); 
-})
+alertify.set({ labels: { ok: "Yes", cancel: "No" }, buttonFocus: "cancel" });
+
+$(document).ready(function() {
+  chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
+    storage = response;
+    displayHistory();
+    $("#content").show();
+
+    viewHistoryItem();
+    deleteHistoryItem();  
+    clearHistoryButton();
+  });
+});
 
 function displayHistory() {
+  $("#history-content").append('<div id="history-title">History Viewer</div>');
+  $("#history-content").append('<div id="history-item-list">');
   for (var key in storage) {    
     var session = JSON.parse(storage[key]);
     date.setTime(key);
-    $("#history-content").prepend('<div class="history-item">' + formatDate(date) + ' - '
-              + session.name + '<div class="load-button" id='+key+'>View</div>' + '</div>');
+    $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
+          + formatDate(date) + ' &#8212; ' + session.name
+          + '</div><div class="del-list-item" id=' + key + '><img class="list-x" src="../resources/redx.png"></div>');
   }
-  // once all items are populated, begin load-button listener
-  viewHistoryItem();
+}
+
+function clearHistoryButton() {
+  $("#clear-all").show().click(function() {
+    alertify.confirm("Are you sure you want to clear ALL WikiMapper history?", function(yes) {
+      if (yes) { clearHistory(); }
+    });
+  });
 }
 
 function clearHistory() {
-  $("#clear-all").click(function() {
-    $("#clear-all-confirm").show();
-    $("#all-yes").click(function() {
-      chrome.runtime.sendMessage({payload: "clear"}, function(response) {
-        $("#clear-all").html(response);
-        $("#history-content").html(response);
-        $("#clear-all-confirm").hide();
-      })
-    })
-
-    $("#all-no").click(function() {
-      $("#clear-all-confirm").hide();
-    })
-  })
+  chrome.runtime.sendMessage({ payload: "clear" }, function(response) {
+    $("#content").load("history.html");
+    alertify.error(response);
+  });
 }
 
-function clearCurrent(key) {
-  $("#clear-current").click(function() {
-    $("#clear-current-confirm").show();
-    $("#current-yes").click(function() {
-      chrome.runtime.sendMessage({payload: "delete", key: key}, function(response) {
-        $("#clear-current").html(response);
-        $("#viz-body").hide();
-        $("#history-content").html(response);
-        $("#history-content").show();
-        $("#clear-current-confirm").hide();
-        $("#history").load("history.html");
-        $("#viz-body").hide();        
-      });
-    })
-    $("#current-no").click(function() {
-      $("#clear-current-confirm").hide();
-    })
-  })
+function deleteThisTreeButton(key) {
+  $("#clear-this").show().click(function() {
+    alertify.confirm("Are you sure you want to delete this tree?", function(yes) {
+      if (yes) {
+        chrome.runtime.sendMessage({ payload: "delete", key: key }, function(response) {
+          $("#content").load("history.html");
+          alertify.error(response);
+        });
+      }
+    });
+  });
 }
 
-function goBack() {
-  $("#back").click(function() {
-    $("#history").load("history.html");
-    $("#viz-body").hide();
+function goBackButton() {
+  $("#go-back").show().click(function() {
+    $("#content").load("history.html");
     $("#back").hide();
   })
 }
 
 function viewHistoryItem() {
-  $(".load-button").click(function() {
+  $(".history-item").click(function() {
+    $("#clear-all").hide();
     var key = $(this).attr('id');
     chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
-      $("#clear-current").show();
-      clearCurrent(key);
-      $("#viz-body").load("tree.html");
-      $("#history-content").hide();
-      $("#viz-body").show();
-      $("#back").show();
+      $("#history-content").load("tree.html");
+      goBackButton();  
+      deleteThisTreeButton(key);    
     })
+  })
+}
+
+function deleteHistoryItem() {
+  $(".del-list-item").click(function() {
+    var key = $(this).attr('id');
+    alertify.confirm("Are you sure you want to delete this item?", function(yes) {
+      if (yes) { 
+        chrome.runtime.sendMessage({ payload: "delete", key: key }, function(response) {
+          $("#content").load("history.html");
+          alertify.error(response);
+        })
+      }
+    });
   })
 }
 

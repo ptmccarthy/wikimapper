@@ -1,9 +1,21 @@
+## 0.7.0 (03-17-2014)
+Features:
+- Completely redone history viewer UI that is much slicker
+- Many other smaller overall look and feel improvements and tweaks
+- Lots of overdue code clean up
+
+Bugfixes:
+- Page elements no longer flicker during transitions
+
+Github Issues Closed:
+- #25, #57
+
 ## 0.6.6 (03-13-2014)
 Features:
 - Node labels on graphs are now a link to the associated Wikipedia page
 - Cursor changes to a pointer when hovering over buttons
 
-GitHub Issues Closed:
+Github Issues Closed:
 - #55, #56
 
 ## 0.6.5 (03-10-2014)
@@ -13,7 +25,7 @@ Features:
 Bugfixes:
 - Node labels changed from SVG text element to SVG foreignObject containing a div of class label, allowing for word wrap.
 
-GitHub Issues Closed:
+Github Issues Closed:
 - #10, #54
 
 

@@ -7,9 +7,9 @@ html, body {
     background-color: white;
 }
 
-a {
+a, a:visited {
   text-decoration: none;
-  color: #006BBB;
+  color: black;
 }
 
 a:hover {

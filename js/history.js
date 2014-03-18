@@ -95,6 +95,6 @@ function formatDate(date) {
   month += 1;
 
   return month + '/' + date.getDate()  + '/' + date.getFullYear() + ' at ' +
-    (date.getHours()<10?'0';'') + date.getHours() + ':' +
+    (date.getHours()<10?'0':'') + date.getHours() + ':' +
     (date.getMinutes()<10?'0':'') + date.getMinutes();
 }

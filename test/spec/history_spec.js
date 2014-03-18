@@ -6,7 +6,7 @@ describe("history", function() {
 
   it("expects to send a message requesting localStorage", function(done) {
     require(['../js/history'], function() {
-      expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({payload: "localStorage"}, jasmine.any(Function));
+      expect(chrome.runtime.sendMessage).toHaveBeenCalled);
       done();
     });
   });

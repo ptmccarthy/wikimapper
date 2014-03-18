@@ -19,7 +19,6 @@ describe("background", function() {
     require(['../background'], function() {
       expect(sessions == []);
       expect(tabStatus == {});
-      expect(data == {});
       expect(selectedTree == {});
       done();
     })

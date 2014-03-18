@@ -1,3 +1,9 @@
+## 0.7.1 (03-17-2014)
+Bugfixes:
+- Always display 2-digit hour in timestamp
+
+Github Issues Closed: #59
+
 ## 0.7.0 (03-17-2014)
 Features:
 - Completely redone history viewer UI that is much slicker

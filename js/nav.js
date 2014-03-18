@@ -1,7 +1,7 @@
 // load default on document ready event and start nav function
 $(document).ready(function() {
   chrome.runtime.sendMessage({ payload: "set" }, function(response) {
-    if (response.name == null) {
+    if (response.name === null) {
       deactivateAll();
       $('#about').attr("state", "active");
       $('#content').load('about.html').show();
@@ -11,7 +11,7 @@ $(document).ready(function() {
     }
 
     nav();
-  })
+  });
 });
 
 // navigation button listener function
@@ -19,7 +19,7 @@ $(document).ready(function() {
 function nav() {
   $('#about').click(function() {
     deactivateAll();
-    $(this).attr("state", "active")
+    $(this).attr("state", "active");
     $('#content').load('about.html');
   });
 

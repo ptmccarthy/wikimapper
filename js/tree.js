@@ -1,5 +1,5 @@
 var margin = {top: 30, right: 0, bottom: 0, left: 120},
-  width = 0
+  width = 0;
   
 var i = 0,
   duration = 750,
@@ -37,14 +37,6 @@ function initGraph(json) {
   root.x0 = height / 2;
   root.y0 = 0;
 
-  function collapse(d) {
-  if (d.children) {
-    d._children = d.children;
-    d._children.forEach(collapse);
-    d.children = null;
-  }
-  }
-
   update(root);
 }
 
@@ -54,7 +46,6 @@ function update(source) {
   var nodes = tree.nodes(root).reverse(),
   links = tree.links(nodes);
 
-  //var depth = 0;
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { 
   d.y = d.depth * 250;
@@ -159,7 +150,7 @@ function isEmpty(d) {
   if (d == undefined) {
   return true;
   }
-  else if (d.length == 0) {
+  else if (d.length === 0) {
   return true;
   }
   else return false;

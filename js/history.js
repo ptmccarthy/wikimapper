@@ -59,7 +59,7 @@ function goBackButton() {
   $("#go-back").show().click(function() {
     $("#content").load("history.html");
     $("#back").hide();
-  })
+  });
 }
 
 function viewHistoryItem() {
@@ -70,8 +70,8 @@ function viewHistoryItem() {
       $("#history-content").load("tree.html");
       goBackButton();  
       deleteThisTreeButton(key);    
-    })
-  })
+    });
+  });
 }
 
 function deleteHistoryItem() {
@@ -82,16 +82,16 @@ function deleteHistoryItem() {
         chrome.runtime.sendMessage({ payload: "delete", key: key }, function(response) {
           $("#content").load("history.html");
           alertify.error(response);
-        })
+        });
       }
     });
-  })
+  });
 }
 
 // take date object and return it as a string of format "MM/DD/YYYY at HH:MM"
 function formatDate(date) {
   // getMonth returns zero-based index of month, so need +1
-  month = date.getMonth()
+  month = date.getMonth();
   month += 1;
 
   return month + '/' + date.getDate()  + '/' + date.getFullYear() + ' at ' +

@@ -53,11 +53,9 @@
 	padding: 15px;
 	border-radius: 4px;
 	color: #FFF;
-	text-shadow: -1px -1px 0 rgba(0,0,0,.5);
 }
 	.alertify-log-error {
 		background: #FC7777;
-		background: rgba(254,26,0,.9);
 	}
 	.alertify-log-success {
 		background: #5CB811;

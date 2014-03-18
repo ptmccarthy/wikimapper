@@ -1,7 +1,7 @@
 .node circle {
   cursor: pointer;
   fill: #fff;
-  stroke: steelblue;
+  stroke: #04690B;
   stroke-width: 1.5px;
 }
 
@@ -17,6 +17,7 @@ path.link {
   stroke-width: 1.5px;
 }
 
-a.node:link, a.node:visited {
+a.node, a.node:visited, a.node:hover, a.node:active {
   text-decoration: none;
+  color: black;
 }

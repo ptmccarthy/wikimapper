@@ -18,10 +18,23 @@ body {
   position: absolute;
   width: 45em;
   border: 1px solid;
+  border-color: #BABABA;
   top: 6em;
   left: 3em;
   font-size: 1em;
   overflow: hidden;
+}
+
+.button {
+  position: absolute;
+  font-size: 0.8em;
+  width: 6.5em;
+  border-radius: 0.4em;
+  border: 1px solid;
+  border-color: #BABABA;
+  color: white;
+  text-align: center;
+  cursor: pointer;
 }
 
 .history-item {
@@ -35,6 +48,7 @@ body {
 .history-item:hover {
   background: #54C54C;
   color: white;
+  background-image: -webkit-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
 }
 
 .del-list-item {
@@ -47,56 +61,47 @@ body {
 }
 
 .del-list-item:hover {
-  background: pink;
-}
-
-.clear-item {
-  background: #FF7D7D;
-  border-style: none;
-  width: 90px;
-  border-radius: 10px;
-  text-align: center;
-  position: absolute;
-  left: 125px;
-}
-
-.button {
-  position: absolute;
-  width: 6.5em;
-  border-radius: 0.2em;
-  text-align: center;
-  cursor: pointer;
+  background: #FC7777;
+  color: white;
+  background-image: -webkit-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
 }
 
 #clear-all {
   display: none;
+  color: black;
   background: white;
   position: absolute;
-  top: 3em;
-  left: 41.25em;
+  top: 4em;
+  left: 52.5em;
   padding: 0.2em;
   width: 7em;
   z-index: 3;
 }
 
 #clear-all:hover, #clear-current:hover {
-  background: pink;
+  color: white;
+  background: #FC7777;
+  background-image: -webkit-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));  
 }
 
 #clear-this {
-  top: 2em;
-  left: 2.7em;
+  top: 3em;
+  left: 4em;
   width: 9em;
   padding: 0.2em;
-  background: pink;
+  background: #FC7777;
+}
+
+#clear-this:hover, #go-back:hover {
+  background-image: -webkit-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
 }
 
 #go-back {
-  top: 4em;
-  left: 2.7em;
+  top: 5em;
+  left: 4em;
   width: 9em;
   padding: 0.2em;
-  background: #9EE080;
+  background: #54C54C;
 }
 
 img.all {

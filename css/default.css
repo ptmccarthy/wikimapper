@@ -28,6 +28,7 @@ li:hover {
   cursor: pointer;
   color: white;
   background: #54C54C;
+  background-image: -webkit-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
 }
 
 li[state=active] {

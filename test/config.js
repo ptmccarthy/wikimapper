@@ -36,7 +36,7 @@ require.config({
     'test/spec/tree_spec'
   ];
 
-  require(['boot'], function() {
+  require(['boot', 'jquery'], function() {
 
     require(specs, function() {
       window.onload();

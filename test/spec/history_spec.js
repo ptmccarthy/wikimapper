@@ -1,12 +1,12 @@
 describe("history", function() {
   beforeEach(function(done) {
-    spyOn(chrome.runtime, "sendMessage").and.callThrough();
     done();
   });
 
   it("expects to send a message requesting localStorage", function(done) {
+    spyOn(chrome.runtime, "sendMessage").and.callThrough();
     require(['../js/history'], function() {
-      expect(chrome.runtime.sendMessage).toHaveBeenCalled();
+      expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({payload: "localStorage"}, jasmine.any(Function));
       done();
     });
   });
@@ -18,6 +18,24 @@ describe("history", function() {
         done();
       }, 100);
     })
+  });
+
+  it("expects to format the unix timestamp to a human readable date", function(done) {
+    require(['../js/history'], function() {
+        var d = new Date();
+        d.setTime(1388563740000);
+        expect(formatDate(d)).toBe("1/1/2014 at 00:09");
+        done();
+    });
+  });
+
+  it("expects clear history to send 'clear' message", function(done) {
+    spyOn(chrome.runtime, "sendMessage").and.returnValue("History Cleared");
+    require(['../js/history'], function() {
+      clearHistory();
+      expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({payload: "clear"}, jasmine.any(Function));
+      done();
+    });
   });
 
 });

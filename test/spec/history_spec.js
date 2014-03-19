@@ -30,7 +30,7 @@ describe("history", function() {
   });
 
   it("expects clear history to send 'clear' message", function(done) {
-    spyOn(chrome.runtime, "sendMessage").and.returnValue("History Cleared");
+    spyOn(chrome.runtime, "sendMessage");
     require(['../js/history'], function() {
       clearHistory();
       expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({payload: "clear"}, jasmine.any(Function));

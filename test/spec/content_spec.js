@@ -10,9 +10,11 @@ describe("content", function() {
     document.title = "Jasmine Spec Runner v2.0.0";
   })
 
-  it("expects to send a message", function(done) {
+  it("expects to send a message to update the title", function(done) {
     require(['../content'], function() {
-      expect(chrome.runtime.sendMessage).toHaveBeenCalled();
+      expect(chrome.runtime.sendMessage).toHaveBeenCalledWith(
+        { "payload": "update", "name": "Unit Test"}, jasmine.any(Function)
+      );
       done();
     });
   });

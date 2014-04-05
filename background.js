@@ -16,6 +16,39 @@ json = {
 }
 */
 
+function eventFilter(details) {
+  var triggers = ['link','typed','form_submit'];
+  var commitData = details;
+  // handle forward and back button (they are unfortunately the same qualifier)
+  if (details.transitionQualifiers.indexOf('forward_back') >= 0) {
+    // back button
+    if (details.url === tabStatus[details.tabId].parent.data.url) {
+      var backPage = tabStatus[details.tabId].parent;
+      commitData = backPage;
+      commitData.forwardId = tabStatus[details.tabId].id;
+      tabStatus[details.tabId] = backPage;
+    } 
+    // forward button
+    else {
+      commitData.id = tabStatus[details.tabId].forwardId;
+      commitData.parent = tabStatus[details.tabId];
+      commitData.children = [];
+      tabStatus[details.tabId] = commitData;
+    }
+  }
+
+  // handle navigation events that match triggers
+  else if (triggers.indexOf(details.transitionType) >= 0) {
+    // get the parent tab id of the tab that the nav event occurs in
+    // and add it as an additional key in commitData
+    chrome.tabs.get(details.tabId, function(tab) {
+      commitData.parentId = tab.openerTabId;
+      sessionHandler(commitData);
+    });    
+  }
+  console.log(tabStatus);
+}
+
 // Session Handler
 // take in event commitData, direct it to the correct session
 function sessionHandler(commitData) {
@@ -36,9 +69,10 @@ function sessionHandler(commitData) {
 // creates new session if needed
 // returns id (timestamp) and parentNode of session object
 function findSessionOf(commitData) {
-  var ret = { "id": "",
-        "parentNode": "",
-      };
+  var ret = {
+    "id": "",
+    "parentNode": "",
+  };
 
   sessions.forEach(function(session) {
     if (session.tabs.indexOf(commitData.tabId) >= 0) {
@@ -67,10 +101,11 @@ function findSessionOf(commitData) {
 // make a new session object and assign it an ID from its timestamp
 // return the id of the created session
 function createNewSession(commitData) {
-  var session = {   "id": Date.now(),
-            "tabs": [ commitData.tabId ],
-            "nodeIndex": 1,
-        };
+  var session = {
+    "id": Date.now(),
+    "tabs": [ commitData.tabId ],
+    "nodeIndex": 1,
+  };
   sessions.push(session);
   return { "id": session.id, "parentNode": "" };
 }
@@ -81,16 +116,18 @@ function createNewSession(commitData) {
 function createPageObject(session, commitData, callback) {
   sessions.forEach(function(activeSession) {
     if (activeSession.id == session.id) {
-      var page = {  "id": activeSession.nodeIndex,
-              "name": shortenURL(commitData.url),
-              "data": {   "url": commitData.url,
-                    "date": commitData.timeStamp,
-                    "sessionId": session.id,
-                    "tabId": commitData.tabId,
-                    "parentId": session.parentNode,
-                  },
-              "children": [],
-            };
+      var page = {
+        "id": activeSession.nodeIndex,
+        "name": shortenURL(commitData.url),
+        "data": {   
+          "url": commitData.url,
+          "date": commitData.timeStamp,
+          "sessionId": session.id,
+          "tabId": commitData.tabId,
+          "parentId": session.parentNode,
+        },
+        "children": [],
+      };
       activeSession.nodeIndex += 1;
       callback(page);
     }
@@ -148,6 +185,9 @@ function findNodeByURLAndName(tree, url, name) {
 // Set TabStatus
 // function to update the tab status object with the page contents of tabId
 function setTabStatus(tabId, page) {
+  if (tabStatus[tabId] !== undefined) {
+    page.parent = tabStatus[tabId];
+  } 
   tabStatus[tabId] = page;
 }
 
@@ -246,22 +286,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 
 // Navigation Event Listener
 chrome.webNavigation.onCommitted.addListener(function(details) {
-  // check that this event is a link or typed address
-  // filter out back, reload, etc events
-  if (details.transitionType == "link" ||
-    details.transitionType == "typed" ||
-    details.transitionType == "form_submit" ) {
-
-    // get the parent tab id of the tab that the nav event occurs in
-    // and add it as an additional key in commitData
-    var commitData = details;
-    chrome.tabs.get(details.tabId, function(tab) {
-      commitData.parentId = tab.openerTabId;
-      sessionHandler(commitData);
-    });
-  }
+  eventFilter(details);
 }, { url: [ { urlContains: ".wikipedia.org/wiki" },
-      { urlContains: ".wiktionary.org/wiki"}]});
+            { urlContains: ".wiktionary.org/wiki"}]});
 
 // Listener for when the user clicks on the Wikimapper button
 chrome.browserAction.onClicked.addListener(function() {

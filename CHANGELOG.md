@@ -1,3 +1,9 @@
+## 0.7.3 (04-05-2014)
+Features:
+- WikiMapper is now much more back/forward button friendly when browsing Wikipedia. It detects back/forward button events and groups pages appropriately rather than drawing a linear path.
+
+Github Issues Closed: #64
+
 ## 0.7.2 (03-17-2014)
 Bugfixes:
 - Always display 2-digit hour in timestamp (I'm an idiot, previous release didn't fix it).

@@ -5,7 +5,7 @@
 var sessions = [];
 var tabStatus = {};
 var selectedTree = {};
-// required JSON object structure for using with JIT and d3.js
+// required JSON object structure
 /* 
 json = {
   "id" : , "node00",
@@ -19,25 +19,35 @@ json = {
 function eventFilter(details) {
   var triggers = ['link','typed','form_submit'];
   var commitData = details;
+
   // handle forward and back button (they are unfortunately the same qualifier)
+  // TODO: refactor this into cleaner, separate functions
   if (details.transitionQualifiers.indexOf('forward_back') >= 0) {
     // back button
     if (details.url === tabStatus[details.tabId].parent.data.url) {
       var backPage = tabStatus[details.tabId].parent;
       commitData = backPage;
       commitData.forwardId = tabStatus[details.tabId].id;
+      commitData.forwardChildren = tabStatus[details.tabId].children;
       tabStatus[details.tabId] = backPage;
     } 
     // forward button
     else {
+      commitData.data = {};
+      console.log(commitData);
       commitData.id = tabStatus[details.tabId].forwardId;
       commitData.parent = tabStatus[details.tabId];
-      commitData.children = [];
+      commitData.data.tabId = commitData.tabId;
+      commitData.data.date = commitData.timeStamp;
+      commitData.data.url = commitData.url;
+      commitData.data.parentId = commitData.parent.id;
+      commitData.data.sessionId = commitData.parent.data.sessionId;
+      commitData.children = tabStatus[details.tabId].forwardChildren;
       tabStatus[details.tabId] = commitData;
     }
   }
 
-  // handle navigation events that match triggers
+  // handle normal navigation events that match triggers
   else if (triggers.indexOf(details.transitionType) >= 0) {
     // get the parent tab id of the tab that the nav event occurs in
     // and add it as an additional key in commitData

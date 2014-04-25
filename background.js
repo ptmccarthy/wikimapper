@@ -56,7 +56,6 @@ function eventFilter(details) {
       sessionHandler(commitData);
     });    
   }
-  console.log(tabStatus);
 }
 
 // Session Handler
@@ -147,6 +146,8 @@ function createPageObject(session, commitData, callback) {
 function recordRoot(page) {
   // set the tabStatus of this tabId to the page content
   setTabStatus(page.data.tabId, page);
+  // apply property 'lastNodeIndex' to keep a running count of tree size
+  page.lastNodeIndex = 1;
   // record new session and root node to localStorage
   localStorage.setItem(page.data.sessionId, JSON.stringify(page));
 }
@@ -159,6 +160,7 @@ function recordChild(page) {
   // find the parent node
   var parent = findNode(tree, page.data.parentId);
   // add this node as a child
+  tree.lastNodeIndex = page.Id;
   parent.children.push(page);
   // record the modified tree to localStorage
   localStorage.setItem(page.data.sessionId, JSON.stringify(tree));

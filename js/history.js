@@ -20,7 +20,7 @@ function displayHistory() {
   $("#history-content").append('<div id="history-item-list">');
   for (var key in storage) {    
     var session = JSON.parse(storage[key]);
-    var count = countNodes(session);
+    var count = nodeCount(session);
     date.setTime(key);
     $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
           + formatDate(date) + ' &#8212; ' + session.name
@@ -90,16 +90,27 @@ function deleteHistoryItem() {
   });
 }
 
+// if the tree already has lastNodeIndex property, return that
+// otherwise count nodes, set lastNodeIndex, and return the count
+//   (prior to 0.7.4 trees didn't keep a running count of their size)
+function nodeCount(tree) {
+  if (tree.lastNodeIndex) {
+    return tree.lastNodeIndex;
+  }
+  else {
+    var n = countNodes(tree);
+    tree.lastNodeIndex = n;
+    localStorage.setItem(tree.data.sessionId, JSON.stringify(tree));
+
+    return n;
+  }
+}
+
 // count how many nodes there are in a tree, recursively
 function countNodes(tree) {
-  if (tree.children.length === 0) {
-    return 1;
-  } 
-
   return 1 + tree.children.reduce(function(count, child) {
     return count + countNodes(child);
   }, 0);
-
 }
 
 // take date object and return it as a string of format "MM/DD/YYYY at HH:MM"

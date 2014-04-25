@@ -25,6 +25,13 @@ body {
   overflow: hidden;
 }
 
+.node-count {
+  float: right;
+  color: #BFBFBF;
+  font-style: italic;
+
+}
+
 .button {
   position: absolute;
   font-size: 0.8em;

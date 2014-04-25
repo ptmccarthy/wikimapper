@@ -38,4 +38,13 @@ describe("history", function() {
     });
   });
 
+  it("expects countNodes to accurately count the number of nodes in a tree", function(done) {
+    require(['../js/history', '../test/support/dummyTree'], function() {
+        expect(countNodes(dummy1)).toBe(8);
+        expect(countNodes(dummy2)).toBe(7);
+        expect(countNodes(dummy3)).toBe(24);
+        done();
+    });
+  });
+
 });

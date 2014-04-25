@@ -20,9 +20,11 @@ function displayHistory() {
   $("#history-content").append('<div id="history-item-list">');
   for (var key in storage) {    
     var session = JSON.parse(storage[key]);
+    var count = countNodes(session);
     date.setTime(key);
     $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
           + formatDate(date) + ' &#8212; ' + session.name
+          + ' <span class="node-count">(' + count + (count == 1 ? ' page)' : ' pages)') +'</span>' 
           + '</div><div class="del-list-item" id=' + key + '><img class="list-x" src="../resources/redx.png"></div>');
   }
 }
@@ -86,6 +88,18 @@ function deleteHistoryItem() {
       }
     });
   });
+}
+
+// count how many nodes there are in a tree, recursively
+function countNodes(tree) {
+  if (tree.children.length === 0) {
+    return 1;
+  } 
+
+  return 1 + tree.children.reduce(function(count, child) {
+    return count + countNodes(child);
+  }, 0);
+
 }
 
 // take date object and return it as a string of format "MM/DD/YYYY at HH:MM"

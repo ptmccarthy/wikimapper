@@ -1,3 +1,9 @@
+## 0.7.4 (04-24-2014)
+Features:
+- WikiMapper history viewer now displays the number of pages that are contained within a historical session.
+
+Github Issues Closed: #65
+
 ## 0.7.3 (04-05-2014)
 Features:
 - WikiMapper is now much more back/forward button friendly when browsing Wikipedia. It detects back/forward button events and groups pages appropriately rather than drawing a linear path.

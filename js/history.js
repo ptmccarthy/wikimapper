@@ -6,7 +6,8 @@ alertify.set({ labels: { ok: "Yes", cancel: "No" }, buttonFocus: "cancel" });
 $(document).ready(function() {
   chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
     storage = response;
-    displayHistory();
+    displayHistory(2);
+    filterHistory();
 
     viewHistoryItem();
     deleteHistoryItem();  
@@ -14,14 +15,14 @@ $(document).ready(function() {
   });
 });
 
-function displayHistory() {
-  $("#history-content").append('<div id="history-title">History Viewer</div>');
-  $("#history-content").append('<div id="history-item-list">');
+function displayHistory(filter) {
+  $("#history-title").show();
+  $("#history-content").empty().append('<div id="history-item-list">');
   for (var key in storage) {    
     var session = JSON.parse(storage[key]);
     var count = nodeCount(session);
 
-    if (count > 1) {
+    if (count >= filter) {
       date.setTime(key);
       $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
             + formatDate(date) + ' &#8212; ' + session.name
@@ -29,6 +30,31 @@ function displayHistory() {
             + '</div><div class="del-list-item" id=' + key + '><img class="list-x" src="../resources/redx.png"></div>');
     }
   }
+}
+
+function filterHistory() {
+  $("#filter-nodes").keydown(function (e) {
+    // Allow: backspace, delete, tab, escape, enter and .
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+      // Allow: Ctrl+A
+      (e.keyCode == 65 && e.ctrlKey === true) || 
+      // Allow: Command+A
+      (e.keyCode == 65 && e.metaKey === true) ||
+      // Allow: home, end, left, right
+      (e.keyCode >= 35 && e.keyCode <= 39)) {
+        // let it happen, don't do anything
+        return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+      e.preventDefault();
+    }
+  });
+
+  $("#filter-nodes").on("change", function() {
+    var filter = parseInt($(this).val());
+    displayHistory(filter);
+  });
 }
 
 function clearHistoryButton() {
@@ -62,13 +88,12 @@ function deleteThisTreeButton(key) {
 function goBackButton() {
   $("#go-back").show().click(function() {
     $("#content").load("history.html");
-    $("#back").hide();
   });
 }
 
 function viewHistoryItem() {
   $(".history-item").click(function() {
-    $("#clear-all").hide();
+    $("#history-title").hide();
     var key = $(this).attr('id');
     chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
       $("#history-content").load("tree.html");

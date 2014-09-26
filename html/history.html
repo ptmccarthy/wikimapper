@@ -2,17 +2,28 @@
   <link type="text/css" href="../css/history.css" rel="stylesheet" />
   <script src="../js/history.js"></script>
 </head>
+
 <div>
-<div class="button" id="clear-all" style="display:none">
-  <span>Clear All<img class="all" src="../resources/redx.png"></span>
+
+<div id="history-title">
+  History Viewer
+  <div class="button" id="clear-all" style="display:none">
+    <span>Clear All<img class="all" src="../resources/redx.png"></span>
+  </div>
 </div>
 
-<div class="button" id="go-back" style="display:none">
-  <span class="back">Back to History</span>
+<div id="history-filters">
+  Filter Sessions Fewer Than <input id="filter-nodes" type="text" value="2"> Pages
 </div>
 
-<div class="button" id="clear-this" style="display:none">
- <span>Delete This Tree</span>
+<div id="button-panel">
+  <div class="button" id="go-back" style="display:none">
+    <span class="back">Back to History</span>
+  </div>
+
+  <div class="button" id="clear-this" style="display:none">
+    <span>Delete This Tree</span>
+  </div>
 </div>
 
 <div id="history-content">

@@ -7,7 +7,6 @@ $(document).ready(function() {
   chrome.runtime.sendMessage({payload: "localStorage"}, function(response) {
     storage = response;
     displayHistory();
-    $("#content").show();
 
     viewHistoryItem();
     deleteHistoryItem();  
@@ -21,11 +20,14 @@ function displayHistory() {
   for (var key in storage) {    
     var session = JSON.parse(storage[key]);
     var count = nodeCount(session);
-    date.setTime(key);
-    $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
-          + formatDate(date) + ' &#8212; ' + session.name
-          + ' <span class="node-count">(' + count + (count == 1 ? ' page)' : ' pages)') +'</span>' 
-          + '</div><div class="del-list-item" id=' + key + '><img class="list-x" src="../resources/redx.png"></div>');
+
+    if (count > 1) {
+      date.setTime(key);
+      $("#history-item-list").prepend('<div class="history-item" id=' + key + '>'
+            + formatDate(date) + ' &#8212; ' + session.name
+            + ' <span class="node-count">(' + count + (count == 1 ? ' page)' : ' pages)') +'</span>' 
+            + '</div><div class="del-list-item" id=' + key + '><img class="list-x" src="../resources/redx.png"></div>');
+    }
   }
 }
 

@@ -1,8 +1,9 @@
+'use strict';
+
 // load default on document ready event and start nav function
 $(document).ready(function() {
   chrome.runtime.sendMessage({ payload: "set" }, function(response) {
     if (response.name === null) {
-      deactivateAll();
       $('#about').attr("state", "active");
       $('#content').load('about.html').show();
     }
@@ -14,9 +15,19 @@ $(document).ready(function() {
   });
 });
 
+function nav() {
+  $('.nav li').click(function() {
+    $('.nav').children('li').attr('state', 'inactive');
+    $(this).attr('state', 'active');
+
+    $('#content').load($(this).attr('id') + '.html');
+  });
+}
+
+
 // navigation button listener function
 // changes content displayed in content div
-function nav() {
+function oldnav() {
   $('#about').click(function() {
     deactivateAll();
     $(this).attr("state", "active");
@@ -38,8 +49,4 @@ function nav() {
   });
 
   $('#nav').show();
-}
-
-function deactivateAll() {
-  $('.header').removeAttr("state");
 }

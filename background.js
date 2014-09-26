@@ -1,6 +1,4 @@
-(function() {
-  'use strict';
-}());
+'use strict';
 
 var sessions = [];
 var tabStatus = {};
@@ -248,6 +246,8 @@ function shortenURL(url) {
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   switch (request.payload) {
 
+    // incoming message to set selected tree for viewing
+    //   if no active sessions, set to empty object
     case "set":
       var recent = 0;
       if (request.key) {

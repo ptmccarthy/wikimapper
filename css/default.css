@@ -9,7 +9,7 @@ html, body {
 
 a, a:visited {
   text-decoration: none;
-  color: black;
+  color: #477ECC;
 }
 
 a:hover {
@@ -53,18 +53,23 @@ div.nav-bg {
   width: 24em;
 }
 
+div.footer {
+  padding-top: 6em;
+}
+
 div#about {
   padding: 4em;
 }
 
 div#intro {
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 1em;
+  line-height: 1.4em;
+
 }
 
 div#intro, .no_current {
   position: absolute;
-  width: 700px;
+  width: 43em;
   top: 60px;
   left: 80px;
   z-index: 1;

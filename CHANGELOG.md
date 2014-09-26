@@ -1,3 +1,12 @@
+## 1.0.0 (09-26-2014)
+The long-awaited 1.0 release!
+Features:
+- Add ability to filter history sessions by how many pages they contain
+- Numerous minor UI tweaks and enhancement, mostly behind-the-scenes
+
+Github Issues Closed: #23, #66, #67, #68, #69
+
+
 ## 0.7.4 (04-24-2014)
 Features:
 - WikiMapper history viewer now displays the number of pages that are contained within a historical session.

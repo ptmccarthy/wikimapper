@@ -8,7 +8,7 @@ body {
 
 #history-title {
   position: absolute;
-  width: 10em;
+  width: 30em;
   font-size: 1.5em;
   top: 2em;
   left: 2em;
@@ -19,17 +19,22 @@ body {
   width: 45em;
   border: 1px solid;
   border-color: #BABABA;
-  top: 6em;
+  top: 6.7em;
   left: 3em;
   font-size: 1em;
   overflow: hidden;
 }
 
+#history-filters {
+  position: absolute;
+  width: 45em;
+  top: 5em;
+  padding-left: 29.1em;
+}
+
 .node-count {
   float: right;
-  color: #BFBFBF;
   font-style: italic;
-
 }
 
 .button {
@@ -74,15 +79,14 @@ body {
 }
 
 #clear-all {
-  display: none;
+  display: inline-block;
+  position: relative;
+  float: right;
+  font-size: 0.6em;
   color: black;
   background: white;
-  position: absolute;
-  top: 4em;
-  left: 52.5em;
   padding: 0.2em;
   width: 7em;
-  z-index: 3;
 }
 
 #clear-all:hover, #clear-current:hover {
@@ -109,6 +113,17 @@ body {
   width: 9em;
   padding: 0.2em;
   background: #54C54C;
+}
+
+input[type=text] {
+  padding: 2px;
+  border: 2px solid: #CCC;
+  border-radius: 5px;
+}
+
+input#filter-nodes {
+  text-align: center;
+  width: 4em;
 }
 
 img.all {

@@ -9,7 +9,7 @@ require.config({
       'jasmine': 'test/lib/jasmine-2.0.0/jasmine',
       'jasmine-html': 'test/lib/jasmine-2.0.0/jasmine-html',
       'boot': 'test/lib/jasmine-2.0.0/boot',
-      'jquery': 'lib/jquery-2.1.0.min',
+      'jquery': 'lib/jquery-2.1.1.min',
       'd3': 'lib/d3.v3.min',
       'alertify': 'lib/alertify.min'
     },

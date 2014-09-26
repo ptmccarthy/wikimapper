@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "WikiMapper",
-  "description": "This extension tracks and graphs your reading of Wikipedia.",
+  "description": "WikiMapper - Track and graph your adventures down the Wikipedia rabbit hole.",
   "version": "1.0.0",
   "icons": {
     "16": "resources/wikimapper-16.png",
@@ -10,6 +10,7 @@
     "128": "resources/wikimapper-128.png"
   },
   "author": "Patrick McCarthy",
+  "homepage_url": "http://www.github.com/ptmccarthy/wikimapper",
 
   "background": { "scripts": ["background.js"] },
 

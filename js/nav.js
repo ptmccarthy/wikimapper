@@ -21,6 +21,10 @@ function nav() {
     $('.nav').children('li').attr('state', 'inactive');
     $(this).attr('state', 'active');
 
+    if ($(this).attr('id') == 'tree') {
+      chrome.runtime.sendMessage({ payload: 'set' }, function(response) {});
+    }
+
     $('#content').load($(this).attr('id') + '.html');
   });
 }

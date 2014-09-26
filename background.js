@@ -5,6 +5,7 @@
 var sessions = [];
 var tabStatus = {};
 var selectedTree = {};
+
 // required JSON object structure
 /* 
 json = {
@@ -246,10 +247,6 @@ function shortenURL(url) {
 // message listener
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   switch (request.payload) {
-    case "status":
-      if (sessions.length === 0) response();
-      else response("active");
-    break;
 
     case "set":
       var recent = 0;

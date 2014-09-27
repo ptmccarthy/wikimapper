@@ -1,3 +1,7 @@
+## 1.0.1 (09-26-2014)
+Bugfixes:
+- Fixed an issue where filter was not hiding appropriately when viewing a historical session.
+
 ## 1.0.0 (09-26-2014)
 The long-awaited 1.0 release!
 Features:

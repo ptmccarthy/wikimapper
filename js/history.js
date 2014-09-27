@@ -54,6 +54,7 @@ function filterHistory() {
   $("#filter-nodes").on("change", function() {
     var filter = parseInt($(this).val());
     displayHistory(filter);
+    viewHistoryItem();
   });
 }
 
@@ -94,6 +95,7 @@ function goBackButton() {
 function viewHistoryItem() {
   $(".history-item").click(function() {
     $("#history-title").hide();
+    $("#history-filters").hide();
     var key = $(this).attr('id');
     chrome.runtime.sendMessage({payload: "set", key: key}, function(response) {
       $("#history-content").load("tree.html");

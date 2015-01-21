@@ -3,7 +3,7 @@
 
   "name": "WikiMapper",
   "description": "WikiMapper - Track and graph your adventures down the Wikipedia rabbit hole.",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "icons": {
     "16": "resources/wikimapper-16.png",
     "48": "resources/wikimapper-48.png",

@@ -1,18 +1,20 @@
 'use strict';
 
+// External Dependencies
 var Backbone = require('backbone'),
-  $ = require('jquery');
+    $ = require('jquery');
 
 Backbone.$ = $;
 
 module.exports = {
 
   domElements: {
+    nav: '#navigation-view',
     body: '#body-view'
   },
 
   initialize: function() {
-    console.log('wikimapper init');
+
   },
 
   showBody: function(view) {
@@ -28,6 +30,12 @@ module.exports = {
     this.currentView = view;
     this.currentView.render();
     $(this.domElements.body).html(this.currentView.el);
+  },
+
+  showNavigation: function(nav) {
+    this.nav = nav;
+    this.nav.render();
+    $(this.domElements.nav).html(this.nav.el);
   }
 
 };

@@ -17,7 +17,8 @@ module.exports = function(karma) {
     reporters: [ 'dots' ],
 
     preprocessors: {
-      'test/**/*spec.js': [ 'browserify' ]
+      'test/**/*spec.js': [ 'browserify' ],
+      'test/stubs/**/*.js': [ 'browserify' ]
     },
 
     browsers: [ 'PhantomJS' ],

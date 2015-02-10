@@ -149,21 +149,20 @@ module.exports = function(grunt) {
   grunt.registerTask('prepare', 'Build preparation steps', [
     'clean:dist',
     'jshint:all',
-    'npm-install',
     'copy:all'
   ]);
 
   grunt.registerTask('build:bundle', 'Build WikiMapper extension bundle', [
     'prepare',
-    //'karma:unit',
+    'karma:unit',
     'browserify:background',
     'browserify:app'
   ]);
 
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [
     'prepare',
-    'browserify:app',
     'browserify:background',
+    'browserify:app',
     'concurrent:dev'
   ]);
 

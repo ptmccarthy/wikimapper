@@ -14,14 +14,12 @@ module.exports = Backbone.View.extend({
 
   template: templates.get('index'),
 
-  init: function() {
+  initialize: function() {
     console.log(_.now());
   },
 
   render: function() {
-    this.$el.html(this.template({
-      title: 'WikiMapper'
-    }));
+    this.$el.html(this.template({}));
   }
 
 });

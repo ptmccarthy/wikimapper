@@ -8,7 +8,8 @@ var App = require('./app');
 Backbone.$ = $;
 
 // Views
-var indexView = require('./views/index');
+var NavView =   require('./views/navigation'),
+    IndexView = require('./views/index');
 
 module.exports = Backbone.Router.extend({
 
@@ -17,7 +18,14 @@ module.exports = Backbone.Router.extend({
   },
 
   index: function() {
-    App.showBody(new indexView({}));
+    if (!App.nav) {
+      App.nav = new NavView({
+        title: 'WikiMapper'
+      });
+      App.showNavigation(App.nav);
+    }
+
+    App.showBody(new IndexView({}));
   }
 
 });

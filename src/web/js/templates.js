@@ -2,7 +2,8 @@
 
 module.exports = {
 
-  index: require('../templates/index.hbs'),
+  index:      require('../templates/index.hbs'),
+  navigation: require('../templates/navigation.hbs'),
 
   get: function(template) {
     if (template in this) {

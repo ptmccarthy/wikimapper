@@ -5,10 +5,16 @@
     "type": "git",
     "url": "git://github.com/ptmccarthy/wikimapper"
   },
+  "browser": {
+    "wikimapper/templates": "./src/web/js/templates.js"
+  },
   "dependencies": {
     "express": "~4.11.0",
     "morgan": "~1.5.1",
-    "errorhandler": "~1.3.2"
+    "errorhandler": "~1.3.2",
+    "backbone": "~1.1.2",
+    "lodash": "~3.1.0",
+    "jquery": "~2.1.3"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -35,12 +41,7 @@
     "karma-jasmine": "~0.2.0",
     "jasmine-core": "~2.1.3"
   },
-
   "engines": {
-    "node": ">=0.8.0"
-  },
-
-  "browserify": {
-    "transform": [ "hbsfy" ]
+    "node": "~0.12.0"
   }
 }

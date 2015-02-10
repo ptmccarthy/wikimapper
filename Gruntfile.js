@@ -81,11 +81,11 @@ module.exports = function(grunt) {
             expand: true
           },
           {
-            src: '<%= config.src %>/background.js',
+            src: '<%= config.src %>/chrome/content.js',
             dest: '<%= config.dist %>/',
             filter: 'isFile',
             flatten: true,
-            expand: true,
+            expand: true
           },
           {
             src: '<%= config.src %>/web/index.html',
@@ -115,15 +115,28 @@ module.exports = function(grunt) {
     browserify: {
       app: {
         src: [
-          '<%= config.src %>/web/main.js',
+          '<%= config.src %>/web/js/app.js',
           '<%= config.src %>/web/js/**/*.js',
           '<%= config.src %>/web/templates/*.hbs',
           '<%= config.src %>/web/styles/*.less'
         ],
-        dest: '<%= config.dist %>/js/app.js',
+        dest: '<%= config.dist %>/js/wikimapper.js',
         options: {
           transform: ['hbsfy', 'node-lessify'],
           // setting debug creates source map symbols
+          browserifyOptions: {
+            debug: true
+          },
+          watch: true
+        }
+      },
+      background: {
+        src: [
+          '<%= config.src %>/chrome/main.js',
+          '<%= config.src %>/chrome/background.js'
+        ],
+        dest: '<%= config.dist %>/background.js',
+        options: {
           browserifyOptions: {
             debug: true
           },
@@ -142,13 +155,15 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build:bundle', 'Build WikiMapper extension bundle', [
     'prepare',
-    'karma:unit',
+    //'karma:unit',
+    'browserify:background',
     'browserify:app'
   ]);
 
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [
     'prepare',
     'browserify:app',
+    'browserify:background',
     'concurrent:dev'
   ]);
 

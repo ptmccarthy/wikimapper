@@ -54,7 +54,7 @@ module.exports = function(grunt) {
         '/*.js',
         '<%= config.src %>/',
         'test/spec/{,*/}*.js'
-      ]
+      ],
     },
 
     karma: {
@@ -146,21 +146,26 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('prepare', 'Build preparation steps', [
+  grunt.registerTask('prepare:bundle', 'Build preparation steps', [
     'clean:dist',
     'jshint:all',
     'copy:all'
   ]);
 
+  grunt.registerTask('prepare:debug', 'Build preparation steps', [
+    'clean:dist',
+    'copy:all'
+  ]);
+
   grunt.registerTask('build:bundle', 'Build WikiMapper extension bundle', [
-    'prepare',
+    'prepare:bundle',
     'karma:unit',
     'browserify:background',
     'browserify:app'
   ]);
 
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [
-    'prepare',
+    'prepare:debug',
     'browserify:background',
     'browserify:app',
     'concurrent:dev'

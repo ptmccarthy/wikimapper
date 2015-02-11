@@ -2,8 +2,16 @@
 
 module.exports = {
 
+  tabs: {
+    get: function(tabId, callback) {}
+  },
+
   webNavigation: {
     onCommitted: {
+      addListener: function() {}
+    },
+
+    onDOMContentLoaded: {
       addListener: function() {}
     }
   },

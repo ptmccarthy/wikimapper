@@ -132,8 +132,7 @@ module.exports = function(grunt) {
       },
       background: {
         src: [
-          '<%= config.src %>/chrome/main.js',
-          '<%= config.src %>/chrome/background.js'
+          '<%= config.src %>/chrome/**/*.js'
         ],
         dest: '<%= config.dist %>/background.js',
         options: {

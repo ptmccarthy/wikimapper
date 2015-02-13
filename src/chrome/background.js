@@ -1,3 +1,8 @@
+/**
+ * Background application.
+ * Handles initialization and listening for navigation events.
+ */
+
 'use strict';
 
 // If running tests, the Chrome API won't be injected to the global scope.
@@ -6,11 +11,15 @@ if (!window.chrome) {
   window.chrome = require('../../test/stubs/chrome');
 }
 
+// External Dependencies
 var _ = require('lodash');
+
+
+// Internal Dependencies
+var Sessions = require('./session-handler');
 
 module.exports = {
 
-  sessions: [],
   tabStatus: [],
   triggers: [
     'link',
@@ -28,7 +37,7 @@ module.exports = {
 
   /**
    * Ingest navigation events and filter them by event type.
-   * @param {object} details - chrome.webNavigation details object
+   * @param {object} details - chrome.webNavigation event details
    */
   eventFilter: function(details) {
 
@@ -40,10 +49,17 @@ module.exports = {
 
   },
 
+  /**
+   * Forward/Back button events are unfortunately the same event trigger in the
+   * Chrome webNavigation API, so we have to do some deduction to figure out which
+   * type each qualifying event is.
+   * @param {object} details - chrome.webNavigation event details
+   */
   processForwardBack: function(details) {
     var commitData = {};
     // back button
     if (details.url === this.tabStatus[details.tabId].parent.data.url) {
+      console.log('back button');
       var backPage = this.tabStatus[details.tabId].parent;
 
       commitData = backPage;
@@ -55,6 +71,7 @@ module.exports = {
 
     // forward button
     else {
+      console.log('forward button');
       commitData.id = this.tabStatus[details.tabId].forwardId;
       commitData.parent = this.tabStatus[details.tabId];
       commitData.children = this.tabStatus[details.tabId].forwardChildren;
@@ -71,19 +88,19 @@ module.exports = {
 
   },
 
+  /**
+   * Process 'normal' navigation events that matched this.triggers.
+   * @param {object} details - chrome.webNavigation event details
+   */
   processNavigation: function(details) {
-    var that = this;
+    console.log('navigation');
     var commitData = details;
     console.log(details.tabId);
     chrome.tabs.get(details.tabId, function(tab) {
       commitData.parentId = tab.openerTabId;
 
-      that.sessionHandler(commitData);
+      Sessions.handler(commitData);
     });
-  },
-
-  sessionHandler: function(details) {
-    console.log(details);
   },
 
   /**

@@ -12,10 +12,6 @@ describe('Background initialization', function() {
     App.initialize();
   });
 
-  it('should have no existing sessions', function() {
-    expect(App.sessions).toEqual([]);
-  });
-
   it('should have no existing tab status', function() {
     expect(App.tabStatus).toEqual([]);
   });

@@ -29,7 +29,7 @@ module.exports = function(karma) {
     browserify: {
       debug: true,
       // the bundle delay prevents the new bundle from triggering a second test run
-      bundleDelay: 1000,
+      bundleDelay: 1500,
       transform: [ 'hbsfy', 'node-lessify' ]
     }
 

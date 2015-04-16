@@ -20,7 +20,9 @@ var Sessions = require('./session-handler');
 
 module.exports = {
 
-  tabStatus: [],
+  /**
+   * chrome.webNavigation event types to filter for
+   */
   triggers: [
     'link',
     'typed',
@@ -42,83 +44,38 @@ module.exports = {
   eventFilter: function(details) {
 
     if (_.includes(details.transitionQualifiers, 'forward_back')) {
-      this.processForwardBack(details);
+      Sessions.processForwardBack(details);
     } else if (_.includes(this.triggers, details.transitionType)) {
-      this.processNavigation(details);
+      Sessions.processNavigation(details);
     }
 
-  },
-
-  /**
-   * Forward/Back button events are unfortunately the same event trigger in the
-   * Chrome webNavigation API, so we have to do some deduction to figure out which
-   * type each qualifying event is.
-   * @param {object} details - chrome.webNavigation event details
-   */
-  processForwardBack: function(details) {
-    var commitData = {};
-    // back button
-    if (details.url === this.tabStatus[details.tabId].parent.data.url) {
-      console.log('back button');
-      var backPage = this.tabStatus[details.tabId].parent;
-
-      commitData = backPage;
-      commitData.forwardId = this.tabStatus[details.tabId].id;
-      commitData.forwardChildren = this.tabStatus[details.tabId].children;
-
-      this.tabStatus[details.tabId] = backPage;
-    }
-
-    // forward button
-    else {
-      console.log('forward button');
-      commitData.id = this.tabStatus[details.tabId].forwardId;
-      commitData.parent = this.tabStatus[details.tabId];
-      commitData.children = this.tabStatus[details.tabId].forwardChildren;
-      commitData.data = {
-        tabId: commitData.tabId,
-        date: commitData.timeStamp,
-        url: commitData.url,
-        parentId: commitData.parent.id,
-        sessionId: commitData.parent.data.sessionId
-      };
-
-      this.tabStatus[details.tabId] = commitData;
-    }
-
-  },
-
-  /**
-   * Process 'normal' navigation events that matched this.triggers.
-   * @param {object} details - chrome.webNavigation event details
-   */
-  processNavigation: function(details) {
-    console.log('navigation');
-    var commitData = details;
-    console.log(details.tabId);
-    chrome.tabs.get(details.tabId, function(tab) {
-      commitData.parentId = tab.openerTabId;
-
-      Sessions.handler(commitData);
-    });
   },
 
   /**
    * Setup background event listeners.
    */
   setupListeners: function() {
-    var that = this;
+    var self = this;
 
     // Navigation Event Listeners
     chrome.webNavigation.onCommitted.addListener(function(details) {
-      that.eventFilter(details);
+      self.eventFilter(details);
     },
       { url: [
         { urlContains: '.wikipedia.org/wiki' },
         { urlContains: '.wiktionary.org/wiki'}
       ]}
     );
-    
+
+    // Listern for when the content script sends updated data from the loaded DOM
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+      // TODO: implement update
+      console.log('onMessage' + JSON.stringify(request));
+      if (sender === sendResponse) {
+        // just using the vars to pass linter, will be removed when implemented
+      }
+    });
+
     // Listener for when the user clicks on the Wikimapper button
     chrome.browserAction.onClicked.addListener(function() {
       chrome.tabs.create({'url': chrome.extension.getURL('index.html')}, function() {

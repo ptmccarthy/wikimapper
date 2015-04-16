@@ -25,6 +25,9 @@ module.exports = {
   runtime: {
     onInstalled: {
       addListener: function() {}
+    },
+    onMessage: {
+      addListener: function() {}
     }
   }
 

@@ -2,7 +2,7 @@
 
 module.exports = {
 
-  index:      require('../templates/index.hbs'),
+  title:      require('../templates/title.hbs'),
   navigation: require('../templates/navigation.hbs'),
 
   get: function(template) {

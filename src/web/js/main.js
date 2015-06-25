@@ -1,11 +1,12 @@
-var Backbone = require('backbone'),
-    $ =        require('jquery');
+var Backbone = require('backbone');
+var $ =        require('jquery');
 
 Backbone.$ = $;
 
-var App = require('./app'),
-    Router = require('./router');
+var App =       require('./app');
+var Router =    require('./router');
+var ViewState = require('./models/view-state');
 
 App.initialize();
-App.Router = new Router();
+ViewState.Router = new Router();
 Backbone.history.start();

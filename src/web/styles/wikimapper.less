@@ -1,4 +1,8 @@
+// Color Palette
 @white: #FFFFFF;
+@black: #000000;
+@light-grey: #F1F1F1;
+@dark-grey: #707070;
 @green: #53B53B;
 
 html, body {
@@ -9,10 +13,50 @@ html, body {
   background-color: @white;
 }
 
-div#navigation-view {
+// Navigation
+
+#navigation-view {
   font-size: 1em;
+  height: 25px;
+  width: 366px;
+}
+
+.nav-header {
+  padding: 0;
+  margin: 0 0 0 -1px;
+}
+
+.nav-header li {
+  list-style: none;
+  display: inline-block;
+  text-align: center;
+  background: @light-grey;
   color: @white;
-  height: 26px;
-  width: 100px;
-  background: @green;
+  height: 25px;
+  width: 120px;
+  border-top: 1px solid @dark-grey;
+  border-right: 1px solid @dark-grey;
+  border-left: 1px solid @dark-grey;
+  border-radius: 6px 6px 0 0;
+  padding: 0;
+  margin: 0 -6px 0 0px;
+}
+
+.nav-header li.enabled {
+  color: @dark-grey;
+  border-bottom: 1px solid @dark-grey;
+}
+
+.nav-header li.active {
+  background: @white;
+  color: @green;
+  font-weight: bold;
+}
+
+.nav-header li:hover {
+  cursor: pointer;
+}
+
+#body-view {
+  margin-top: 26px;
 }

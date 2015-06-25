@@ -6,8 +6,10 @@
     "url": "git://github.com/ptmccarthy/wikimapper"
   },
   "browser": {
+    "wikimapper/enums": "./src/web/js/enums.js",
     "wikimapper/templates": "./src/web/js/templates.js",
-    "wikimapper/resources": "./src/web/js/resources.js"
+    "wikimapper/resources": "./src/web/js/resources.js",
+    "wikimapper/viewstate": "./src/web/js/models/view-state.js"
   },
   "dependencies": {
     "express": "~4.11.0",

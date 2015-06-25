@@ -1,13 +1,10 @@
 'use strict';
 
 // External Dependencies
-var Backbone = require('backbone');
 var $ = require('jquery');
 
 // Internal Dependencies
 var ViewState = require('wikimapper/viewstate');
-
-Backbone.$ = $;
 
 module.exports = {
 

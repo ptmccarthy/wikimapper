@@ -5,7 +5,6 @@ var Backbone = require('backbone');
 
 // Internal
 var enums =     require('wikimapper/enums');
-
 var templates = require('wikimapper/templates');
 var ViewState = require('wikimapper/viewstate');
 

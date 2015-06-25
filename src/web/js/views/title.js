@@ -2,14 +2,11 @@
 
 // External Dependencies
 var Backbone = require('backbone');
-var $ =        require('jquery');
 
 // Internal Dependencies
 var enums =     require('wikimapper/enums');
 var templates = require('wikimapper/templates');
 var ViewState = require('wikimapper/viewstate');
-
-Backbone.$ = $;
 
 module.exports = Backbone.View.extend({
 

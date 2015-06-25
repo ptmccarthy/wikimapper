@@ -4,6 +4,7 @@
 @light-grey: #F1F1F1;
 @dark-grey: #707070;
 @green: #53B53B;
+@light-green: #EBFCEB;
 
 html, body {
   margin: 0;
@@ -39,21 +40,25 @@ html, body {
   border-left: 1px solid @dark-grey;
   border-radius: 6px 6px 0 0;
   padding: 0;
-  margin: 0 -6px 0 0px;
+  margin: 0 -6px 0 0;
 }
 
 .nav-header li.enabled {
   color: @dark-grey;
   border-bottom: 1px solid @dark-grey;
+  box-shadow: inset 0 0 3px 0 #ABABAB;
 }
 
 .nav-header li.active {
+  cursor: default;
   background: @white;
   color: @green;
   font-weight: bold;
 }
 
-.nav-header li:hover {
+.nav-header li.enabled:hover {
+  transition: background 0.5s ease;
+  background: @light-green;
   cursor: pointer;
 }
 

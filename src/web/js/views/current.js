@@ -1,3 +1,7 @@
+/**
+ * Current Session View
+ */
+
 'use strict';
 
 // External

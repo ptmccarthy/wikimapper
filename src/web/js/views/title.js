@@ -1,3 +1,7 @@
+/**
+ * Index/Title View
+ */
+
 'use strict';
 
 // External Dependencies

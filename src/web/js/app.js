@@ -1,3 +1,7 @@
+/**
+ * Front-end Application Object
+ */
+
 'use strict';
 
 // External Dependencies

@@ -1,3 +1,7 @@
+/**
+ * History View
+ */
+
 'use strict';
 
 // External

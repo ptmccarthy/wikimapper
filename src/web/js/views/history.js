@@ -19,6 +19,7 @@ module.exports = Backbone.View.extend({
   initialize: function(options) {
     if (options && options.collection) {
       this.collection = options.collection;
+      this.listenTo(this.collection, 'sync', this.render);
     } else {
       console.error('History view initialized without a collection. No history will be available.');
     }

@@ -13,6 +13,9 @@ var TitleView =   require('./views/title');
 var CurrentView = require('./views/current');
 var HistoryView = require('./views/history');
 
+// Collections
+var StorageCollection = require('./collections/localStorage');
+
 module.exports = Backbone.Router.extend({
 
   routes: {
@@ -34,7 +37,14 @@ module.exports = Backbone.Router.extend({
 
   history: function() {
     this.ensureNav();
-    App.showBody(new HistoryView({}));
+
+    if (!App.StorageCollection) {
+      App.StorageCollection = new StorageCollection();
+    }
+
+    App.showBody(new HistoryView({
+      collection: App.StorageCollection
+    }));
   },
 
   /**

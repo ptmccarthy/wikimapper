@@ -16,12 +16,22 @@ module.exports = Backbone.View.extend({
 
   template: templates.get('history'),
 
-  initialize: function() {
+  initialize: function(options) {
+    if (options && options.collection) {
+      this.collection = options.collection;
+    } else {
+      console.error('History view initialized without a collection. No history will be available.');
+    }
+
     ViewState.setNavState('history', enums.nav.active);
+
+    this.collection.fetch();
   },
 
   render: function() {
-    this.$el.html(this.template({}));
+    this.$el.html(this.template({
+      collection: this.collection
+    }));
   }
 
 });

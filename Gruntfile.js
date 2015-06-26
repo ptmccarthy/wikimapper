@@ -8,7 +8,8 @@ module.exports = function(grunt) {
 
   var config = {
     src: 'src',
-    dist: 'dist'
+    dist: 'dist',
+    nodeModules: './node_modules'
   };
 
   grunt.initConfig({
@@ -107,8 +108,37 @@ module.exports = function(grunt) {
             filter: 'isFile',
             flatten: true,
             expand: true
+          },
+          {
+            src: '<%= config.nodeModules %>/font-awesome/fonts/*',
+            dest: '<%= config.dist %>/resources/fonts/',
+            filter: 'isFile',
+            flatten: true,
+            expand: true
           }
         ]
+      }
+    },
+
+    fontAwesomeVars: {
+      main: {
+        variablesLessPath: '<%= config.nodeModules %>/font-awesome/less/variables.less',
+        fontPath: '../resources/fonts'
+      }
+    },
+
+    less: {
+      app: {
+        options: {
+          compress: false,
+          sourceMap: true,
+          sourceMapFilename: '<%= config.dist %>/styles/wikimapper.css.map',
+          sourceMapURL: 'wikimapper.css.map',
+          sourceMapBasepath: '<%= config.dist %>',
+        },
+        files: {
+          '<%= config.dist %>/styles/wikimapper.css': '<%= config.src %>/web/styles/wikimapper.less'
+        }
       }
     },
 
@@ -117,12 +147,11 @@ module.exports = function(grunt) {
         src: [
           '<%= config.src %>/web/js/app.js',
           '<%= config.src %>/web/js/**/*.js',
-          '<%= config.src %>/web/templates/*.hbs',
-          '<%= config.src %>/web/styles/*.less'
+          '<%= config.src %>/web/templates/*.hbs'
         ],
         dest: '<%= config.dist %>/js/wikimapper.js',
         options: {
-          transform: ['hbsfy', 'node-lessify'],
+          transform: ['hbsfy'],
           // setting debug creates source map symbols
           browserifyOptions: {
             debug: true
@@ -148,17 +177,20 @@ module.exports = function(grunt) {
   grunt.registerTask('prepare:bundle', 'Build preparation steps', [
     'clean:dist',
     'jshint:all',
-    'copy:all'
+    'copy:all',
+    'fontAwesomeVars:main'
   ]);
 
   grunt.registerTask('prepare:debug', 'Build preparation steps', [
     'clean:dist',
-    'copy:all'
+    'copy:all',
+    'fontAwesomeVars:main'
   ]);
 
   grunt.registerTask('build:bundle', 'Build WikiMapper extension bundle', [
     'prepare:bundle',
     'karma:unit',
+    'less:app',
     'browserify:background',
     'browserify:app'
   ]);

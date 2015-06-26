@@ -1,3 +1,6 @@
+// Font Awesome
+@import (less) '../../../node_modules/font-awesome/less/font-awesome.less';
+
 // Color Palette
 @white: #FFFFFF;
 @black: #000000;
@@ -12,6 +15,11 @@ html, body {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   font-size: 1em;
   background-color: @white;
+}
+
+#body-view {
+  margin-top: 26px;
+  margin-left: 26px;
 }
 
 // Navigation
@@ -50,21 +58,25 @@ html, body {
 }
 
 .nav-header li.active {
-  cursor: default;
   background: @white;
   color: @green;
   font-weight: bold;
 }
 
 .nav-header li.enabled:hover {
-  transition: background 0.5s ease;
+  transition: background 0.35s ease;
   background: @light-green;
   cursor: pointer;
 }
 
-#body-view {
-  margin-top: 26px;
-  margin-left: 26px;
+// History
+
+.page-filter {
+  padding: 10px;
+}
+
+#filter-input {
+  width: 20px;
 }
 
 .history-table {

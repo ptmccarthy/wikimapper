@@ -2,10 +2,11 @@
 
 module.exports = {
 
-  navigation: require('../templates/navigation.hbs'),
-  title:      require('../templates/title.hbs'),
-  current:    require('../templates/current.hbs'),
-  history:    require('../templates/history.hbs'),
+  navigation:  require('../templates/navigation.hbs'),
+  title:       require('../templates/title.hbs'),
+  current:     require('../templates/current.hbs'),
+  historyItem: require('../templates/history-item.hbs'),
+  historyList: require('../templates/history-list.hbs'),
 
   get: function(template) {
     if (template in this) {

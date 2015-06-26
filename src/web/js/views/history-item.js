@@ -1,5 +1,5 @@
 /**
- * History View
+ * History Item View
  */
 
 'use strict';
@@ -14,22 +14,19 @@ var ViewState = require('wikimapper/viewstate');
 
 module.exports = Backbone.View.extend({
 
-  template: templates.get('history'),
+  template: templates.get('historyItem'),
 
   initialize: function(options) {
-    if (options && options.collection) {
-      this.collection = options.collection;
-      this.listenTo(this.collection, 'sync', this.render);
+    if (options && options.session) {
+      this.session = options.session;
     } else {
-      console.error('History view initialized without a collection. No history will be available.');
+      console.error('History Item View initialized without a session object!');
     }
-
-    ViewState.setNavState('history', enums.nav.active);
   },
 
   render: function() {
     this.$el.html(this.template({
-      collection: this.collection.toJSON()
+      tree: this.session.get('tree')
     }));
   }
 

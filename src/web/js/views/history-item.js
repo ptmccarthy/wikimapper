@@ -22,6 +22,8 @@ module.exports = Backbone.View.extend({
     } else {
       console.error('History Item View initialized without a session object!');
     }
+
+    ViewState.setNavState('history', enums.nav.active);
   },
 
   render: function() {

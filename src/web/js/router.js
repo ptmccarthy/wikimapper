@@ -60,10 +60,10 @@ module.exports = Backbone.Router.extend({
 
     App.showBody(new HistoryItemView({
       session: session
-    }))
+    }));
   },
 
-  historyList: function(sessionId) {
+  historyList: function() {
     this.ensureNav();
 
     if (!App.StorageCollection) {

@@ -64,4 +64,41 @@ html, body {
 
 #body-view {
   margin-top: 26px;
+  margin-left: 26px;
+}
+
+.history-table {
+  text-align: left;
+  border: 1px solid @light-grey;
+  border-collapse: collapse;
+}
+
+.history-table th {
+  font-weight: bold;
+}
+
+.history-table tr.table-header {
+  border-bottom: 1px solid @light-grey;
+}
+
+.history-table tr.table-row:hover {
+  cursor: pointer;
+  background: @light-green;
+}
+
+.history-table th:nth-child(1),
+.history-table td:nth-child(1) {
+  padding-left: 5px;
+  width: 200px;
+}
+
+.history-table th:nth-child(2),
+.history-table td:nth-child(2) {
+  width: 400px;
+}
+
+.history-table th:nth-child(3),
+.history-table td:nth-child(3) {
+  text-align: center;
+  padding-right: 5px;
 }

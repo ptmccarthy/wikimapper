@@ -1,5 +1,16 @@
 <div class="body-content">
-  {{#each collection}}
-    {{#parseDate}}{{id}}{{/parseDate}} - {{tree.name}}<br>
-  {{/each}}
+  <table class="history-table">
+    <tr class="table-header">
+      <th>Date</th>
+      <th>Root Node</th>
+      <th>Pages</th>
+    </tr>
+    {{#each collection}}
+    <tr class="table-row">
+      <td>{{#parseDate}}{{id}}{{/parseDate}}</td>
+      <td>{{tree.name}}</td>
+      <td>{{tree.lastNodeIndex}}</td>
+    </tr>
+    {{/each}}
+  </table>
 </div>

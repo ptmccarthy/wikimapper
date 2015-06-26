@@ -25,13 +25,11 @@ module.exports = Backbone.View.extend({
     }
 
     ViewState.setNavState('history', enums.nav.active);
-
-    this.collection.fetch();
   },
 
   render: function() {
     this.$el.html(this.template({
-      collection: this.collection
+      collection: this.collection.toJSON()
     }));
   }
 

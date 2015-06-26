@@ -1,3 +1,5 @@
 <div class="body-content">
-  History
+  {{#each collection}}
+    {{#parseDate}}{{id}}{{/parseDate}} - {{tree.name}}<br>
+  {{/each}}
 </div>

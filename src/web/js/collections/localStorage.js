@@ -17,11 +17,17 @@ module.exports = Backbone.Collection.extend({
 
   fetch: function() {
     var history = [];
-    for (var i = 0, len = this.localStorage.length; i < len; i++) {
-      history.push(JSON.parse(this.localStorage.getItem(this.localStorage.key(i))));
+    var session = {};
+    var keys = Object.keys(this.localStorage);
+
+    for (var i = 0; i < keys.length; i++) {
+      session = {};
+      session.id = keys[i];
+      session.tree = JSON.parse(this.localStorage.getItem(this.localStorage.key(i)));
+      history.push(session);
     }
 
-    this.parse({ body: history });
+    this.parse(history);
     this.trigger('sync');
   },
 

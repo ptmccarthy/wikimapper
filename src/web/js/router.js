@@ -45,6 +45,8 @@ module.exports = Backbone.Router.extend({
     App.showBody(new HistoryView({
       collection: App.StorageCollection
     }));
+
+    App.StorageCollection.fetch();
   },
 
   /**

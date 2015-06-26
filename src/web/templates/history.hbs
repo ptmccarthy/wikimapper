@@ -6,7 +6,7 @@
       <th>Pages</th>
     </tr>
     {{#each collection}}
-    <tr class="table-row">
+    <tr class="table-row" sessionId="{{id}}">
       <td>{{#parseDate}}{{id}}{{/parseDate}}</td>
       <td>{{tree.name}}</td>
       <td>{{tree.lastNodeIndex}}</td>

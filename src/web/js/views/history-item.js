@@ -33,7 +33,8 @@ module.exports = Backbone.View.extend({
     }));
 
     this.d3View = new TreeView({
-      el: this.$('#viz')
+      el: this.$('#viz'),
+      data: this.session.get('tree')
     });
 
     this.d3View.render();

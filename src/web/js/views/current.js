@@ -25,10 +25,10 @@ module.exports = Backbone.View.extend({
     this.$el.html(this.template({}));
 
     this.d3View = new TreeView({
-      el: this.$el.selector
+      el: this.$('#viz')
     });
 
-    this.$el.append(this.d3View.render().el);
+    this.d3View.render();
   }
 
 });

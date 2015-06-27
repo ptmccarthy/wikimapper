@@ -23,28 +23,32 @@ module.exports = Backbone.View.extend({
   render: function() {
     console.log('Rendering d3 child view.');
 
-    this.draw();
-
+    //this.draw();
+    this.initd3();
     return this;
+  },
+
+  initd3: function() {
+    this.width = $(window).width();
+    this.height = $(window).height();
+    this.data.x0 = this.height / 2;
+    this.data.y0 = 0;
+    
+    this.svg = d3.select(this.el).append('svg')
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .append('g');
+
+    this.draw();
   },
 
   draw: function() {
     var self = this;
-    var width = $(window).width();
-    var height = $(window).height() - 60;
-    var tree = d3.layout.tree().size([height, width]);
+    var tree = d3.layout.tree().size([self.height, self.width]);
     var diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
     var i = 0;
     var duration = 750;
     var depth = 0;
-
-    this.data.x0 = height / 2;
-    this.data.y0 = 0;
-
-    var svg = d3.select(this.el).append('svg')
-      .attr('width', width)
-      .attr('height', height)
-      .append('g');
 
     // Compute the tree layout
     var nodes = tree.nodes(this.data).reverse();
@@ -57,7 +61,7 @@ module.exports = Backbone.View.extend({
     });
 
     // Update the nodes
-    var node = svg.selectAll('g.node')
+    var node = this.svg.selectAll('g.node')
       .data(nodes, function(d) {
         return d.id || (d.id = ++i);
       });
@@ -108,7 +112,7 @@ module.exports = Backbone.View.extend({
       .attr('r', 1e-6);
 
     // Update the links
-    var link = svg.selectAll('path.link')
+    var link = this.svg.selectAll('path.link')
       .data(links, function(d) {
         return d.target.id;
       });

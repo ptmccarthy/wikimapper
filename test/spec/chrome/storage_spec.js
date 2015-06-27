@@ -1,6 +1,6 @@
 'use strict';
 
-var Storage = require('../../src/chrome/storage');
+var Storage = require('../../../src/chrome/storage');
 
 describe('Storage API', function() {
 

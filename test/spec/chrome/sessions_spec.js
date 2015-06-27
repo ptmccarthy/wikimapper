@@ -1,7 +1,7 @@
 'use strict';
 
-var App =      require('../../src/chrome/background'),
-    Sessions = require('../../src/chrome/session-handler');
+var App =      require('../../../src/chrome/background'),
+    Sessions = require('../../../src/chrome/session-handler');
 
 describe('Background initialization', function() {
 

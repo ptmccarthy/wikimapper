@@ -1,6 +1,6 @@
 'use strict';
 
-var App = require('../../src/chrome/background');
+var App = require('../../../src/chrome/background');
 
 describe('Background initialization', function() {
 

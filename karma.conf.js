@@ -6,7 +6,18 @@ module.exports = function(karma) {
     frameworks: [ 'browserify', 'jasmine'],
 
     files: [
-      './test/**/*spec.js'
+      {
+        pattern: './test/**/*spec.js',
+        watched: false,
+        included: true,
+        served: true
+      },
+      {
+        pattern: './src/**/*.js',
+        watched: true,
+        included: false,
+        served: false
+      }
     ],
 
     // proxy the img directory to avoid 404 warnings during test runs
@@ -28,8 +39,6 @@ module.exports = function(karma) {
     // browserify config
     browserify: {
       debug: true,
-      // the bundle delay prevents the new bundle from triggering a second test run
-      bundleDelay: 1500,
       transform: [ 'hbsfy', 'node-lessify' ]
     }
 

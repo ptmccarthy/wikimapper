@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         script: 'test/server.js',
         options: {
           nodeArgs: ['--debug'],
-          watch: ['test/server.js', '<%= config.dist %>'],
+          watch: ['test/server.js', '<%= config.dist %>']
         }
       }
     },
@@ -55,7 +55,7 @@ module.exports = function(grunt) {
         '/*.js',
         '<%= config.src %>/',
         'test/spec/{,*/}*.js'
-      ],
+      ]
     },
 
     karma: {
@@ -134,7 +134,7 @@ module.exports = function(grunt) {
           sourceMap: true,
           sourceMapFilename: '<%= config.dist %>/styles/wikimapper.css.map',
           sourceMapURL: 'wikimapper.css.map',
-          sourceMapBasepath: '<%= config.dist %>',
+          sourceMapBasepath: '<%= config.dist %>'
         },
         files: {
           '<%= config.dist %>/styles/wikimapper.css': '<%= config.src %>/web/styles/wikimapper.less'

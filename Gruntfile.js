@@ -137,7 +137,7 @@ module.exports = function(grunt) {
           sourceMapBasepath: '<%= config.dist %>'
         },
         files: {
-          '<%= config.dist %>/styles/wikimapper.css': '<%= config.src %>/web/styles/wikimapper.less'
+          '<%= config.dist %>/styles/wikimapper.css': '<%= config.src %>/web/styles/*.less'
         }
       }
     },

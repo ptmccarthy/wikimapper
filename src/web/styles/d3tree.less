@@ -1,0 +1,26 @@
+// Colors
+@import (less) 'colors.less';
+
+.node circle {
+  cursor: pointer;
+  fill: @white;
+  stroke: @green;
+  stroke-width: 1.5px;
+}
+
+.label {
+  font-size: 0.6em;
+  text-align: center;
+  word-wrap: normal;
+}
+
+path.link {
+  fill: none;
+  stroke: @dark-grey;
+  stroke-width: 1.5px;
+}
+
+a.node, a.node:visited, a.node:hover, a.node:active {
+  text-decoration: none;
+  color: @black;
+}

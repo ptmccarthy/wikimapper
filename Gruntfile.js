@@ -197,6 +197,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [
     'prepare:debug',
+    'less:app',
     'browserify:background',
     'browserify:app',
     'concurrent:dev'

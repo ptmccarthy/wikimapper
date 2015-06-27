@@ -11,6 +11,7 @@ var Backbone = require('backbone');
 var enums =     require('wikimapper/enums');
 var templates = require('wikimapper/templates');
 var ViewState = require('wikimapper/viewstate');
+var TreeView =  require('./tree');
 
 module.exports = Backbone.View.extend({
 
@@ -30,6 +31,12 @@ module.exports = Backbone.View.extend({
     this.$el.html(this.template({
       tree: this.session.get('tree')
     }));
+
+    this.d3View = new TreeView({
+      el: this.$('#viz')
+    });
+
+    this.d3View.render();
   }
 
 });

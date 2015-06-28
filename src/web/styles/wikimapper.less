@@ -12,7 +12,7 @@ html, body {
   background-color: @white;
 }
 
-#body-view {
+.body-content {
   margin-top: 26px;
   margin-left: 26px;
 }
@@ -46,6 +46,10 @@ html, body {
   margin: 0 -6px 0 0;
 }
 
+.nav-header li:hover {
+  cursor: pointer;
+}
+
 .nav-header li.enabled {
   color: @dark-grey;
   border-bottom: 1px solid @dark-grey;
@@ -61,7 +65,6 @@ html, body {
 .nav-header li.enabled:hover {
   transition: background 0.35s ease;
   background: @light-green;
-  cursor: pointer;
 }
 
 // History

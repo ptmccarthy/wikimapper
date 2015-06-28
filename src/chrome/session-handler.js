@@ -178,5 +178,21 @@ module.exports = {
 
       self.handler(commitData);
     });
+  },
+
+  /**
+   * First step of updating a name with the 'cleaned' title received
+   * from the content script. Find the session the tab belongs to,
+   * then pass on the info to the Storage API to update localStorage.
+   * @param tabId - tabID to find the session of
+   * @param url - url of the page to update
+   * @param name - cleaned name to update
+   */
+  updateName: function(tabId, url, name) {
+    var session = _.find(this.activeSessions, function(s) {
+      return _.contains(s.tabs, tabId);
+    });
+
+    Storage.updatePageName(session.id, url, name);
   }
 };

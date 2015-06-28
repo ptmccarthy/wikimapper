@@ -64,7 +64,18 @@ module.exports = {
     var len = tree.children.length;
     for (var i = 0; i < len; i++) {
       result = this.findNode(tree.children[i], nodeId);
-      if (result !== undefined) { return result; }
+      if (result) { return result; }
+    }
+  },
+
+  findNodeByURL: function(tree, url) {
+    if (tree.data.url === url) { return tree; }
+
+    var result;
+    var len = tree.children.length;
+    for (var i = 0; i < len; i++) {
+      result = this.findNodeByURL(tree.children[i], url);
+      if (result) { return result; }
     }
   },
 
@@ -77,6 +88,18 @@ module.exports = {
    */
   shortenURL: function(url) {
     return /[^/]*$/.exec(url)[0];
+  },
+
+  updatePageName: function(sessionId, url, name) {
+    var tree = JSON.parse(localStorage.getItem(sessionId));
+    var page = this.findNodeByURL(tree, url);
+
+    if (page) {
+      page.name = name;
+      localStorage.setItem(sessionId, JSON.stringify(tree));
+    } else {
+      console.warn('Could not find node with url of ' + url + '. Name cannot be updated.');
+    }
   }
 
 };

@@ -67,12 +67,10 @@ module.exports = {
       ]}
     );
 
-    // Listern for when the content script sends updated data from the loaded DOM
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-      // TODO: implement update
-      console.log('onMessage' + JSON.stringify(request));
-      if (sender === sendResponse) {
-        // just using the vars to pass linter, will be removed when implemented
+    // Listener for when the content script sends updated data from the loaded DOM
+    chrome.runtime.onMessage.addListener(function(request, sender){
+      if (sender.tab && sender.tab.id && sender.tab.url) {
+        Sessions.updateName(sender.tab.id, sender.tab.url, request.name);
       }
     });
 

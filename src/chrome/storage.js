@@ -100,6 +100,20 @@ module.exports = {
     } else {
       console.warn('Could not find node with url of ' + url + '. Name cannot be updated.');
     }
-  }
+  },
 
+  /**
+   * Delete the given sessionId from the localStorage history.
+   * @param sessionId
+   */
+  deleteItem: function(sessionId) {
+    localStorage.removeItem(sessionId);
+  },
+
+  /**
+   * Delete all localStorage history.
+   */
+  deleteAll: function() {
+    localStorage.clear();
+  }
 };

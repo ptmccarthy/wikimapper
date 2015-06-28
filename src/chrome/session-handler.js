@@ -194,5 +194,21 @@ module.exports = {
     });
 
     Storage.updatePageName(session.id, url, name);
+  },
+
+  /**
+   * Clear the given sessionId
+   * @param sessionId
+   */
+  clearSession: function(sessionId) {
+    this.activeSessions = _.reject(this.activeSessions, { id: sessionId });
+  },
+
+  /**
+   * Clear all active sessions.
+   */
+  clearAllSessions: function() {
+    this.tabStatus = [];
+    this.activeSessions = [];
   }
 };

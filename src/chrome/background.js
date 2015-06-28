@@ -14,9 +14,10 @@ if (!window.chrome) {
 // External Dependencies
 var _ = require('lodash');
 
-
 // Internal Dependencies
 var Sessions = require('./session-handler');
+var Storage =  require('./storage');
+var enums =    require('./enums');
 
 module.exports = {
 
@@ -67,10 +68,31 @@ module.exports = {
       ]}
     );
 
-    // Listener for when the content script sends updated data from the loaded DOM
+    // Listener for incoming messages
     chrome.runtime.onMessage.addListener(function(request, sender){
-      if (sender.tab && sender.tab.id && sender.tab.url) {
-        Sessions.updateName(sender.tab.id, sender.tab.url, request.name);
+      switch(request.type) {
+
+        case (enums.messageTypes.update): {
+          if (sender.tab && sender.tab.id && sender.tab.url) {
+            Sessions.updateName(sender.tab.id, sender.tab.url, request.name);
+          } else {
+            console.error('Received malformed update message.')
+          }
+          break;
+        }
+
+        case (enums.messageTypes.deleteItem): {
+          if (request.sessionId) {
+            Storage.deleteItem(request.sessionId);
+          } else {
+            console.error('Received malformed deleteItem message.');
+          }
+          break;
+        }
+
+        case (enums.messageTypes.deleteAll): {
+          Storage.deleteAll();
+        }
       }
     });
 

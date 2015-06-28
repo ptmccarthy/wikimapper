@@ -1,6 +1,6 @@
 'use strict';
 
-var enums = require('./enums');
+var enums = require('../chrome/enums');
 
 var cleanedTitle = document.title.replace(' - Wikipedia, the free encyclopedia', '');
 

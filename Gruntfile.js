@@ -82,13 +82,6 @@ module.exports = function(grunt) {
             expand: true
           },
           {
-            src: '<%= config.src %>/chrome/content.js',
-            dest: '<%= config.dist %>/',
-            filter: 'isFile',
-            flatten: true,
-            expand: true
-          },
-          {
             src: '<%= config.src %>/web/index.html',
             dest: '<%= config.dist %>/',
             filter: 'isFile',
@@ -170,6 +163,18 @@ module.exports = function(grunt) {
           },
           watch: true
         }
+      },
+      content: {
+        src: [
+          '<%= config.src %>/content/content.js'
+        ],
+        dest: '<%= config.dist %>/content.js',
+        options: {
+          browserifyOptions: {
+            debug: true
+          },
+          watch: true
+        }
       }
     }
   });
@@ -192,6 +197,7 @@ module.exports = function(grunt) {
     'karma:unit',
     'less:app',
     'browserify:background',
+    'browserify:content',
     'browserify:app'
   ]);
 
@@ -199,6 +205,7 @@ module.exports = function(grunt) {
     'prepare:debug',
     'less:app',
     'browserify:background',
+    'browserify:content',
     'browserify:app',
     'concurrent:dev'
   ]);

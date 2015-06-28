@@ -30,10 +30,7 @@ module.exports = Backbone.View.extend({
   },
 
   render: function() {
-    console.log('Rendering d3 child view.');
-
     this.draw();
-
     return this;
   },
 

@@ -4,7 +4,7 @@ module.exports = {
 
   navigation:  require('../templates/navigation.hbs'),
   title:       require('../templates/title.hbs'),
-  current:     require('../templates/current.hbs'),
+  latest:     require('../templates/latest.hbs'),
   historyItem: require('../templates/history-item.hbs'),
   historyList: require('../templates/history-list.hbs'),
 

@@ -8,7 +8,8 @@
 var $ = require('jquery');
 
 // Internal Dependencies
-var ViewState = require('wikimapper/viewstate');
+var ViewState =         require('wikimapper/viewstate');
+var StorageCollection = require('./collections/localStorage');
 
 module.exports = {
 
@@ -19,6 +20,9 @@ module.exports = {
 
   initialize: function() {
     ViewState.initializeHeader();
+
+    this.StorageCollection = new StorageCollection();
+    this.StorageCollection.fetch();
   },
 
   showBody: function(view) {

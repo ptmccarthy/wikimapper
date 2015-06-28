@@ -18,7 +18,7 @@ module.exports = Backbone.View.extend({
 
   domElements: {
     title: 'nav-title',
-    current: 'nav-current',
+    latest: 'nav-latest',
     history: 'nav-history'
   },
 
@@ -69,7 +69,7 @@ module.exports = Backbone.View.extend({
       }
       case 1:
       {
-        ViewState.Router.navigate('current', { trigger: true });
+        ViewState.Router.navigate('latest', { trigger: true });
         break;
       }
       case 2:

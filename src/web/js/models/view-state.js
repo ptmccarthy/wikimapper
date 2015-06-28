@@ -15,7 +15,7 @@ var ViewState = Backbone.Model.extend({
   initializeHeader: function() {
     this.set('nav', new Backbone.Model({
       title: enums.nav.active,
-      current: enums.nav.enabled,
+      latest: enums.nav.enabled,
       history: enums.nav.enabled
     }));
   },

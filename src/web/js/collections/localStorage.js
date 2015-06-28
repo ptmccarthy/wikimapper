@@ -35,6 +35,12 @@ module.exports = Backbone.Collection.extend({
     _.each(history, _.bind(function(session) {
       this.add(session);
     }, this));
+  },
+
+  getLatest: function() {
+    this.fetch();
+    var len = this.models.length;
+    return this.models[len-1];
   }
 
 });

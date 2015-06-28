@@ -10,19 +10,16 @@ Backbone.$ = $;
 // Views
 var NavView =         require('./views/navigation');
 var TitleView =       require('./views/title');
-var CurrentView =     require('./views/current');
+var LatestView =     require('./views/latest');
 var HistoryItemView = require('./views/history-item');
 var HistoryListView = require('./views/history-list');
-
-// Collections
-var StorageCollection = require('./collections/localStorage');
 
 module.exports = Backbone.Router.extend({
 
   routes: {
     '': 'title',
     title: 'title',
-    current: 'current',
+    latest: 'latest',
     'history?=:sessionId': 'historyParser',
     history: 'historyList'
   },
@@ -32,20 +29,15 @@ module.exports = Backbone.Router.extend({
     App.showBody(new TitleView({}));
   },
 
-  current: function() {
+  latest: function() {
     this.ensureNav();
-    App.showBody(new CurrentView({}));
+    App.showBody(new LatestView({
+      session: App.StorageCollection.getLatest()
+    }));
   },
 
   historyParser: function(sessionId) {
-    var session;
-
-    if (!App.StorageCollection) {
-      App.StorageCollection = new StorageCollection();
-      App.StorageCollection.fetch();
-    }
-
-    session = App.StorageCollection.findWhere({ id: sessionId });
+    var session = App.StorageCollection.findWhere({ id: sessionId });
 
     if (session) {
       this.historyItem(session);
@@ -65,10 +57,6 @@ module.exports = Backbone.Router.extend({
 
   historyList: function() {
     this.ensureNav();
-
-    if (!App.StorageCollection) {
-      App.StorageCollection = new StorageCollection();
-    }
 
     App.showBody(new HistoryListView({
       collection: App.StorageCollection

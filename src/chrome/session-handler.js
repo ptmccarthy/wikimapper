@@ -12,7 +12,7 @@ var Storage =    require('./storage');
 
 module.exports = {
 
-  tabStatus: [],
+  tabStatus: {},
   activeSessions: [],
 
   /**
@@ -79,21 +79,20 @@ module.exports = {
 
     // look for an existing session in active sessions list
     this.activeSessions.forEach(function(session) {
-      // this navigation happened in the same tab as its parent
-      if (_.contains(session.tabs, commitData.tabId)) {
-        ret.id = session.id;
-        ret.parentNode = tabStatus[commitData.tabId].id;
-        ret.nodeIndex = session.nodeIndex;
-      }
-
       // this is a child tab of an existing parent tab
-      else if (commitData.parentId) {
+      if (commitData.parentId) {
         if (_.contains(session.tabs, commitData.parentId)) {
           ret.id = session.id;
           ret.parentNode = tabStatus[commitData.parentId].id;
           ret.nodeIndex = session.nodeIndex;
           session.tabs.push(commitData.tabId);
         }
+      }
+      // this navigation happened in the same tab as its parent
+      else if (_.contains(session.tabs, commitData.tabId)) {
+        ret.id = session.id;
+        ret.parentNode = tabStatus[commitData.tabId].id;
+        ret.nodeIndex = session.nodeIndex;
       }
     });
 
@@ -168,9 +167,7 @@ module.exports = {
    */
   processNavigation: function(details) {
     var self = this;
-    console.log('navigation');
     var commitData = details;
-    console.log(details.tabId);
     chrome.tabs.get(details.tabId, function(tab) {
       if (tab.openerTabId) {
         commitData.parentId = tab.openerTabId;
@@ -208,7 +205,7 @@ module.exports = {
    * Clear all active sessions.
    */
   clearAllSessions: function() {
-    this.tabStatus = [];
+    this.tabStatus = {};
     this.activeSessions = [];
   }
 };

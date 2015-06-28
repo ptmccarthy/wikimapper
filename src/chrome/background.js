@@ -76,7 +76,7 @@ module.exports = {
           if (sender.tab && sender.tab.id && sender.tab.url) {
             Sessions.updateName(sender.tab.id, sender.tab.url, request.name);
           } else {
-            console.error('Received malformed update message.')
+            console.error('Received malformed update message.');
           }
           break;
         }

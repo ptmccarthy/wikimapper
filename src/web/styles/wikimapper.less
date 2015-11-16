@@ -45,12 +45,17 @@ input[type="text"]:focus {
   transition: background 0.35s ease, color 0.35s ease;
 }
 
-.red-button:focus,
+.red-button:focus {
+  background-color: @light-red;
+  color: @white;
+  transition: none;
+  outline: 0;
+}
+
 .red-button:active {
   background-color: @lighter-red;
   color: @white;
   transition: none;
-  outline: 0;
 }
 
 // Navigation

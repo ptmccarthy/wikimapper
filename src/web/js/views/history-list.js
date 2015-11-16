@@ -17,7 +17,7 @@ module.exports = Backbone.View.extend({
   template: templates.get('historyList'),
 
   events: {
-    'click .table-row': 'onTableRowClick'
+    'click .navigable': 'onTableItemClick'
   },
 
   initialize: function(options) {
@@ -38,16 +38,16 @@ module.exports = Backbone.View.extend({
   },
 
   /**
-   * Handler for table row click events. Parse the sessionId from it.
+   * Handler for table navigable item click events. Parse the sessionId from it.
    * @param eventArgs
    */
-  onTableRowClick: function(eventArgs) {
-    var id = this.$(eventArgs.currentTarget).attr('sessionId');
+  onTableItemClick: function(eventArgs) {
+    var id = this.$(eventArgs.currentTarget).parent().attr('sessionId');
 
     if (id) {
       ViewState.Router.navigate('history?=' + id, { trigger: true });
     } else {
-      console.error('Table row click event, but no sessionId attribute found on row!');
+      console.error('Table navigable click event, but no sessionId attribute found on row!');
     }
   }
 

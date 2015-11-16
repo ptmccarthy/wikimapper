@@ -17,6 +17,42 @@ html, body {
   margin-left: 26px;
 }
 
+// Controls
+
+input[type="checkbox"] {
+  height: 22px;
+  width: 22px;
+}
+
+input[type="text"]:focus {
+  outline-color: @green;
+}
+
+.red-button {
+  background-color: @white;
+  height: 25px;
+  border-radius: 6px;
+  border: 1px solid @dark-red;
+  display: inline-block;
+  cursor: pointer;
+  color: @black;
+  padding: 0 10px;
+  text-decoration: none;
+}
+.red-button:hover {
+  background-color: @light-red;
+  color: @white;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+.red-button:focus,
+.red-button:active {
+  background-color: @lighter-red;
+  color: @white;
+  transition: none;
+  outline: 0;
+}
+
 // Navigation
 
 #navigation-view {
@@ -34,7 +70,7 @@ html, body {
   list-style: none;
   display: inline-block;
   text-align: center;
-  background: @light-grey;
+  background: @lighter-grey;
   color: @white;
   height: 25px;
   width: 130px;
@@ -53,7 +89,7 @@ html, body {
 .nav-header li.enabled {
   color: @dark-grey;
   border-bottom: 1px solid @dark-grey;
-  box-shadow: inset 0 0 3px 0 #ABABAB;
+  box-shadow: inset 0 0 3px 0 @light-grey;
 }
 
 .nav-header li.active {
@@ -69,6 +105,19 @@ html, body {
 
 // History
 
+.history-controls {
+  display: inline-block;
+  width: 705px;
+  margin-bottom: 10px;
+}
+
+#history-search {
+  width: 180px;
+  height: 21px;
+  padding-left: 6px;
+  float: right;
+}
+
 .page-filter {
   padding: 10px;
 }
@@ -79,38 +128,43 @@ html, body {
 
 .history-table {
   text-align: left;
-  border: 1px solid @light-grey;
+  border: 1px solid @lighter-grey;
   border-collapse: collapse;
 }
 
 .history-table th {
   font-weight: bold;
-  background: @light-grey;
+  background: @lighter-grey;
 }
 
 .history-table tr.table-header {
-  border-bottom: 1px solid @light-grey;
+  border-bottom: 1px solid @lighter-grey;
 }
 
 .history-table tr.table-row:hover {
   cursor: pointer;
   background: @light-green;
-  box-shadow: inset 2px @light-grey;
+  box-shadow: inset 2px @lighter-grey;
 }
 
 .history-table th:nth-child(1),
 .history-table td:nth-child(1) {
   padding-left: 5px;
-  width: 200px;
+  width: 28px;
 }
 
 .history-table th:nth-child(2),
 .history-table td:nth-child(2) {
-  width: 400px;
+  width: 200px;
 }
 
 .history-table th:nth-child(3),
 .history-table td:nth-child(3) {
+  width: 400px;
+}
+
+.history-table th:nth-child(4),
+.history-table td:nth-child(4) {
   text-align: center;
   padding-right: 5px;
 }

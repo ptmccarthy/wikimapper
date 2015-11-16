@@ -1,15 +1,22 @@
 <div class="body-content">
-  <table class="history-table">
+    <div class="history-controls">
+      <button type="button" class="red-button" id="clear-history">Delete Selected</button>
+      <input type="text" id="history-search" placeholder="Search...">
+    </div>
+
+    <table class="history-table">
     <tr class="table-header">
+      <th><input type="checkbox" id="history-select-all"></th>
       <th><i class="fa fa-calendar"></i> Date</th>
       <th><i class="fa fa-anchor"></i> Root Node</th>
       <th><i class="fa fa-code-fork"></i> Pages</th>
     </tr>
     {{#each collection}}
     <tr class="table-row" sessionId="{{id}}">
-      <td>{{#parseDate}}{{id}}{{/parseDate}}</td>
-      <td>{{tree.name}}</td>
-      <td>{{tree.lastNodeIndex}}</td>
+      <td><input type="checkbox" id="{{id}}"></td>
+      <td class="navigable">{{#parseDate}}{{id}}{{/parseDate}}</td>
+      <td class="navigable">{{tree.name}}</td>
+      <td class="navigable">{{tree.lastNodeIndex}}</td>
     </tr>
     {{/each}}
   </table>

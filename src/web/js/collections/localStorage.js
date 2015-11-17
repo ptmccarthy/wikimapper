@@ -33,6 +33,7 @@ module.exports = Backbone.Collection.extend({
 
   parse: function(history) {
     _.each(history, _.bind(function(session) {
+      session.checked = false;
       this.add(session);
     }, this));
   },

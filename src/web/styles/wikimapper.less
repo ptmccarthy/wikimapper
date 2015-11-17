@@ -13,7 +13,7 @@ html, body {
 }
 
 .body-content {
-  margin-top: 26px;
+  margin-top: 14px;
   margin-left: 26px;
 }
 
@@ -25,7 +25,7 @@ input[type="checkbox"] {
 }
 
 input[type="text"]:focus {
-  outline-color: @green;
+  outline-color: @light-green;
 }
 
 .red-button {
@@ -56,6 +56,43 @@ input[type="text"]:focus {
   background-color: @lighter-red;
   color: @white;
   transition: none;
+}
+
+.green-button {
+  background-color: @white;
+  height: 25px;
+  border-radius: 6px;
+  border: 1px solid @dark-green;
+  display: inline-block;
+  cursor: pointer;
+  color: @black;
+  padding: 0 10px;
+  text-decoration: none;
+}
+
+.green-button:hover {
+  background-color: @light-green;
+  color: @white;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+.green-button:focus {
+  background-color: @light-green;
+  color: @white;
+  transition: none;
+  outline: 0;
+}
+
+.green-button:active {
+  background-color: @lighter-green;
+  transition: none;
+}
+
+#back-to-history {
+  position: fixed;
+  left: 26px;
+  top: 40px;
+  z-index: 2;
 }
 
 // Navigation
@@ -99,13 +136,13 @@ input[type="text"]:focus {
 
 .nav-header li.active {
   background: @white;
-  color: @green;
+  color: @light-green;
   font-weight: bold;
 }
 
 .nav-header li.enabled:hover {
   transition: background 0.35s ease;
-  background: @light-green;
+  background: @lighter-green;
 }
 
 // History
@@ -148,7 +185,7 @@ input[type="text"]:focus {
 
 .history-table tr.table-row:hover {
   cursor: pointer;
-  background: @light-green;
+  background: @lighter-green;
   box-shadow: inset 2px @lighter-grey;
 }
 

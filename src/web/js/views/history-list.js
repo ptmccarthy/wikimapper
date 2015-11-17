@@ -20,7 +20,8 @@ module.exports = Backbone.View.extend({
     'click .navigable': 'onTableItemClick',
     'click .history-checkbox': 'onSelectTableItem',
     'click #history-select-all': 'onSelectAll',
-    'click #clear-history': 'confirmDelete'
+    'click #clear-history': 'confirmDelete',
+    'keyup #history-search': 'onSearchKeyup'
   },
 
   domElements: {
@@ -119,6 +120,12 @@ module.exports = Backbone.View.extend({
       this.collection.deleteChecked();
       this.collection.fetch();
     }
+  },
+
+  onSearchKeyup: function(eventArgs) {
+    var searchTerm = this.$(eventArgs.currentTarget).val();
+
+    this.collection.filterSearch(searchTerm);
   }
 
 });

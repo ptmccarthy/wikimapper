@@ -108,8 +108,14 @@ module.exports = Backbone.View.extend({
 
   confirmDelete: function() {
     var checked = this.collection.where({ checked: true });
+    var pluralString = checked.length === 1? 'session' : 'sessions';
 
-    console.log(checked.length);
+    var confirmed = window.confirm('Are you sure you want to delete ' + checked.length + ' historical ' + pluralString + '?');
+
+    if (confirmed) {
+      this.collection.deleteChecked();
+      this.collection.fetch();
+    }
   }
 
 });

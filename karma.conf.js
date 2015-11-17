@@ -39,7 +39,7 @@ module.exports = function(karma) {
     // browserify config
     browserify: {
       debug: true,
-      transform: [ 'hbsfy', 'node-lessify' ]
+      transform: [ 'hbsfy' ]
     }
 
   });

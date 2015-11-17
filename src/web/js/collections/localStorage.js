@@ -57,5 +57,17 @@ module.exports = Backbone.Collection.extend({
     });
 
     this.trigger('sync');
+  },
+
+  filterSearch: function(searchTerm) {
+    searchTerm = searchTerm.toLowerCase();
+    this.each(function(session) {
+      var name = session.get('tree').name.toLowerCase();
+      if (name.indexOf(searchTerm) < 0) {
+        session.set('hidden', true);
+      }
+    });
+
+    this.trigger('sync');
   }
 });

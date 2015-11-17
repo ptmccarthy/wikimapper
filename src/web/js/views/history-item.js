@@ -17,6 +17,10 @@ module.exports = Backbone.View.extend({
 
   template: templates.get('historyItem'),
 
+  events: {
+    'click #back-to-history': 'onGoBack'
+  },
+
   initialize: function(options) {
     if (options && options.session) {
       this.session = options.session;
@@ -38,6 +42,10 @@ module.exports = Backbone.View.extend({
     });
 
     this.d3View.render();
+  },
+
+  onGoBack: function() {
+    Backbone.history.history.back();
   }
 
 });

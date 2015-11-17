@@ -86,7 +86,7 @@ describe('Session handler', function() {
     expect(session.id).toEqual(501);
 
     // find a session in a parent tab
-    commitData = { tabId: 8, parentId: 5 };
+    commitData = { tabId: 8, openerTabId: 5 };
     session = Sessions.findSessionOf(commitData);
     expect(session.id).toEqual(650);
   });

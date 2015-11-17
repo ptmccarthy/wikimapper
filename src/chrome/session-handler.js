@@ -77,26 +77,30 @@ module.exports = {
     };
     var tabStatus = this.tabStatus;
 
-    // look for an existing session in active sessions list
+    // Look for an existing session in active sessions list
     this.activeSessions.forEach(function(session) {
-      // this is a child tab of an existing parent tab
-      if (commitData.parentId) {
-        if (_.contains(session.tabs, commitData.parentId)) {
-          ret.id = session.id;
-          ret.parentNode = tabStatus[commitData.parentId].id;
-          ret.nodeIndex = session.nodeIndex;
-          session.tabs.push(commitData.tabId);
-        }
-      }
-      // this navigation happened in the same tab as its parent
-      else if (_.contains(session.tabs, commitData.tabId)) {
+
+      // First check if this navigation happened in the same tab as its parent
+      // by checking our existing sessions & tabs
+      if (_.contains(session.tabs, commitData.tabId)) {
         ret.id = session.id;
         ret.parentNode = tabStatus[commitData.tabId].id;
         ret.nodeIndex = session.nodeIndex;
       }
+
+      // Otherwise, this is a child tab of an existing parent tab
+      // (if it has an openerTabId to use)
+      else if (commitData.openerTabId) {
+        if (_.contains(session.tabs, commitData.openerTabId)) {
+          ret.id = session.id;
+          ret.parentNode = tabStatus[commitData.openerTabId].id;
+          ret.nodeIndex = session.nodeIndex;
+          session.tabs.push(commitData.tabId);
+        }
+      }
     });
 
-    // if we found a an existing session return it,
+    // If we found a an existing session return it,
     // otherwise create a new session and return it
     if (ret.id) {
       return ret;
@@ -168,9 +172,10 @@ module.exports = {
   processNavigation: function(details) {
     var self = this;
     var commitData = details;
+    
     chrome.tabs.get(details.tabId, function(tab) {
       if (tab.openerTabId) {
-        commitData.parentId = tab.openerTabId;
+        commitData.openerTabId = tab.openerTabId;
       }
 
       self.handler(commitData);

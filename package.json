@@ -1,0 +1,50 @@
+{
+  "name": "wikimapper",
+  "version": "2.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ptmccarthy/wikimapper"
+  },
+  "browser": {
+    "wikimapper/enums": "./src/web/js/enums.js",
+    "wikimapper/templates": "./src/web/js/templates.js",
+    "wikimapper/resources": "./src/web/js/resources.js",
+    "wikimapper/viewstate": "./src/web/js/models/view-state.js"
+  },
+  "dependencies": {
+    "express": "~4.11.0",
+    "morgan": "~1.5.1",
+    "errorhandler": "~1.3.2",
+    "backbone": "~1.1.2",
+    "lodash": "~3.1.0",
+    "jquery": "~2.1.3",
+    "moment": "~2.10.3",
+    "font-awesome": "~4.4.0",
+    "d3": "~3.5.5"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "load-grunt-tasks": "~3.3.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-jshint": "~0.11.3",
+    "grunt-contrib-clean": "~0.7.0",
+    "grunt-concurrent": "~2.1.0",
+    "grunt-nodemon": "~0.4.0",
+    "grunt-font-awesome-vars": "~1.0.1",
+    "grunt-contrib-less": "~1.1.0",
+    "time-grunt": "~1.2.2",
+    "jshint-stylish": "~2.1.0",
+    "grunt-browserify": "~4.0.1",
+    "handlebars": "~4.0.4",
+    "hbsfy": "~2.4.1",
+    "karma": "~0.13.15",
+    "grunt-karma-new": "~0.11.2",
+    "karma-phantomjs-launcher": "~0.2.1",
+    "karma-browserify": "~4.4.0",
+    "karma-jasmine": "~0.3.6",
+    "jasmine-core": "~2.3.4"
+  },
+  "engines": {
+    "node": "~4.2.1"
+  }
+}

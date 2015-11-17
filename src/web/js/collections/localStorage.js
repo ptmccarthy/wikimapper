@@ -42,6 +42,20 @@ module.exports = Backbone.Collection.extend({
     this.fetch();
     var len = this.models.length;
     return this.models[len-1];
-  }
+  },
 
+  deleteChecked: function() {
+    var self = this;
+
+    this.each(function(session) {
+      var sessionId = session.get('id');
+      if (session.get('checked')) {
+        console.log('Deleting session ' + sessionId);
+        self.remove(sessionId);
+        self.localStorage.removeItem(sessionId);
+      }
+    });
+
+    this.trigger('sync');
+  }
 });

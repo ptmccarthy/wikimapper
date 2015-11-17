@@ -17,7 +17,14 @@ module.exports = Backbone.View.extend({
   template: templates.get('historyList'),
 
   events: {
-    'click .navigable': 'onTableItemClick'
+    'click .navigable': 'onTableItemClick',
+    'click .history-checkbox': 'onSelectTableItem',
+    'click #history-select-all': 'onSelectAll',
+    'click #clear-history': 'confirmDelete'
+  },
+
+  domElements: {
+    'selectAll': '#history-select-all'
   },
 
   initialize: function(options) {
@@ -33,7 +40,8 @@ module.exports = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template({
-      collection: this.collection.toJSON()
+      collection: this.collection.toJSON(),
+      selectAll: this.selectAll
     }));
   },
 
@@ -49,6 +57,59 @@ module.exports = Backbone.View.extend({
     } else {
       console.error('Table navigable click event, but no sessionId attribute found on row!');
     }
+  },
+
+  /**
+   * Handler for table item selection events. Set selection state on the model and update
+   * select all view state if necessary.
+   * @param eventArgs
+   */
+  onSelectTableItem: function(eventArgs) {
+    var id = this.$(eventArgs.currentTarget).attr('id');
+    var checked = this.$(eventArgs.currentTarget).is(':checked');
+
+    var item = this.collection.findWhere({ id: id });
+    if (item) {
+      item.set('checked', checked);
+    } else {
+      console.error('Could not find session ID: ' + id + ' in WikiMapper history.');
+    }
+
+    // if checking, set select all if necessary
+    if (checked) {
+      var unselectedItem = this.collection.findWhere({checked: false});
+      if (!unselectedItem) {
+        this.selectAll = true;
+        this.$(this.domElements.selectAll).prop('checked', true);
+      }
+    }
+
+    // if unchecking, unset select all if necessary
+    if (!checked && this.selectAll) {
+      this.selectAll = false;
+      this.$(this.domElements.selectAll).prop('checked', false);
+    }
+  },
+
+  /**
+   * Handler for select all checkbox. Update all models in collection to match.
+   * @param eventArgs
+   */
+  onSelectAll: function(eventArgs) {
+    var checked = this.$(eventArgs.currentTarget).is(':checked');
+    this.selectAll = checked;
+
+    this.collection.each(function(item) {
+      item.set('checked', checked);
+    });
+
+    this.render();
+  },
+
+  confirmDelete: function() {
+    var checked = this.collection.where({ checked: true });
+
+    console.log(checked.length);
   }
 
 });

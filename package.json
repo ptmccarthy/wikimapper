@@ -5,6 +5,7 @@
     "type": "git",
     "url": "git://github.com/ptmccarthy/wikimapper"
   },
+  "license": "MIT",
   "browser": {
     "wikimapper/enums": "./src/web/js/enums.js",
     "wikimapper/templates": "./src/web/js/templates.js",

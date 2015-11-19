@@ -1,5 +1,5 @@
 /**
- * History List View
+ * Main History View
  */
 
 'use strict';
@@ -12,9 +12,12 @@ var enums =     require('wikimapper/enums');
 var templates = require('wikimapper/templates');
 var ViewState = require('wikimapper/viewstate');
 
+// Child Views
+var HistoryTableView = require('./history-table');
+
 module.exports = Backbone.View.extend({
 
-  template: templates.get('historyList'),
+  template: templates.get('history'),
 
   events: {
     'click .navigable': 'onTableItemClick',
@@ -25,6 +28,7 @@ module.exports = Backbone.View.extend({
   },
 
   domElements: {
+    'tableContainer': '#history-table-container',
     'selectAll': '#history-select-all'
   },
 
@@ -32,18 +36,22 @@ module.exports = Backbone.View.extend({
     if (options && options.collection) {
       this.collection = options.collection;
       this.listenTo(this.collection, 'sync', this.render);
+      this.listenTo(this.collection, 'change', this.onCollectionChange);
     } else {
       console.error('History view initialized without a collection. No history will be available.');
     }
+
+    this.historyTable = new HistoryTableView({
+      collection: this.collection
+    });
 
     ViewState.setNavState('history', enums.nav.active);
   },
 
   render: function() {
-    this.$el.html(this.template({
-      collection: this.collection.toJSON(),
-      selectAll: this.selectAll
-    }));
+    this.$el.html(this.template());
+
+    this.renderChild(this.historyTable, this.domElements.tableContainer);
   },
 
   /**
@@ -80,14 +88,14 @@ module.exports = Backbone.View.extend({
     if (checked) {
       var unselectedItem = this.collection.findWhere({checked: false});
       if (!unselectedItem) {
-        this.selectAll = true;
+        this.collection.selectAll = true;
         this.$(this.domElements.selectAll).prop('checked', true);
       }
     }
 
     // if unchecking, unset select all if necessary
-    if (!checked && this.selectAll) {
-      this.selectAll = false;
+    if (!checked && this.collection.selectAll) {
+      this.collection.selectAll = false;
       this.$(this.domElements.selectAll).prop('checked', false);
     }
   },
@@ -98,7 +106,7 @@ module.exports = Backbone.View.extend({
    */
   onSelectAll: function(eventArgs) {
     var checked = this.$(eventArgs.currentTarget).is(':checked');
-    this.selectAll = checked;
+    this.collection.selectAll = checked;
 
     this.collection.each(function(item) {
       item.set('checked', checked);
@@ -124,8 +132,24 @@ module.exports = Backbone.View.extend({
 
   onSearchKeyup: function(eventArgs) {
     var searchTerm = this.$(eventArgs.currentTarget).val();
+  },
 
-    this.collection.filterSearch(searchTerm);
+  onCollectionChange: function() {
+    this.renderChild(this.historyTable, this.domElements.tableContainer);
+  },
+
+  /**
+   * Renders a child view, using the provided selector as the containing element.
+   * @param childView The child view to render.
+   * @param selector The jquery selector to the element that will contain the child view.
+   */
+  renderChild: function(childView, selector) {
+    // NOTE: calls to this.$el.html() will remove all child event bindings (this is how jquery's html() works).
+    //       using setElement (as opposed to appending the child view's this.el) rebinds all events, each time
+    //       .html() is invoked (typically called on each render).
+    if (childView) {
+      childView.setElement(this.$(selector)).render();
+    }
   }
 
 });

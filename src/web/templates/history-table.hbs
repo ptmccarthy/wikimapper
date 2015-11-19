@@ -1,0 +1,18 @@
+<table class="history-table">
+  <tr class="table-header">
+    <th><input type="checkbox" id="history-select-all" {{#if selectAll}}checked{{/if}}></th>
+    <th><i class="fa fa-calendar"></i> Date</th>
+    <th><i class="fa fa-map-pin"></i> Root Node</th>
+    <th><i class="fa fa-share-alt"></i> Nodes</th>
+  </tr>
+  {{#each collection}}
+    {{#unless hidden}}
+      <tr class="table-row" sessionId="{{id}}">
+        <td><input type="checkbox" class="history-checkbox" id="{{id}}" {{#if checked}}checked{{/if}}></td>
+        <td class="navigable">{{#parseDate}}{{id}}{{/parseDate}}</td>
+        <td class="navigable">{{tree.name}}</td>
+        <td class="navigable">{{tree.lastNodeIndex}}</td>
+      </tr>
+    {{/unless}}
+  {{/each}}
+</table>

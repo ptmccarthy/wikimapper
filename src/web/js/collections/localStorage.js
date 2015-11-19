@@ -48,15 +48,16 @@ module.exports = Backbone.Collection.extend({
     var self = this;
 
     this.each(function(session) {
+      console.debug('Delete iteration, session: ' + JSON.stringify(session));
       var sessionId = session.get('id');
       if (session.get('checked')) {
-        console.log('Deleting session ' + sessionId);
+        console.log('Deleting session ' + sessionId + ': ' + session.get('tree').name);
         self.remove(sessionId);
         self.localStorage.removeItem(sessionId);
       }
     });
 
-    this.trigger('sync');
+    this.trigger('change');
   },
 
   filterSearch: function(searchTerm) {
@@ -65,9 +66,11 @@ module.exports = Backbone.Collection.extend({
       var name = session.get('tree').name.toLowerCase();
       if (name.indexOf(searchTerm) < 0) {
         session.set('hidden', true);
+      } else {
+        session.set('hidden', false);
       }
     });
 
-    this.trigger('sync');
+    this.trigger('change');
   }
 });

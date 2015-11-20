@@ -1,9 +1,9 @@
 <table class="history-table">
   <tr class="table-header">
     <th><input type="checkbox" id="history-select-all" {{#if selectAll}}checked{{/if}}></th>
-    <th><i class="fa fa-calendar"></i> Date</th>
-    <th><i class="fa fa-map-pin"></i> Root Node</th>
-    <th><i class="fa fa-share-alt"></i> Nodes</th>
+    <th id="header-date" class="sortable"><i class="fa fa-calendar"></i> Date</th>
+    <th id="header-root" class="sortable"><i class="fa fa-map-pin"></i> Root Node</th>
+    <th id="header-nodes" class="sortable"><i class="fa fa-share-alt"></i> Nodes</th>
   </tr>
   {{#each collection}}
     {{#unless hidden}}

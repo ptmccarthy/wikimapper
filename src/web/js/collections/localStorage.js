@@ -13,6 +13,8 @@ module.exports = Backbone.Collection.extend({
 
   initialize: function() {
     this.localStorage = window.localStorage;
+
+    this.comparator = 'id';
   },
 
   fetch: function() {

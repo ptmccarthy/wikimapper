@@ -20,8 +20,9 @@ module.exports = Backbone.View.extend({
   template: templates.get('history'),
 
   events: {
-    'click .navigable': 'onTableItemClick',
-    'click .history-checkbox': 'onSelectTableItem',
+    'click td.navigable': 'onTableItemClick',
+    'click th.sortable': 'onSortableClick',
+    'click input.history-checkbox': 'onSelectTableItem',
     'click #history-select-all': 'onSelectAll',
     'click #clear-history': 'confirmDelete',
     'keyup #history-search': 'onSearchKeyup'
@@ -51,6 +52,10 @@ module.exports = Backbone.View.extend({
   render: function() {
     this.$el.html(this.template());
 
+    this.renderChild(this.historyTable, this.domElements.tableContainer);
+  },
+
+  onCollectionChange: function() {
     this.renderChild(this.historyTable, this.domElements.tableContainer);
   },
 
@@ -130,12 +135,28 @@ module.exports = Backbone.View.extend({
     }
   },
 
-  onSearchKeyup: function(eventArgs) {
-    var searchTerm = this.$(eventArgs.currentTarget).val();
+  onSortableClick: function(eventArgs) {
+    var sortableId = this.$(eventArgs.currentTarget).attr('id');
+    var sortBy;
+
+    switch (sortableId) {
+      case 'header-date':
+        sortBy = 'id';
+        break;
+      case 'header-root':
+        sortBy = 'name';
+        break;
+      case 'header-nodes':
+        sortBy = 'lastNodeIndex';
+        break;
+    }
+
+    console.debug('Sorting: ' + sortBy);
   },
 
-  onCollectionChange: function() {
-    this.renderChild(this.historyTable, this.domElements.tableContainer);
+  onSearchKeyup: function(eventArgs) {
+    var searchTerm = this.$(eventArgs.currentTarget).val();
+    this.collection.filterSearch(searchTerm);
   },
 
   /**

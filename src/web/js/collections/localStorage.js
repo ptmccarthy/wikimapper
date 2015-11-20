@@ -11,6 +11,10 @@ module.exports = Backbone.Collection.extend({
 
   model: Backbone.Model,
 
+  comparator: function(model) {
+    return -model.get('id');
+  },
+
   initialize: function() {
     this.localStorage = window.localStorage;
   },
@@ -44,18 +48,48 @@ module.exports = Backbone.Collection.extend({
     return this.models[len-1];
   },
 
+  setSortBy: function(sortBy) {
+    if (sortBy === 'id') {
+      this.comparator = function(model) {
+        return model.get('id');
+      };
+
+    } else {
+      this.comparator = function(model) {
+        return model.get('tree')[sortBy];
+      };
+    }
+
+    this.sort();
+  },
+
   deleteChecked: function() {
     var self = this;
 
     this.each(function(session) {
+      console.debug('Delete iteration, session: ' + JSON.stringify(session));
       var sessionId = session.get('id');
       if (session.get('checked')) {
-        console.log('Deleting session ' + sessionId);
+        console.log('Deleting session ' + sessionId + ': ' + session.get('tree').name);
         self.remove(sessionId);
         self.localStorage.removeItem(sessionId);
       }
     });
 
-    this.trigger('sync');
+    this.trigger('change');
+  },
+
+  filterSearch: function(searchTerm) {
+    searchTerm = searchTerm.toLowerCase();
+    this.each(function(session) {
+      var name = session.get('tree').name.toLowerCase();
+      if (name.indexOf(searchTerm) < 0) {
+        session.set('hidden', true);
+      } else {
+        session.set('hidden', false);
+      }
+    });
+
+    this.trigger('change');
   }
 });

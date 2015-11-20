@@ -12,7 +12,7 @@ var NavView =         require('./views/navigation');
 var TitleView =       require('./views/title');
 var LatestView =     require('./views/latest');
 var HistoryItemView = require('./views/history-item');
-var HistoryListView = require('./views/history-list');
+var HistoryListView = require('./views/history');
 
 module.exports = Backbone.Router.extend({
 

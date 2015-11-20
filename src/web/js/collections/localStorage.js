@@ -11,10 +11,12 @@ module.exports = Backbone.Collection.extend({
 
   model: Backbone.Model,
 
+  comparator: function(model) {
+    return -model.get('id');
+  },
+
   initialize: function() {
     this.localStorage = window.localStorage;
-
-    this.comparator = 'id';
   },
 
   fetch: function() {
@@ -44,6 +46,21 @@ module.exports = Backbone.Collection.extend({
     this.fetch();
     var len = this.models.length;
     return this.models[len-1];
+  },
+
+  setSortBy: function(sortBy) {
+    if (sortBy === 'id') {
+      this.comparator = function(model) {
+        return model.get('id');
+      };
+
+    } else {
+      this.comparator = function(model) {
+        return model.get('tree')[sortBy];
+      };
+    }
+
+    this.sort();
   },
 
   deleteChecked: function() {

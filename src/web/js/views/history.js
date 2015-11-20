@@ -38,6 +38,7 @@ module.exports = Backbone.View.extend({
       this.collection = options.collection;
       this.listenTo(this.collection, 'sync', this.render);
       this.listenTo(this.collection, 'change', this.onCollectionChange);
+      this.listenTo(this.collection, 'sort', this.onCollectionChange);
     } else {
       console.error('History view initialized without a collection. No history will be available.');
     }
@@ -152,6 +153,7 @@ module.exports = Backbone.View.extend({
     }
 
     console.debug('Sorting: ' + sortBy);
+    this.collection.setSortBy(sortBy);
   },
 
   onSearchKeyup: function(eventArgs) {

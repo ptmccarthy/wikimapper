@@ -93,10 +93,8 @@ module.exports = Backbone.Collection.extend({
     var self = this;
 
     this.each(function(session) {
-      console.debug('Delete iteration, session: ' + JSON.stringify(session));
       var sessionId = session.get('id');
       if (session.get('checked')) {
-        console.log('Deleting session ' + sessionId + ': ' + session.get('tree').name);
         self.remove(sessionId);
         self.localStorage.removeItem(sessionId);
       }

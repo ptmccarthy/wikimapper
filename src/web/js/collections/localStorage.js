@@ -10,7 +10,10 @@ var _ =        require('lodash');
 module.exports = Backbone.Collection.extend({
 
   model: Backbone.Model,
+  sortingField: 'id',
+  sortAscending: false,
 
+  // default comparator is id (date) descending
   comparator: function(model) {
     return -model.get('id');
   },
@@ -49,14 +52,37 @@ module.exports = Backbone.Collection.extend({
   },
 
   setSortBy: function(sortBy) {
+    var direction;
+
+    // if the field is not changing, just toggle the direction
+    if (sortBy === this.sortingField) {
+      this.sortAscending = !this.sortAscending;
+    // otherwise, reset to the default of descending
+    } else {
+      this.sortAscending = false;
+      this.sortingField = sortBy;
+    }
+
+    // convert boolean value to pos/neg integer for use in the comparator function
+    if (this.sortAscending) {
+      direction = 1;
+    } else {
+      direction = -1;
+    }
+
+    // each field needs to be sorted a little differently... ugly
     if (sortBy === 'id') {
       this.comparator = function(model) {
-        return model.get('id');
+        return direction * model.get('id');
       };
-
+    } else if (sortBy === 'name') {
+      this.comparator = function(a, b) {
+        // JS/Backbone can't simply sort strings alphabetically in reverse, have to hack it a little bit...
+        return direction * a.get('tree').name.localeCompare(b.get('tree').name);
+      };
     } else {
       this.comparator = function(model) {
-        return model.get('tree')[sortBy];
+        return direction * model.get('tree')[sortBy];
       };
     }
 

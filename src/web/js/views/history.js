@@ -152,7 +152,6 @@ module.exports = Backbone.View.extend({
         break;
     }
 
-    console.debug('Sorting: ' + sortBy);
     this.collection.setSortBy(sortBy);
   },
 

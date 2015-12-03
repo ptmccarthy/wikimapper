@@ -140,6 +140,7 @@ module.exports = Backbone.Collection.extend({
    */
   filterSearch: function(searchTerm) {
     searchTerm = searchTerm.toLowerCase();
+    this.searchTerm = searchTerm;
 
     // recursive children search
     var searchChildren = function(children, searchTerm) {

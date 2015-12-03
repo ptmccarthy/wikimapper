@@ -7,7 +7,6 @@ var _ =        require('lodash');
 
 // Internal Dependencies
 var templates = require('wikimapper/templates');
-var resources = require('wikimapper/resources');
 var ViewState = require('wikimapper/viewstate');
 
 Backbone.$ = $;
@@ -33,7 +32,6 @@ module.exports = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template({
-      title: resources.appName,
       nav: ViewState.get('nav').toJSON()
     }));
   },

@@ -47,8 +47,10 @@ module.exports = Backbone.Collection.extend({
 
   getLatest: function() {
     this.fetch();
-    var len = this.models.length;
-    return this.models[len-1];
+
+    return _.max(this.models, function(model) {
+      return model.id;
+    });
   },
 
   setSortBy: function(sortBy) {

@@ -91,18 +91,25 @@ module.exports = Backbone.Collection.extend({
     this.sort();
   },
 
+  /**
+   * Remove selected sessions from the collection and from localStorage.
+   * BEWARE: do not modify the collection during the .each() iteration!!!
+   * Doing so breaks the iteration! Instead, remove it from localStorage and
+   * keep a reference to the model in toRemove for bulk removal at the end.
+   */
   deleteChecked: function() {
     var self = this;
-    var collection = this.models;
+    var toRemove = [];
 
-    collection.forEach(function(session) {
-
+    self.each(function(session) {
       var sessionId = session.get('id');
       if (session.get('checked')) {
-        self.remove(sessionId);
+        toRemove.push(session);
         self.localStorage.removeItem(sessionId);
       }
     });
+
+    self.remove(toRemove);
 
     this.trigger('delete');
   },

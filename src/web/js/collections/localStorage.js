@@ -91,8 +91,10 @@ module.exports = Backbone.Collection.extend({
 
   deleteChecked: function() {
     var self = this;
+    var collection = this.models;
 
-    this.each(function(session) {
+    collection.forEach(function(session) {
+
       var sessionId = session.get('id');
       if (session.get('checked')) {
         self.remove(sessionId);
@@ -100,7 +102,7 @@ module.exports = Backbone.Collection.extend({
       }
     });
 
-    this.trigger('change');
+    this.trigger('delete');
   },
 
   filterSearch: function(searchTerm) {
@@ -114,6 +116,6 @@ module.exports = Backbone.Collection.extend({
       }
     });
 
-    this.trigger('change');
+    this.trigger('filter');
   }
 });

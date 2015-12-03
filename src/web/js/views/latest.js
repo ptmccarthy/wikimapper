@@ -21,16 +21,25 @@ module.exports = Backbone.View.extend({
     if (options && options.session) {
       this.session = options.session;
     } else {
-      console.log('no latest');
+      console.warn('No latest session could be found.');
     }
 
     ViewState.setNavState('latest', enums.nav.active);
   },
 
   render: function() {
-    this.$el.html(this.template({}));
+    var hasValidSession = false;
 
-    if (this.session) {
+    // check that this.session is a Backbone model by checking if it has a get method
+    if (this.session.get) {
+      hasValidSession = true;
+    }
+
+    this.$el.html(this.template({
+      session: hasValidSession
+    }));
+
+    if (hasValidSession) {
       this.d3View = new TreeView({
         el: this.$('#viz'),
         data: this.session.get('tree')

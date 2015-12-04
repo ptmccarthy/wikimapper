@@ -52,7 +52,9 @@ module.exports = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(this.template());
+    this.$el.html(this.template({
+      searchTerm: this.collection.searchTerm
+    }));
 
     this.renderChild(this.historyTable, this.domElements.tableContainer);
   },

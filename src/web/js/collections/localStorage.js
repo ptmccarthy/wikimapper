@@ -13,8 +13,8 @@ module.exports = Backbone.Collection.extend({
   sortingField: 'id',
   sortAscending: false,
 
-  // default comparator is id (date) descending
   comparator: function(model) {
+    // default comparator is id (date) descending
     return -model.get('id');
   },
 
@@ -22,6 +22,10 @@ module.exports = Backbone.Collection.extend({
     this.localStorage = window.localStorage;
   },
 
+  /**
+   * Custom Fetch
+   * Retrieves localStorage and converts it to a Backbone.Collection
+   */
   fetch: function() {
     var history = [];
     var session = {};
@@ -38,6 +42,11 @@ module.exports = Backbone.Collection.extend({
     this.trigger('sync');
   },
 
+  /**
+   * Custom Parse
+   * Add localStorage objects into the collection
+   * @param history - localStorage parsed into an Array of objects
+   */
   parse: function(history) {
     _.each(history, _.bind(function(session) {
       session.checked = false;
@@ -45,6 +54,10 @@ module.exports = Backbone.Collection.extend({
     }, this));
   },
 
+  /**
+   * Return the most recent session model.
+   * @returns {Backbone.Model}
+   */
   getLatest: function() {
     this.fetch();
 
@@ -53,6 +66,10 @@ module.exports = Backbone.Collection.extend({
     });
   },
 
+  /**
+   * Set the sorting on the collection by assigning a new comparator function.
+   * @param sortBy
+   */
   setSortBy: function(sortBy) {
     var direction;
 
@@ -114,17 +131,53 @@ module.exports = Backbone.Collection.extend({
     this.trigger('delete');
   },
 
+  /**
+   * Filter sessions based on search input (case insensitive).
+   * Recursively look through the parent node and all its children for the search term.
+   * If the search term is not found in any of the session's node names, flag it as hidden.
+   * When searching, if a match is found, stop recursing.
+   * @param {string} searchTerm
+   */
   filterSearch: function(searchTerm) {
     searchTerm = searchTerm.toLowerCase();
+    this.searchTerm = searchTerm;
+
+    // recursive children search
+    var searchChildren = function(children, searchTerm) {
+      var containsTerm = false;
+
+      _.each(children, function(child) {
+
+        if (child.name.toLowerCase().indexOf(searchTerm) < 0) {
+          if (child.children && child.children.length > 0) {
+            containsTerm = searchChildren(child.children, searchTerm);
+          }
+        } else {
+          containsTerm = true;
+        }
+      });
+
+      return containsTerm;
+    };
+
+    // search through each session in the collection
     this.each(function(session) {
-      var name = session.get('tree').name.toLowerCase();
+      var containsTerm = false;
+      var tree = session.get('tree');
+      var name = tree.name.toLowerCase();
+
       if (name.indexOf(searchTerm) < 0) {
-        session.set('hidden', true);
+        if (tree.children.length > 0) {
+          containsTerm = searchChildren(tree.children, searchTerm);
+        }
       } else {
-        session.set('hidden', false);
+        containsTerm = true;
       }
+
+      session.set('hidden', !containsTerm);
     });
 
+    // we're done searching, trigger the filter event to re-render the view
     this.trigger('filter');
   }
 });

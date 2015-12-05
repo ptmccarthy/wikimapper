@@ -71,17 +71,6 @@ module.exports = {
     // Listener for incoming messages
     chrome.runtime.onMessage.addListener(function(request, sender) {
       switch(request.type) {
-        case (enums.messageTypes.update): {
-
-          if (sender.tab && sender.tab.id && sender.tab.url) {
-            Sessions.updateName(sender.tab.id, sender.tab.url, request.name, request.redirectedFrom);
-          } else {
-            console.error('Received malformed update message: ' +
-                          JSON.stringify(request) + ', ' + JSON.stringify(sender));
-          }
-          break;
-        }
-
         case (enums.messageTypes.deleteItem): {
           if (request.sessionId) {
             Storage.deleteItem(request.sessionId);

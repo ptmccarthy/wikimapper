@@ -87,12 +87,32 @@ module.exports = {
    * @return {string} url with wikipedia stuff removed
    */
   shortenURL: function(url) {
-    return /[^/]*$/.exec(url)[0];
+    return decodeURI(/[^/]*$/.exec(url)[0]);
   },
 
-  updatePageName: function(sessionId, url, name) {
+  /**
+   * Update the initial page name derived from the URL to the name
+   * from the update sent via content script.
+   * @param sessionId
+   * @param url
+   * @param name
+   * @param redirectedFrom
+   */
+  updatePageName: function(sessionId, url, name, redirectedFrom) {
     var tree = JSON.parse(localStorage.getItem(sessionId));
-    var page = this.findNodeByURL(tree, url);
+    var page;
+
+    if (redirectedFrom) {
+      console.log('redirected from : ' + redirectedFrom);
+      page = this.findNodeByURL(tree, redirectedFrom);
+    } else {
+      page = this.findNodeByURL(tree, url);
+    }
+
+    // if we got redirected, update the URL, too
+    if (page && redirectedFrom) {
+      page.url = url;
+    }
 
     if (page) {
       page.name = name;

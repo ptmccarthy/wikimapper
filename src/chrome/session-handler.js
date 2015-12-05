@@ -190,12 +190,12 @@ module.exports = {
    * @param url - url of the page to update
    * @param name - cleaned name to update
    */
-  updateName: function(tabId, url, name) {
+  updateName: function(tabId, url, name, redirectedFrom) {
     var session = _.find(this.activeSessions, function(s) {
       return _.contains(s.tabs, tabId);
     });
 
-    Storage.updatePageName(session.id, url, name);
+    Storage.updatePageName(session.id, url, name, redirectedFrom);
   },
 
   /**

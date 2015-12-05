@@ -9,18 +9,24 @@
 }
 
 .label {
-  font-size: 0.6em;
+  font-size: 0.7em;
   text-align: center;
   word-wrap: normal;
 }
 
 path.link {
   fill: none;
-  stroke: @dark-grey;
+  stroke: @light-grey;
   stroke-width: 1.5px;
 }
 
 a.node, a.node:visited, a.node:hover, a.node:active {
   text-decoration: none;
+  // a dirty, dirty hack to emulate a 2px text border
+  // since there's no supported CSS3 directive for it...
+  text-shadow: 0 0 2px @white, 0 0 2px @white, 0 0 2px @white,
+               0 0 2px @white, 0 0 2px @white, 0 0 2px @white,
+               0 0 2px @white, 0 0 2px @white, 0 0 2px @white,
+               0 0 2px @white, 0 0 2px @white, 0 0 2px @white;
   color: @black;
 }

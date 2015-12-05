@@ -74,7 +74,7 @@ module.exports = {
         case (enums.messageTypes.update): {
 
           if (sender.tab && sender.tab.id && sender.tab.url) {
-            Sessions.updateName(sender.tab.id, sender.tab.url, request.name);
+            Sessions.updateName(sender.tab.id, sender.tab.url, request.name, request.redirectedFrom);
           } else {
             console.error('Received malformed update message: ' +
                           JSON.stringify(request) + ', ' + JSON.stringify(sender));

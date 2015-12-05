@@ -53,7 +53,7 @@ module.exports = {
 
   /**
    * Recursively search through a tree to find a node by its id
-   * @param tree - JSON tree of wikimapper data
+   * @param tree - JSON tree of WikiMapper data
    * @param nodeId - nodeId to find
    * @returns {*}
    */
@@ -68,13 +68,26 @@ module.exports = {
     }
   },
 
-  findNodeByURL: function(tree, url) {
-    if (tree.data.url === url) { return tree; }
+  /**
+   * Recursively search through a tree to find a node by its URL.
+   * Will only return the first matching node that it finds.
+   * @param tree - JSON tree of WikiMapper data
+   * @param url - URL to find
+   * @param {boolean} ignoreUpdated - if true, ignore nodes that have already been marked as updated
+   * @returns {*}
+   */
+  findNodeByURL: function(tree, url, ignoreUpdated) {
+    if (tree.data.url === url) {
+      var ignored = tree.updated === ignoreUpdated;
+      if (!ignored) {
+        return tree;
+      }
+    }
 
     var result;
     var len = tree.children.length;
     for (var i = 0; i < len; i++) {
-      result = this.findNodeByURL(tree.children[i], url);
+      result = this.findNodeByURL(tree.children[i], url, ignoreUpdated);
       if (result) { return result; }
     }
   },
@@ -103,10 +116,9 @@ module.exports = {
     var page;
 
     if (redirectedFrom) {
-      console.log('redirected from : ' + redirectedFrom);
-      page = this.findNodeByURL(tree, redirectedFrom);
+      page = this.findNodeByURL(tree, redirectedFrom, true);
     } else {
-      page = this.findNodeByURL(tree, url);
+      page = this.findNodeByURL(tree, url, true);
     }
 
     // if we got redirected, update the URL, too
@@ -116,6 +128,7 @@ module.exports = {
 
     if (page) {
       page.name = name;
+      page.updated = true;
       localStorage.setItem(sessionId, JSON.stringify(tree));
     } else {
       console.warn('Could not find node with url of ' + url + '. Name cannot be updated.');

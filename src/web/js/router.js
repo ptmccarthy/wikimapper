@@ -17,11 +17,19 @@ var HistoryListView = require('./views/history');
 module.exports = Backbone.Router.extend({
 
   routes: {
-    '': 'title',
+    '': 'checkForLatest',
     title: 'title',
     latest: 'latest',
     'history?=:sessionId': 'historyParser',
     history: 'historyList'
+  },
+
+  checkForLatest: function() {
+    if (App.StorageCollection.getLatest()) {
+      this.latest();
+    } else {
+      this.title();
+    }
   },
 
   title: function() {

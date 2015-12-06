@@ -142,22 +142,21 @@ module.exports = Backbone.Collection.extend({
     searchTerm = searchTerm.toLowerCase();
     this.searchTerm = searchTerm;
 
-    // recursive children search
+    // recursive children search for search term
     var searchChildren = function(children, searchTerm) {
-      var containsTerm = false;
 
-      _.each(children, function(child) {
+      for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        var name = child.name.toLowerCase();
 
-        if (child.name.toLowerCase().indexOf(searchTerm) < 0) {
-          if (child.children && child.children.length > 0) {
-            containsTerm = searchChildren(child.children, searchTerm);
+        if (name.includes(searchTerm)) {
+          return true;
+        } else if (child.children) {
+          if (searchChildren(child.children, searchTerm)) {
+            return true;
           }
-        } else {
-          containsTerm = true;
         }
-      });
-
-      return containsTerm;
+      }
     };
 
     // search through each session in the collection
@@ -166,15 +165,14 @@ module.exports = Backbone.Collection.extend({
       var tree = session.get('tree');
       var name = tree.name.toLowerCase();
 
-      if (name.indexOf(searchTerm) < 0) {
-        if (tree.children.length > 0) {
-          containsTerm = searchChildren(tree.children, searchTerm);
-        }
-      } else {
+      if (name.includes(searchTerm)) {
         containsTerm = true;
+      } else {
+        containsTerm = searchChildren(tree.children, searchTerm);
       }
 
-      session.set('hidden', !containsTerm);
+      // hide the session if it does not contain the search term
+      session.set('hidden', (containsTerm !== true));
     });
 
     // we're done searching, trigger the filter event to re-render the view

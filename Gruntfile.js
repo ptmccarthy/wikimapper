@@ -163,18 +163,6 @@ module.exports = function(grunt) {
           },
           watch: true
         }
-      },
-      content: {
-        src: [
-          '<%= config.src %>/content/content.js'
-        ],
-        dest: '<%= config.dist %>/content.js',
-        options: {
-          browserifyOptions: {
-            debug: true
-          },
-          watch: true
-        }
       }
     }
   });
@@ -197,7 +185,6 @@ module.exports = function(grunt) {
     'karma:unit',
     'less:app',
     'browserify:background',
-    'browserify:content',
     'browserify:app'
   ]);
 
@@ -205,7 +192,6 @@ module.exports = function(grunt) {
     'prepare:debug',
     'less:app',
     'browserify:background',
-    'browserify:content',
     'browserify:app',
     'concurrent:dev'
   ]);

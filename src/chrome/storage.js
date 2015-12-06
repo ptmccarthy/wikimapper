@@ -93,46 +93,13 @@ module.exports = {
   },
 
   /**
-   * Trim a wikipedia url to just the page name in the url.
-   * This is a placeholder value for node.name until the real name is received
-   * from the content script, which must wait until the DOM has loaded.
+   * Trim a wikipedia url to just the page name in the url, then URI decode
+   * it and replace the underscores with spaces to end up with the page title.
    * @param url - url string
-   * @return {string} url with wikipedia stuff removed
+   * @return {string} URL-derived Page Name
    */
   shortenURL: function(url) {
-    return decodeURI(/[^/]*$/.exec(url)[0]);
-  },
-
-  /**
-   * Update the initial page name derived from the URL to the name
-   * from the update sent via content script.
-   * @param sessionId
-   * @param url
-   * @param name
-   * @param redirectedFrom
-   */
-  updatePageName: function(sessionId, url, name, redirectedFrom) {
-    var tree = JSON.parse(localStorage.getItem(sessionId));
-    var page;
-
-    if (redirectedFrom) {
-      page = this.findNodeByURL(tree, redirectedFrom, true);
-    } else {
-      page = this.findNodeByURL(tree, url, true);
-    }
-
-    // if we got redirected, update the URL, too
-    if (page && redirectedFrom) {
-      page.url = url;
-    }
-
-    if (page) {
-      page.name = name;
-      page.updated = true;
-      localStorage.setItem(sessionId, JSON.stringify(tree));
-    } else {
-      console.warn('Could not find node with url of ' + url + '. Name cannot be updated.');
-    }
+    return decodeURI(/[^/]*$/.exec(url)[0].replace(/_/g,' '));
   },
 
   /**

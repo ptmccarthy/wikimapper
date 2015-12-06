@@ -9,10 +9,6 @@ module.exports = {
   webNavigation: {
     onCommitted: {
       addListener: function() {}
-    },
-
-    onDOMContentLoaded: {
-      addListener: function() {}
     }
   },
 

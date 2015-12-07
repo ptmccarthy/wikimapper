@@ -159,10 +159,8 @@ module.exports = {
         parentId: commitData.parent.id,
         sessionId: commitData.parent.data.sessionId
       };
-
       this.tabStatus[details.tabId] = commitData;
     }
-
   },
 
   /**

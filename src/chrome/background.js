@@ -43,7 +43,6 @@ module.exports = {
    * @param {object} details - chrome.webNavigation event details
    */
   eventFilter: function(details) {
-
     if (_.includes(details.transitionQualifiers, 'forward_back')) {
       Sessions.processForwardBack(details);
     } else if (_.includes(this.triggers, details.transitionType)) {

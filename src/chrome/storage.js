@@ -99,7 +99,15 @@ module.exports = {
    * @return {string} URL-derived Page Name
    */
   shortenURL: function(url) {
-    return decodeURI(/[^/]*$/.exec(url)[0].replace(/_/g,' '));
+    // handle the special case of a search results page
+    if (url.indexOf('Special:Search?search=') >= 0) {
+      var split = url.split('Search?search=');
+      var searchTerm = split[1].split('&')[0];
+      return 'Search Results: ' + searchTerm;
+    // otherwise, derive the name from the page url
+    } else {
+      return decodeURI(/[^/]*$/.exec(url)[0].replace(/_/g,' '));
+    }
   },
 
   /**

@@ -9,7 +9,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", "Helvetica Neue", sans-serif;
   font-size: 1em;
   background-color: @white;
 }
@@ -177,6 +177,10 @@ input[type="text"]:focus {
 
 // History
 
+.sorting-by {
+  color: @light-green;
+}
+
 .history-controls {
   display: inline-block;
   width: 744px;
@@ -197,6 +201,15 @@ input[type="text"]:focus {
   position: fixed;
   left: 26px;
   top: 40px;
+  width: 105px;
+  z-index: 2;
+}
+
+#export-to-svg {
+  position: fixed;
+  left: 146px;
+  top: 40px;
+  width: 105px;
   z-index: 2;
 }
 

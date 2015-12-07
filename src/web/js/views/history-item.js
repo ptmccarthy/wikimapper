@@ -6,19 +6,21 @@
 
 // External
 var Backbone = require('backbone');
+var svgCrowbar = require('../../../lib/svg-crowbar');
 
 // Internal
-var enums =     require('wikimapper/enums');
-var templates = require('wikimapper/templates');
-var ViewState = require('wikimapper/viewstate');
-var TreeView =  require('./tree');
+var enums =      require('wikimapper/enums');
+var templates =  require('wikimapper/templates');
+var ViewState =  require('wikimapper/viewstate');
+var TreeView =   require('./tree');
 
 module.exports = Backbone.View.extend({
 
   template: templates.get('historyItem'),
 
   events: {
-    'click #back-to-history': 'onGoBack'
+    'click #back-to-history': 'onGoBack',
+    'click #export-to-svg': 'exportSVG'
   },
 
   initialize: function(options) {
@@ -46,6 +48,10 @@ module.exports = Backbone.View.extend({
 
   onGoBack: function() {
     Backbone.history.history.back();
+  },
+
+  exportSVG: function() {
+    svgCrowbar();
   }
 
 });

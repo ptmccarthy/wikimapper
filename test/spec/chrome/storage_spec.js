@@ -2,8 +2,16 @@
 
 var Storage =     require('../../../src/chrome/storage');
 var mockSession = require('../../resources/mock_session');
+var commitData =  require('../../resources/commit_data');
 
 describe('Storage API', function() {
+
+  beforeAll(function() {
+    spyOn(window.localStorage, 'getItem');
+    spyOn(window.localStorage, 'setItem');
+    spyOn(window.localStorage, 'removeItem');
+    spyOn(window.localStorage, 'clear');
+  });
 
   it('should be able to detect a search results page and name it appropriately', function() {
     var searchURL = 'https://en.wikipedia.org/wiki/Special:Search?search=_&go=Go';
@@ -28,5 +36,21 @@ describe('Storage API', function() {
     expect(node).toBeUndefined();
     node = Storage.findNode(mockSession, -5);
     expect(node).toBeUndefined();
+  });
+
+  it('should be able to create page objects', function() {
+    var session = {
+      id: 123456789,
+      nodeIndex: 24,
+      parentNode: 22
+    };
+
+    var page = Storage.createPageObject(session, commitData);
+
+    expect(page.id).toEqual(session.nodeIndex);
+    expect(page.name).toEqual('Sooners');
+    expect(page.children).toEqual([]);
+    expect(page.data).toBeDefined();
+    expect(page.data.url).toEqual(commitData.url);
   });
 });

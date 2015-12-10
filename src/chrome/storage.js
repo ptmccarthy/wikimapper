@@ -20,7 +20,6 @@ module.exports = {
         url: commitData.url,
         date: commitData.timeStamp,
         sessionId: session.id,
-        tabId: commitData.id,
         parentId: session.parentNode
       },
       children: []

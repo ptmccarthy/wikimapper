@@ -1,4 +1,6 @@
 # WikiMapper
+![WikiMapper](https://github.com/ptmccarthy/wikimapper/blob/master/src/resources/wikimapper-banner-small.png)
+
 ## A Chrome extension to map your Wikipedia navigation.
 
 WikiMapper creates a historical tree of your Wikipedia browsing so that you can see just exactly how you spontaneously wasted 45 minutes and ended up reading about the history of Agriculture in Uzbekistan.

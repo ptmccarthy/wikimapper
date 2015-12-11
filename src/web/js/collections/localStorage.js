@@ -144,6 +144,9 @@ module.exports = Backbone.Collection.extend({
 
     // recursive children search for search term
     var searchChildren = function(children, searchTerm) {
+      if (!children) {
+        return false;
+      }
 
       for (var i = 0; i < children.length; i++) {
         var child = children[i];

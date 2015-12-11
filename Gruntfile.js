@@ -50,7 +50,7 @@ module.exports = function(grunt) {
       options: {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish'),
-        ignores: ['<%= config.src %>/lib/**/*.js']
+        ignores: ['<%= config.src %>/web/lib/**/*.js']
       },
       all: [
         '/*.js',

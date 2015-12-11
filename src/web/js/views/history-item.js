@@ -6,7 +6,7 @@
 
 // External
 var Backbone = require('backbone');
-var svgCrowbar = require('../../../lib/svg-crowbar');
+var svgCrowbar = require('../../lib/svg-crowbar');
 
 // Internal
 var enums =      require('wikimapper/enums');

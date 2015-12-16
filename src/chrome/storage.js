@@ -105,7 +105,7 @@ module.exports = {
       return 'Search Results: ' + searchTerm;
     // otherwise, derive the name from the page url
     } else {
-      return decodeURI(/[^/]*$/.exec(url)[0].replace(/_/g,' '));
+      return decodeURIComponent(/[^/]*$/.exec(url)[0].replace(/_/g,' '));
     }
   },
 

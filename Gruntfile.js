@@ -105,7 +105,7 @@ module.exports = function(grunt) {
           },
           {
             src: '<%= config.nodeModules %>/font-awesome/fonts/*',
-            dest: '<%= config.dist %>/resources/fonts/',
+            dest: '<%= config.dist %>/fonts/',
             filter: 'isFile',
             flatten: true,
             expand: true
@@ -117,7 +117,7 @@ module.exports = function(grunt) {
     fontAwesomeVars: {
       main: {
         variablesLessPath: '<%= config.nodeModules %>/font-awesome/less/variables.less',
-        fontPath: '../resources/fonts'
+        fontPath: '../fonts'
       }
     },
 

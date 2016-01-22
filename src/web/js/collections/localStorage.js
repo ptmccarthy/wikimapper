@@ -176,6 +176,11 @@ module.exports = Backbone.Collection.extend({
 
       // hide the session if it does not contain the search term
       session.set('hidden', (containsTerm !== true));
+
+      // unselect the session if it is now hidden, lest we inadvertently delete it
+      if (session.get('checked') && !containsTerm) {
+        session.set('checked', false);
+      }
     });
 
     // we're done searching, trigger the filter event to re-render the view

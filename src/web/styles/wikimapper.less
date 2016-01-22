@@ -53,9 +53,37 @@ html, body {
 
 // Controls
 
-input[type="checkbox"] {
-  height: 22px;
-  width: 22px;
+.th-checkbox:hover,
+.td-checkbox:hover {
+  cursor: pointer;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+input[type='checkbox'] + label:before {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  padding-right: 8px;
+  width: 23px;
+}
+
+input[type="checkbox"] + label:before {
+  content: "\f096";
+}
+input[type="checkbox"]:checked + label:before {
+  color: @dark-red;
+  content: "\f046";
+}
+
+label.checkbox-label {
+  text-align: center;
+  padding-top: 2px;
 }
 
 input[type="text"]:focus {

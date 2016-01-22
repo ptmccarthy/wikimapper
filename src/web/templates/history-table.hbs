@@ -1,6 +1,9 @@
 <table class="history-table">
   <tr class="table-header">
-    <th><input type="checkbox" id="history-select-all" {{#if selectAll}}checked{{/if}}></th>
+    <th class="th-checkbox">
+      <input type="checkbox" name="cb-select-all" id="history-select-all" {{#if selectAll}}checked{{/if}}>
+      <label for="cb-select-all" class="checkbox-label"></label>
+    </th>
     <th id="header-date" class="sortable"><i class="fa fa-calendar"></i> Date {{#if sortByDate}}<i class="fa sorting-by {{#if sortAscending}}fa-caret-up{{else}}fa-caret-down{{/if}}"></i>{{/if}}</th>
     <th id="header-root" class="sortable"><i class="fa fa-map-pin"></i> Root Node {{#if sortByName}}<i class="fa sorting-by {{#if sortAscending}}fa-caret-up{{else}}fa-caret-down{{/if}}"></i>{{/if}}</th>
     <th id="header-nodes" class="sortable"><i class="fa fa-share-alt"></i> Nodes {{#if sortByNodes}}<i class="fa sorting-by {{#if sortAscending}}fa-caret-up{{else}}fa-caret-down{{/if}}"></i>{{/if}}</th>
@@ -8,7 +11,10 @@
   {{#each collection}}
     {{#unless hidden}}
       <tr class="table-row" sessionId="{{id}}">
-        <td><input type="checkbox" class="history-checkbox" id="{{id}}" {{#if checked}}checked{{/if}}></td>
+        <td class="td-checkbox" id="{{id}}">
+          <input type="checkbox" name="cb-{{id}}" {{#if checked}}checked{{/if}}>
+          <label for="cb-{{id}}" class="checkbox-label"></label>
+        </td>
         <td class="navigable">{{#parseDate}}{{id}}{{/parseDate}}</td>
         <td class="navigable">{{tree.name}}</td>
         <td class="navigable">{{tree.lastNodeIndex}}</td>

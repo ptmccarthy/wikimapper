@@ -22,8 +22,8 @@ module.exports = Backbone.View.extend({
   events: {
     'click td.navigable': 'onTableItemClick',
     'click th.sortable': 'onSortableClick',
-    'click input.history-checkbox': 'onSelectTableItem',
-    'click #history-select-all': 'onSelectAll',
+    'click td.td-checkbox': 'onSelectTableItem',
+    'click th.th-checkbox': 'onSelectAll',
     'click #clear-history': 'confirmDelete',
     'keyup #history-search': 'onSearchKeyup'
   },
@@ -83,19 +83,24 @@ module.exports = Backbone.View.extend({
    * @param eventArgs
    */
   onSelectTableItem: function(eventArgs) {
-    var id = this.$(eventArgs.currentTarget).attr('id');
-    var checked = this.$(eventArgs.currentTarget).is(':checked');
+    var el = this.$(eventArgs.currentTarget);
+    var id = el.attr('id');
+    var checkbox = el.children('input');
+    // since its not a native checkbox, the to-be-set checked state
+    // is the *opposite* of its previously-known state
+    var checked = checkbox.is(':not(:checked)');
 
     var item = this.collection.findWhere({ id: id });
     if (item) {
       item.set('checked', checked);
+      checkbox.prop('checked', checked);
     } else {
       console.error('Could not find session ID: ' + id + ' in WikiMapper history.');
     }
 
     // if checking, set select all if necessary
     if (checked) {
-      var unselectedItem = this.collection.findWhere({checked: false});
+      var unselectedItem = this.collection.findWhere({checked: false, hidden: false});
       if (!unselectedItem) {
         this.collection.selectAll = true;
         this.$(this.domElements.selectAll).prop('checked', true);
@@ -114,11 +119,14 @@ module.exports = Backbone.View.extend({
    * @param eventArgs
    */
   onSelectAll: function(eventArgs) {
-    var checked = this.$(eventArgs.currentTarget).is(':checked');
+    // since its not a native checkbox, the to-be-set checked state
+    // is the *opposite* of its previously-known state
+    var checked = this.$(eventArgs.currentTarget).children('input').is(':not(:checked)');
     this.collection.selectAll = checked;
-
     this.collection.each(function(item) {
-      item.set('checked', checked);
+      if (!item.get('hidden')) {
+        item.set('checked', checked);
+      }
     });
 
     this.render();
@@ -160,6 +168,7 @@ module.exports = Backbone.View.extend({
 
   onSearchKeyup: function(eventArgs) {
     var searchTerm = this.$(eventArgs.currentTarget).val();
+    this.collection.selectAll = false;
     this.collection.filterSearch(searchTerm);
   },
 

@@ -9,7 +9,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: "Lucida Sans Unicode", "Lucida Grande", "Helvetica Neue", sans-serif;
+  font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Helvetica Neue', sans-serif;
   font-size: 1em;
   background-color: @white;
 }
@@ -72,19 +72,19 @@ input[type='checkbox'] + label:before {
   width: 16px;
 }
 
-input[type="checkbox"] + label:before {
-  content: "\f096";
+input[type='checkbox'] + label:before {
+  content: '\f096';
 }
-input[type="checkbox"]:checked + label:before {
+input[type='checkbox']:checked + label:before {
   color: @dark-red;
-  content: "\f046";
+  content: '\f046';
 }
 
 label.checkbox-label:hover {
   cursor: pointer;
 }
 
-input[type="text"]:focus {
+input[type='text']:focus {
   outline-color: @light-green;
 }
 
@@ -219,19 +219,10 @@ input[type="text"]:focus {
   float: right;
 }
 
-#back-to-history {
+.history-actions {
   position: absolute;
   left: 26px;
   top: 40px;
-  width: 105px;
-  z-index: 2;
-}
-
-#export-to-svg {
-  position: absolute;
-  left: 146px;
-  top: 40px;
-  width: 105px;
   z-index: 2;
 }
 

@@ -46,6 +46,7 @@ module.exports = Backbone.View.extend({
     this.tree = d3.layout.tree().size([self.height, self.width]);
 
     this.svg = d3.select(this.el).append('svg')
+      .attr('id', 'wikimapper-svg')
       .attr('width', this.width)
       .attr('height', this.height)
       .append('g')
@@ -112,7 +113,7 @@ module.exports = Backbone.View.extend({
       .attr('height', 60)
       .attr('width', 200)
       .html(function(d) {
-        return '<div class="label"><a class="node" target="_blank" href="' + d.data.url + '">' + d.name + '</a></div>';
+        return '<div xmlns="http://www.w3.org/1999/xhtml" class="label"><a class="node" target="_blank" href="' + d.data.url + '">' + d.name + '</a></div>';
       });
 
     // Transition nodes to their new position

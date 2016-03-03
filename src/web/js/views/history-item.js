@@ -5,8 +5,9 @@
 'use strict';
 
 // External
-var Backbone = require('backbone');
-var svgCrowbar = require('../../lib/svg-crowbar');
+var Backbone =       require('backbone');
+var saveSvgAsPng   = require('save-svg-as-png');
+var svgCrowbar =     require('../../lib/svg-crowbar');
 
 // Internal
 var enums =      require('wikimapper/enums');
@@ -20,7 +21,8 @@ module.exports = Backbone.View.extend({
 
   events: {
     'click #back-to-history': 'onGoBack',
-    'click #export-to-svg': 'exportSVG'
+    'click #export-to-svg': 'exportSVG',
+    'click #export-to-png': 'exportPNG'
   },
 
   initialize: function(options) {
@@ -52,6 +54,13 @@ module.exports = Backbone.View.extend({
 
   exportSVG: function() {
     svgCrowbar();
+  },
+
+  exportPNG: function() {
+    saveSvgAsPng.saveSvgAsPng(document.getElementById('wikimapper-svg'), 'wikimapper.png', {
+      backgroundColor: 'white',
+      scale: 1.5
+    });
   }
 
 });

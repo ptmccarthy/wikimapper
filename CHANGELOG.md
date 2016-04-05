@@ -1,3 +1,13 @@
+## 2.0.1 (04-04-2016)
+- Add high-res 38px icons for high-dpi displays.
+
+## 2.0.0 (03-02-2016)
+All-new version 2.0!
+- Slick new interface!
+- More efficient and more accurate page tracking!
+- History search, filtering, export to PNG & SVG!
+- Lots of little fixes and tweaks!
+
 ## 1.0.1 (09-26-2014)
 Bugfixes:
 - Fixed an issue where filter was not hiding appropriately when viewing a historical session.

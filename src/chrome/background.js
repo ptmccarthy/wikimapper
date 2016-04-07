@@ -63,7 +63,8 @@ module.exports = {
     },
       { url: [
         { urlContains: '.wikipedia.org/wiki' },
-        { urlContains: '.wiktionary.org/wiki'}
+        { urlContains: '.wiktionary.org/wiki'},
+        { urlMatches: '.wikiwand.com/[A-Za-z]{2}/'}
       ]}
     );
 

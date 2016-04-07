@@ -7,6 +7,8 @@ WikiMapper creates a historical tree of your Wikipedia browsing so that you can 
 
 WikiMapper is available for free in the Chrome Web Store! [Click here.](https://chrome.google.com/webstore/detail/wikimapper/feiheebgoilmbkaddngcoocjbogfchlb?hl=en&gl=US)
 
+**NEW!** WikiMapper now supports browsing Wikipedia via the [Wikiwand extension!](http://www.wikiwand.com/) When installed, Wikiwand restyles beautifies Wikipedia for you automatically.
+
 ![This xkcd comic illustrates the purpose pretty well.](http://imgs.xkcd.com/comics/the_problem_with_wikipedia.png)
 
 (Comic source: http://xkcd.com/214/)

@@ -1,3 +1,6 @@
+## 2.0.2 (04-07-2016)
+- Add support for browsing Wikipedia via Wikiwand.
+
 ## 2.0.1 (04-04-2016)
 - Add high-res 38px icons for high-dpi displays.
 

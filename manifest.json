@@ -13,7 +13,10 @@
   "author": "Patrick McCarthy",
   "homepage_url": "http://www.github.com/ptmccarthy/wikimapper",
 
-  "background": { "scripts": ["background.js"] },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
 
   "permissions": [
     "tabs",

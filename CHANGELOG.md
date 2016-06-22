@@ -1,3 +1,6 @@
+## 2.0.3 (06-21-2016)
+- Set `persistent: false` flag in manifest to convert the background script to be an event script. This is recommended behavior from Google, and there is nothing in the background script that requires in-memory persistence.
+
 ## 2.0.2 (04-07-2016)
 - Add support for browsing Wikipedia via Wikiwand.
 

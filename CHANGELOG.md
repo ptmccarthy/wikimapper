@@ -1,3 +1,7 @@
+## 2.0.4 (09-24-2016)
+- Revert the non-persistent change from 2.0.3. It seems to cause intermittent issues with session detection.
+
+
 ## 2.0.3 (06-21-2016)
 - Set `persistent: false` flag in manifest to convert the background script to be an event script. This is recommended behavior from Google, and there is nothing in the background script that requires in-memory persistence.
 

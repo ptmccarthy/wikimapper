@@ -40,7 +40,7 @@
     "time-grunt": "~1.2.2",
     "jshint-stylish": "~2.1.0",
     "grunt-browserify": "~4.0.1",
-    "handlebars": "~4.0.4",
+    "handlebars": "~4.7.7",
     "hbsfy": "~2.4.1",
     "karma": "~0.13.15",
     "grunt-karma-new": "~0.11.2",

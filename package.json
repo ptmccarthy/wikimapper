@@ -1,6 +1,6 @@
 {
   "name": "wikimapper",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "repository": {
     "type": "git",
     "url": "git://github.com/ptmccarthy/wikimapper"
@@ -11,6 +11,9 @@
     "wikimapper/templates": "./src/web/js/templates.js",
     "wikimapper/resources": "./src/web/js/resources.js",
     "wikimapper/viewstate": "./src/web/js/models/view-state.js"
+  },
+  "scripts": {
+    "build": "grunt build:bundle"
   },
   "dependencies": {
     "backbone": "~1.2.3",

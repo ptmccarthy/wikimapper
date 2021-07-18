@@ -82,7 +82,7 @@ module.exports = {
 
       // First check if this navigation happened in the same tab as its parent
       // by checking our existing sessions & tabs
-      if (_.contains(session.tabs, commitData.tabId)) {
+      if (_.includes(session.tabs, commitData.tabId)) {
         ret.id = session.id;
         ret.parentNode = tabStatus[commitData.tabId].id;
         ret.nodeIndex = session.nodeIndex;
@@ -91,7 +91,7 @@ module.exports = {
       // Otherwise, this is a child tab of an existing parent tab
       // (if it has an openerTabId to use)
       else if (commitData.openerTabId) {
-        if (_.contains(session.tabs, commitData.openerTabId)) {
+        if (_.includes(session.tabs, commitData.openerTabId)) {
           ret.id = session.id;
           ret.parentNode = tabStatus[commitData.openerTabId].id;
           ret.nodeIndex = session.nodeIndex;
@@ -190,7 +190,7 @@ module.exports = {
    */
   updateName: function(tabId, url, name, redirectedFrom) {
     var session = _.find(this.activeSessions, function(s) {
-      return _.contains(s.tabs, tabId);
+      return _.includes(s.tabs, tabId);
     });
 
     Storage.updatePageName(session.id, url, name, redirectedFrom);

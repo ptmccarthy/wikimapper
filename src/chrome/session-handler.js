@@ -8,7 +8,7 @@
 var _ = require('lodash');
 
 // Internal Dependencies
-var Storage =    require('./storage');
+var Storage = require('./storage');
 
 module.exports = {
 
@@ -21,7 +21,6 @@ module.exports = {
    * @param commitData
    */
   handler: function(commitData) {
-
     var session = this.findSessionOf(commitData);
     var page = Storage.createPageObject(session, commitData);
 
@@ -79,14 +78,13 @@ module.exports = {
 
     // Look for an existing session in active sessions list
     this.activeSessions.forEach(function(session) {
-
       // First check if this navigation happened in the same tab as its parent
       // by checking our existing sessions & tabs
       if (_.includes(session.tabs, commitData.tabId)) {
         ret.id = session.id;
         ret.parentNode = tabStatus[commitData.tabId].id;
         ret.nodeIndex = session.nodeIndex;
-      }
+      } // eslint-disable-line brace-style
 
       // Otherwise, this is a child tab of an existing parent tab
       // (if it has an openerTabId to use)
@@ -107,7 +105,6 @@ module.exports = {
     } else {
       return this.createNewSession(commitData);
     }
-
   },
 
   /**
@@ -144,7 +141,7 @@ module.exports = {
       commitData.forwardChildren = this.tabStatus[details.tabId].children;
 
       this.tabStatus[details.tabId] = backPage;
-    }
+    } // eslint-disable-line brace-style
 
     // forward button
     else {
@@ -170,7 +167,7 @@ module.exports = {
   processNavigation: function(details) {
     var self = this;
     var commitData = details;
-    
+
     chrome.tabs.get(details.tabId, function(tab) {
       if (tab.openerTabId) {
         commitData.openerTabId = tab.openerTabId;

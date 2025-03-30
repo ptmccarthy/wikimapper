@@ -2,7 +2,7 @@
 
 // External
 var Backbone = require('backbone');
-var _ =        require('lodash');
+var _ = require('lodash');
 
 // Internal
 var enums = require('wikimapper/enums');

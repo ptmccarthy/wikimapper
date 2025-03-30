@@ -5,15 +5,15 @@
 'use strict';
 
 // External
-var Backbone =       require('backbone');
-var saveSvgAsPng   = require('save-svg-as-png');
-var svgCrowbar =     require('../../lib/svg-crowbar');
+var Backbone = require('backbone');
+var saveSvgAsPng = require('save-svg-as-png');
+var svgCrowbar = require('../../lib/svg-crowbar');
 
 // Internal
-var enums =      require('wikimapper/enums');
-var templates =  require('wikimapper/templates');
-var ViewState =  require('wikimapper/viewstate');
-var TreeView =   require('./tree');
+var enums = require('wikimapper/enums');
+var templates = require('wikimapper/templates');
+var ViewState = require('wikimapper/viewstate');
+var TreeView = require('./tree');
 
 module.exports = Backbone.View.extend({
 

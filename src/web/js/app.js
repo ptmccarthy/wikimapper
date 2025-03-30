@@ -8,7 +8,7 @@
 var $ = require('jquery');
 
 // Internal Dependencies
-var ViewState =         require('wikimapper/viewstate');
+var ViewState = require('wikimapper/viewstate');
 var StorageCollection = require('./collections/localStorage');
 
 module.exports = {
@@ -26,7 +26,6 @@ module.exports = {
   },
 
   showBody: function(view) {
-
     if (this.currentView) {
       if (this.currentView.close) {
         this.currentView.close();

@@ -6,9 +6,9 @@
 
 // External
 var Backbone = require('backbone');
-var d3 =       require('d3');
-var $ =        require('jquery');
-var _ =        require('lodash');
+var d3 = require('d3');
+var $ = require('jquery');
+var _ = require('lodash');
 
 module.exports = Backbone.View.extend({
 

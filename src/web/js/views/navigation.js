@@ -2,8 +2,8 @@
 
 // External Dependencies
 var Backbone = require('backbone');
-var $ =        require('jquery');
-var _ =        require('lodash');
+var $ = require('jquery');
+var _ = require('lodash');
 
 // Internal Dependencies
 var templates = require('wikimapper/templates');

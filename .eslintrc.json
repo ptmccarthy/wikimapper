@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "webextensions": true,
+    "jasmine": true
+  },
+  "extends": "standard",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "space-before-function-paren": ["error", "never"],
+    "comma-dangle": ["error", "never"],
+    "no-var": "off", // TODO: refactor to use const/let
+    "prefer-const": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "semi": ["error", "always"]
+  }
+}

@@ -1,10 +1,9 @@
 'use strict';
 
-var App =      require('../../../src/chrome/background'),
-    Sessions = require('../../../src/chrome/session-handler');
+var App = require('../../../src/chrome/background');
+var Sessions = require('../../../src/chrome/session-handler');
 
 describe('Session handler', function() {
-
   beforeAll(function() {
     App.initialize();
   });
@@ -23,10 +22,10 @@ describe('Session handler', function() {
   });
 
   it('should be able to clear a session', function() {
-    Sessions.activeSessions = [{ id: 123 }, { id: 543} , { id: 998} ];
+    Sessions.activeSessions = [{ id: 123 }, { id: 543 }, { id: 998 }];
 
     Sessions.clearSession(543);
-    expect(Sessions.activeSessions).toEqual([{ id: 123}, { id: 998} ]);
+    expect(Sessions.activeSessions).toEqual([{ id: 123 }, { id: 998 }]);
 
     Sessions.clearSession(123);
     expect(Sessions.activeSessions).toEqual([{ id: 998 }]);
@@ -36,7 +35,7 @@ describe('Session handler', function() {
   });
 
   it('should be able to clear all sessions', function() {
-    Sessions.activeSessions = [{ id: 123 }, { id: 543} , { id: 998} ];
+    Sessions.activeSessions = [{ id: 123 }, { id: 543 }, { id: 998 }];
 
     Sessions.clearAllSessions();
     expect(Sessions.activeSessions.length).toBe(0);
@@ -44,7 +43,7 @@ describe('Session handler', function() {
 
   it('should be able to process navigation events', function() {
     spyOn(window.chrome.tabs, 'get');
-    var details = {tabId: 566, openerId: 420};
+    var details = { tabId: 566, openerId: 420 };
 
     Sessions.processNavigation(details);
     expect(window.chrome.tabs.get).toHaveBeenCalledWith(details.tabId, jasmine.any(Function));
@@ -65,20 +64,20 @@ describe('Session handler', function() {
   });
 
   it('should be able to find an existing session', function() {
-    var commitData = {tabId: 3};
+    var commitData = { tabId: 3 };
     var session;
 
     Sessions.activeSessions = [
-      {id: 501, tabs: [1, 2, 3]},
-      {id: 650, tabs: [4, 5]}
+      { id: 501, tabs: [1, 2, 3] },
+      { id: 650, tabs: [4, 5] }
     ];
 
     Sessions.tabStatus = {
-      1: {id: 3},
-      2: {id: 4},
-      3: {id: 500},
-      4: {id: 204},
-      5: {id: 7}
+      1: { id: 3 },
+      2: { id: 4 },
+      3: { id: 500 },
+      4: { id: 204 },
+      5: { id: 7 }
     };
 
     // find a session in the same tab
@@ -90,5 +89,4 @@ describe('Session handler', function() {
     session = Sessions.findSessionOf(commitData);
     expect(session.id).toEqual(650);
   });
-
 });

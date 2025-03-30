@@ -46,16 +46,15 @@ module.exports = function(grunt) {
       }
     },
 
-    jshint: {
+    eslint: {
       options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish'),
-        ignores: ['<%= config.src %>/web/lib/**/*.js']
+        overrideConfigFile: '.eslintrc.json',
+        fix: true
       },
-      all: [
+      target: [
         '/*.js',
-        '<%= config.src %>/',
-        'test/spec/{,*/}*.js'
+        '<%= config.src %>/**/*.js',
+        'test/spec/**/*.js'
       ]
     },
 
@@ -165,7 +164,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('prepare:bundle', 'Build preparation steps', [
     'clean:dist',
-    'jshint:all',
+    'eslint',
     'copy:all'
   ]);
 

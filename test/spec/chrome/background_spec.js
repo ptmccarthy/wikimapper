@@ -3,7 +3,6 @@
 var App = require('../../../src/chrome/background');
 
 describe('Background initialization', function() {
-
   beforeAll(function() {
     spyOn(window.chrome.runtime.onInstalled, 'addListener');
     spyOn(window.chrome.runtime.onMessage, 'addListener');

@@ -1,11 +1,10 @@
 'use strict';
 
-var Storage =     require('../../../src/chrome/storage');
+var Storage = require('../../../src/chrome/storage');
 var mockSession = require('../../resources/mock_session');
-var commitData =  require('../../resources/commit_data');
+var commitData = require('../../resources/commit_data');
 
 describe('Storage API', function() {
-
   beforeAll(function() {
     spyOn(window.localStorage, 'getItem');
     spyOn(window.localStorage, 'setItem');

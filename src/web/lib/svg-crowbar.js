@@ -24,7 +24,7 @@ var svgCrowbar = function() {
         if (el.contentDocument) {
           documents.push(el.contentDocument);
         }
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     });
@@ -34,7 +34,7 @@ var svgCrowbar = function() {
         if (el.contentDocument) {
           documents.push(el.contentDocument);
         }
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     });
@@ -75,56 +75,52 @@ var svgCrowbar = function() {
 
     buttonsContainer.setAttribute('class', 'svg-crowbar');
     buttonsContainer.style['z-index'] = 1e7;
-    buttonsContainer.style['position'] = 'absolute';
-    buttonsContainer.style['top'] = 0;
-    buttonsContainer.style['left'] = 0;
-
-
+    buttonsContainer.style.position = 'absolute';
+    buttonsContainer.style.top = 0;
+    buttonsContainer.style.left = 0;
 
     var background = document.createElement('div');
     body.appendChild(background);
 
     background.setAttribute('class', 'svg-crowbar');
-    background.style['background'] = 'rgba(255, 255, 255, 0.7)';
-    background.style['position'] = 'fixed';
-    background.style['left'] = 0;
-    background.style['top'] = 0;
-    background.style['width'] = '100%';
-    background.style['height'] = '100%';
+    background.style.background = 'rgba(255, 255, 255, 0.7)';
+    background.style.position = 'fixed';
+    background.style.left = 0;
+    background.style.top = 0;
+    background.style.width = '100%';
+    background.style.height = '100%';
 
     sources.forEach(function(d, i) {
       var buttonWrapper = document.createElement('div');
       buttonsContainer.appendChild(buttonWrapper);
       buttonWrapper.setAttribute('class', 'svg-crowbar');
-      buttonWrapper.style['position'] = 'absolute';
-      buttonWrapper.style['top'] = (d.top + document.body.scrollTop) + 'px';
-      buttonWrapper.style['left'] = (document.body.scrollLeft + d.left) + 'px';
-      buttonWrapper.style['padding'] = '4px';
+      buttonWrapper.style.position = 'absolute';
+      buttonWrapper.style.top = (d.top + document.body.scrollTop) + 'px';
+      buttonWrapper.style.left = (document.body.scrollLeft + d.left) + 'px';
+      buttonWrapper.style.padding = '4px';
       buttonWrapper.style['border-radius'] = '3px';
-      buttonWrapper.style['color'] = 'white';
+      buttonWrapper.style.color = 'white';
       buttonWrapper.style['text-align'] = 'center';
       buttonWrapper.style['font-family'] = 'Lucida Sans Unicode, Lucida Grande, Helvetica Neue';
-      buttonWrapper.style['background'] = 'rgba(0, 0, 0, 0.8)';
+      buttonWrapper.style.background = 'rgba(0, 0, 0, 0.8)';
       buttonWrapper.style['box-shadow'] = '0px 4px 18px rgba(0, 0, 0, 0.4)';
-      buttonWrapper.style['cursor'] = 'move';
-      buttonWrapper.textContent =  'SVG #' + i + ': ' + (d.id ? '#' + d.id : '') + (d.class ? '.' + d.class : '');
+      buttonWrapper.style.cursor = 'move';
+      buttonWrapper.textContent = 'SVG #' + i + ': ' + (d.id ? '#' + d.id : '') + (d.class ? '.' + d.class : '');
 
       var button = document.createElement('button');
       buttonWrapper.appendChild(button);
       button.setAttribute('data-source-id', i);
-      button.style['width'] = '150px';
+      button.style.width = '150px';
       button.style['font-size'] = '12px';
       button.style['line-height'] = '1.4em';
-      button.style['margin'] = '5px 0 0 0';
+      button.style.margin = '5px 0 0 0';
       button.textContent = 'Download';
 
       button.onclick = function() {
         // console.log(el, d, i, sources)
         download(d);
       };
-
     });
-
   }
 
   function cleanup() {
@@ -135,25 +131,22 @@ var svgCrowbar = function() {
     });
   }
 
-
   function getSources(doc, styles) {
-    var svgInfo = [],
-        svgs = doc.querySelectorAll('svg');
+    var svgInfo = [];
+    var svgs = doc.querySelectorAll('svg');
 
     styles = (styles === undefined) ? '' : styles;
 
-    [].forEach.call(svgs, function (svg) {
-
+    [].forEach.call(svgs, function(svg) {
       svg.setAttribute('version', '1.1');
 
       var defsEl = document.createElement('defs');
-      svg.insertBefore(defsEl, svg.firstChild); //TODO   .insert('defs', ':first-child')
+      svg.insertBefore(defsEl, svg.firstChild); // TODO   .insert('defs', ':first-child')
       // defsEl.setAttribute('class', 'svg-crowbar');
 
       var styleEl = document.createElement('style');
       defsEl.appendChild(styleEl);
       styleEl.setAttribute('type', 'text/css');
-
 
       // removing attributes so they aren't doubled up
       svg.removeAttribute('xmlns');
@@ -195,14 +188,14 @@ var svgCrowbar = function() {
       filename = window.document.title.replace(/[^a-z0-9]/gi, '-').toLowerCase();
     }
 
-    var url = window.URL.createObjectURL(new Blob(source.source, { 'type' : 'text\/xml' }));
+    var url = window.URL.createObjectURL(new Blob(source.source, { type: 'text/xml' }));
 
     var a = document.createElement('a');
     body.appendChild(a);
     a.setAttribute('class', 'svg-crowbar');
     a.setAttribute('download', filename + '.svg');
     a.setAttribute('href', url);
-    a.style['display'] = 'none';
+    a.style.display = 'none';
     a.click();
 
     setTimeout(function() {
@@ -230,8 +223,8 @@ var svgCrowbar = function() {
       }
     }
 
-    var styles = '',
-        styleSheets = doc.styleSheets;
+    var styles = '';
+    var styleSheets = doc.styleSheets;
 
     if (styleSheets) {
       for (var i = 0; i < styleSheets.length; i++) {

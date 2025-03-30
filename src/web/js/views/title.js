@@ -8,7 +8,7 @@
 var Backbone = require('backbone');
 
 // Internal Dependencies
-var enums =     require('wikimapper/enums');
+var enums = require('wikimapper/enums');
 var templates = require('wikimapper/templates');
 var ViewState = require('wikimapper/viewstate');
 

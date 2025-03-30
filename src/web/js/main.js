@@ -5,11 +5,11 @@
 
 // External Dependencies
 var Backbone = require('backbone');
-var $ =        require('jquery');
+var $ = require('jquery');
 
 // Internal Dependencies
-var App =       require('./app');
-var Router =    require('./router');
+var App = require('./app');
+var Router = require('./router');
 var ViewState = require('./models/view-state');
 
 // Give jQuery to Backbone

@@ -39,7 +39,7 @@ describe('Session handler', function() {
     Sessions.activeSessions = [{ id: 123 }, { id: 543} , { id: 998} ];
 
     Sessions.clearAllSessions();
-    expect(Sessions.activeSessions = []);
+    expect(Sessions.activeSessions.length).toBe(0);
   });
 
   it('should be able to process navigation events', function() {

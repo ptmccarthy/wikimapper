@@ -28,7 +28,7 @@ module.exports = function(grunt) {
       dev: {
         script: 'test/server.js',
         options: {
-          nodeArgs: ['--debug'],
+          nodeArgs: ['--inspect'],
           watch: ['test/server.js', '<%= config.dist %>']
         }
       }
@@ -114,13 +114,6 @@ module.exports = function(grunt) {
       }
     },
 
-    fontAwesomeVars: {
-      main: {
-        variablesLessPath: '<%= config.nodeModules %>/font-awesome/less/variables.less',
-        fontPath: '../fonts'
-      }
-    },
-
     less: {
       app: {
         options: {
@@ -128,7 +121,8 @@ module.exports = function(grunt) {
           sourceMap: true,
           sourceMapFilename: '<%= config.dist %>/styles/wikimapper.css.map',
           sourceMapURL: 'wikimapper.css.map',
-          sourceMapBasepath: '<%= config.dist %>'
+          sourceMapBasepath: '<%= config.dist %>',
+          javascriptEnabled: true
         },
         files: {
           '<%= config.dist %>/styles/wikimapper.css': '<%= config.src %>/web/styles/*.less'
@@ -146,9 +140,9 @@ module.exports = function(grunt) {
         dest: '<%= config.dist %>/js/wikimapper.js',
         options: {
           transform: ['hbsfy'],
-          // setting debug creates source map symbols
           browserifyOptions: {
-            debug: true
+            debug: true,
+            standalone: 'WikiMapper'
           },
           watch: true
         }
@@ -160,7 +154,8 @@ module.exports = function(grunt) {
         dest: '<%= config.dist %>/background.js',
         options: {
           browserifyOptions: {
-            debug: true
+            debug: true,
+            standalone: 'WikiMapperBackground'
           },
           watch: true
         }
@@ -171,14 +166,12 @@ module.exports = function(grunt) {
   grunt.registerTask('prepare:bundle', 'Build preparation steps', [
     'clean:dist',
     'jshint:all',
-    'copy:all',
-    'fontAwesomeVars:main'
+    'copy:all'
   ]);
 
   grunt.registerTask('prepare:debug', 'Build preparation steps', [
     'clean:dist',
-    'copy:all',
-    'fontAwesomeVars:main'
+    'copy:all'
   ]);
 
   grunt.registerTask('build:bundle', 'Build WikiMapper extension bundle', [
@@ -197,4 +190,8 @@ module.exports = function(grunt) {
     'concurrent:dev'
   ]);
 
+  // Add a serve task for development
+  grunt.registerTask('serve', 'Start development server', [
+    'build:debug'
+  ]);
 };

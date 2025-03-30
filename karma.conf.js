@@ -2,15 +2,9 @@
 
 module.exports = function(karma) {
   karma.set({
-    frameworks: ['browserify', 'jasmine'],
+    frameworks: ['browserify', 'jasmine', 'sinon'],
 
     files: [
-      {
-        pattern: './test/spec/chrome/chrome-mock.js',
-        watched: false,
-        included: true,
-        served: true
-      },
       {
         pattern: './test/**/*spec.js',
         watched: false,
@@ -33,8 +27,7 @@ module.exports = function(karma) {
     reporters: ['dots', 'kjhtml'],
 
     preprocessors: {
-      'test/**/*spec.js': ['browserify'],
-      'test/stubs/**/*.js': ['browserify']
+      'test/**/*spec.js': ['browserify']
     },
 
     browsers: ['ChromeHeadless'],
@@ -43,10 +36,10 @@ module.exports = function(karma) {
       ChromeHeadless: {
         base: 'Chrome',
         flags: [
-          '--no-sandbox',
-          '--headless',
+          '--headless=new',
           '--disable-gpu',
-          '--remote-debugging-port=9222'
+          '--remote-debugging-port=9222',
+          '--disable-dev-shm-usage'
         ]
       }
     },

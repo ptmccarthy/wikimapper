@@ -5,12 +5,6 @@
 
 'use strict';
 
-// If running tests, the Chrome API won't be injected to the global scope.
-// This block injects the stubbed out chrome in its place so tests can run.
-if (!window.chrome) {
-  window.chrome = require('../../test/stubs/chrome');
-}
-
 // External Dependencies
 var _ = require('lodash');
 

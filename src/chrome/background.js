@@ -16,8 +16,8 @@ var _ = require('lodash');
 
 // Internal Dependencies
 var Sessions = require('./session-handler');
-var Storage =  require('./storage');
-var enums =    require('./enums');
+var Storage = require('./storage');
+var enums = require('./enums');
 
 module.exports = {
 
@@ -48,7 +48,6 @@ module.exports = {
     } else if (_.includes(this.triggers, details.transitionType)) {
       Sessions.processNavigation(details);
     }
-
   },
 
   /**
@@ -61,16 +60,18 @@ module.exports = {
     chrome.webNavigation.onCommitted.addListener(function(details) {
       self.eventFilter(details);
     },
-      { url: [
+    {
+      url: [
         { urlContains: '.wikipedia.org/wiki' },
-        { urlContains: '.wiktionary.org/wiki'},
-        { urlMatches: '.wikiwand.com/[A-Za-z]{2}/'}
-      ]}
+        { urlContains: '.wiktionary.org/wiki' },
+        { urlMatches: '.wikiwand.com/[A-Za-z]{2}/' }
+      ]
+    }
     );
 
     // Listener for incoming messages
     chrome.runtime.onMessage.addListener(function(request, sender) {
-      switch(request.type) {
+      switch (request.type) {
         case (enums.messageTypes.deleteItem): {
           if (request.sessionId) {
             Storage.deleteItem(request.sessionId);
@@ -89,14 +90,14 @@ module.exports = {
 
     // Listener for when the user clicks on the Wikimapper button
     chrome.browserAction.onClicked.addListener(function() {
-      chrome.tabs.create({'url': chrome.extension.getURL('index.html')}, function() {
+      chrome.tabs.create({ url: chrome.extension.getURL('index.html') }, function() {
       });
     });
 
     // Listener for first install
     chrome.runtime.onInstalled.addListener(function(details) {
-      if(details.reason === 'install') {
-        chrome.tabs.create({'url': 'index.html'});
+      if (details.reason === 'install') {
+        chrome.tabs.create({ url: 'index.html' });
       }
     });
   }

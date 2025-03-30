@@ -18,7 +18,7 @@ module.exports = Backbone.View.extend({
     this.collection = options.collection;
   },
 
-  render: function () {
+  render: function() {
     this.updateSortState();
 
     this.$el.html(this.template({
@@ -37,7 +37,6 @@ module.exports = Backbone.View.extend({
     this.sortByDate = false;
     this.sortByName = false;
     this.sortByNodes = false;
-
 
     switch (this.collection.sortingField) {
       case 'id':

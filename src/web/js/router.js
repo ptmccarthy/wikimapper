@@ -1,16 +1,16 @@
 'use strict';
 
 var Backbone = require('backbone');
-var $ =        require('jquery');
+var $ = require('jquery');
 
 var App = require('./app');
 
 Backbone.$ = $;
 
 // Views
-var NavView =         require('./views/navigation');
-var TitleView =       require('./views/title');
-var LatestView =     require('./views/latest');
+var NavView = require('./views/navigation');
+var TitleView = require('./views/title');
+var LatestView = require('./views/latest');
 var HistoryItemView = require('./views/history-item');
 var HistoryListView = require('./views/history');
 
@@ -59,7 +59,7 @@ module.exports = Backbone.Router.extend({
     this.ensureNav();
 
     App.showBody(new HistoryItemView({
-      session: session
+      session
     }));
   },
 

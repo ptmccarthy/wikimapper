@@ -8,7 +8,7 @@
 var Backbone = require('backbone');
 
 // Internal
-var enums =     require('wikimapper/enums');
+var enums = require('wikimapper/enums');
 var templates = require('wikimapper/templates');
 var ViewState = require('wikimapper/viewstate');
 
@@ -29,8 +29,8 @@ module.exports = Backbone.View.extend({
   },
 
   domElements: {
-    'tableContainer': '#history-table-container',
-    'selectAll': '#history-select-all'
+    tableContainer: '#history-table-container',
+    selectAll: '#history-select-all'
   },
 
   initialize: function(options) {
@@ -90,7 +90,7 @@ module.exports = Backbone.View.extend({
     // is the *opposite* of its previously-known state
     var checked = checkbox.is(':not(:checked)');
 
-    var item = this.collection.findWhere({ id: id });
+    var item = this.collection.findWhere({ id });
     if (item) {
       item.set('checked', checked);
       checkbox.prop('checked', checked);
@@ -100,7 +100,7 @@ module.exports = Backbone.View.extend({
 
     // if checking, set select all if necessary
     if (checked) {
-      var unselectedItem = this.collection.findWhere({checked: false, hidden: false});
+      var unselectedItem = this.collection.findWhere({ checked: false, hidden: false });
       if (!unselectedItem) {
         this.collection.selectAll = true;
         this.$(this.domElements.selectAll).prop('checked', true);
@@ -135,7 +135,7 @@ module.exports = Backbone.View.extend({
   confirmDelete: function() {
     var confirmed;
     var checked = this.collection.where({ checked: true });
-    var pluralString = checked.length === 1? 'session' : 'sessions';
+    var pluralString = checked.length === 1 ? 'session' : 'sessions';
 
     if (checked.length > 0) {
       confirmed = window.confirm('Are you sure you want to delete ' + checked.length + ' historical ' + pluralString + '?');

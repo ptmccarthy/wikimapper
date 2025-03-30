@@ -8,10 +8,10 @@
 var Backbone = require('backbone');
 
 // Internal
-var enums =     require('wikimapper/enums');
+var enums = require('wikimapper/enums');
 var templates = require('wikimapper/templates');
 var ViewState = require('wikimapper/viewstate');
-var TreeView =  require('./tree');
+var TreeView = require('./tree');
 
 module.exports = Backbone.View.extend({
 

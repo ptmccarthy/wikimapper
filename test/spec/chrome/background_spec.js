@@ -1,22 +1,51 @@
 'use strict';
 
+var sinon = require('sinon');
 var App = require('../../../src/chrome/background');
 
 describe('Background initialization', function() {
-  beforeAll(function() {
-    spyOn(window.chrome.runtime.onInstalled, 'addListener');
-    spyOn(window.chrome.runtime.onMessage, 'addListener');
-    spyOn(window.chrome.webNavigation.onCommitted, 'addListener');
-    spyOn(window.chrome.browserAction.onClicked, 'addListener');
+  var sandbox;
+  var originalChrome;
+
+  beforeEach(function() {
+    sandbox = sinon.createSandbox();
+    originalChrome = window.chrome;
+
+    // Create Chrome API stubs
+    window.chrome = {
+      runtime: {
+        onInstalled: {
+          addListener: sandbox.stub()
+        },
+        onMessage: {
+          addListener: sandbox.stub()
+        }
+      },
+      webNavigation: {
+        onCommitted: {
+          addListener: sandbox.stub()
+        }
+      },
+      browserAction: {
+        onClicked: {
+          addListener: sandbox.stub()
+        }
+      }
+    };
 
     App.initialize();
   });
 
+  afterEach(function() {
+    sandbox.restore();
+    window.chrome = originalChrome;
+  });
+
   it('should set up event listeners', function() {
-    expect(window.chrome.runtime.onInstalled.addListener).toHaveBeenCalled();
-    expect(window.chrome.runtime.onMessage.addListener).toHaveBeenCalled();
-    expect(window.chrome.webNavigation.onCommitted.addListener).toHaveBeenCalled();
-    expect(window.chrome.browserAction.onClicked.addListener).toHaveBeenCalled();
+    expect(window.chrome.runtime.onInstalled.addListener.called).toBe(true);
+    expect(window.chrome.runtime.onMessage.addListener.called).toBe(true);
+    expect(window.chrome.webNavigation.onCommitted.addListener.called).toBe(true);
+    expect(window.chrome.browserAction.onClicked.addListener.called).toBe(true);
   });
 
   // TODO: test event filter

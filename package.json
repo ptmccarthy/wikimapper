@@ -10,7 +10,12 @@
     "wikimapper/enums": "./src/web/js/enums.js",
     "wikimapper/templates": "./src/web/js/templates.js",
     "wikimapper/resources": "./src/web/js/resources.js",
-    "wikimapper/viewstate": "./src/web/js/models/view-state.js"
+    "wikimapper/viewstate": "./src/web/js/models/view-state.js",
+    "timers": "./node_modules/timers-browserify/main.js"
+  },
+  "browserify-shim": {
+    "timers": "global:timers",
+    "process": "global:process"
   },
   "scripts": {
     "build": "grunt build:bundle",
@@ -28,6 +33,7 @@
     "save-svg-as-png": "^1.4.17"
   },
   "devDependencies": {
+    "browserify-shim": "^3.8.14",
     "errorhandler": "^1.5.1",
     "eslint": "^8.56.0",
     "eslint-config-standard": "^17.1.0",
@@ -52,9 +58,12 @@
     "karma-chrome-launcher": "^3.2.0",
     "karma-jasmine": "^3.1.1",
     "karma-jasmine-html-reporter": "^1.7.0",
+    "karma-sinon": "^1.0.5",
     "load-grunt-tasks": "^5.1.0",
     "morgan": "^1.10.0",
-    "time-grunt": "^2.0.0"
+    "sinon": "^7.5.0",
+    "time-grunt": "^2.0.0",
+    "timers-browserify": "^2.0.12"
   },
   "engines": {
     "node": ">=18.0.0"

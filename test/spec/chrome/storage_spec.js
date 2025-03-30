@@ -1,15 +1,23 @@
 'use strict';
 
+var sinon = require('sinon');
 var Storage = require('../../../src/chrome/storage');
 var mockSession = require('../../resources/mock_session');
 var commitData = require('../../resources/commit_data');
 
 describe('Storage API', function() {
-  beforeAll(function() {
-    spyOn(window.localStorage, 'getItem');
-    spyOn(window.localStorage, 'setItem');
-    spyOn(window.localStorage, 'removeItem');
-    spyOn(window.localStorage, 'clear');
+  var sandbox;
+
+  beforeEach(function() {
+    sandbox = sinon.createSandbox();
+    sandbox.spy(window.localStorage, 'getItem');
+    sandbox.spy(window.localStorage, 'setItem');
+    sandbox.spy(window.localStorage, 'removeItem');
+    sandbox.spy(window.localStorage, 'clear');
+  });
+
+  afterEach(function() {
+    sandbox.restore();
   });
 
   it('should be able to detect a search results page and name it appropriately', function() {

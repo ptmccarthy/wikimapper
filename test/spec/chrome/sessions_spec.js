@@ -1,16 +1,59 @@
 'use strict';
 
+var sinon = require('sinon');
 var App = require('../../../src/chrome/background');
 var Sessions = require('../../../src/chrome/session-handler');
 
 describe('Session handler', function() {
+  var sandbox;
+  var originalChrome;
+
   beforeAll(function() {
+    // Store original Chrome object if it exists
+    originalChrome = window.chrome;
+
+    // Create Chrome API stubs for initialization
+    window.chrome = {
+      runtime: {
+        onInstalled: { addListener: function() {} },
+        onMessage: { addListener: function() {} }
+      },
+      webNavigation: {
+        onCommitted: { addListener: function() {} }
+      },
+      browserAction: {
+        onClicked: { addListener: function() {} }
+      }
+    };
+
     App.initialize();
   });
 
   beforeEach(function() {
+    sandbox = sinon.createSandbox();
+
+    // Create Chrome API stubs for each test
+    window.chrome.tabs = {
+      get: sandbox.stub().callsFake(function(tabId, callback) {
+        callback({
+          id: tabId,
+          url: 'https://en.wikipedia.org/wiki/Example_Page',
+          title: 'Example Page'
+        });
+      })
+    };
+
     Sessions.activeSessions = [];
     Sessions.tabStatus = {};
+  });
+
+  afterEach(function() {
+    sandbox.restore();
+  });
+
+  afterAll(function() {
+    // Restore original Chrome object
+    window.chrome = originalChrome;
   });
 
   it('should have no existing tab status', function() {
@@ -42,17 +85,23 @@ describe('Session handler', function() {
   });
 
   it('should be able to process navigation events', function() {
-    spyOn(window.chrome.tabs, 'get');
-    var details = { tabId: 566, openerId: 420 };
+    var details = {
+      tabId: 566,
+      openerId: 420,
+      url: 'https://en.wikipedia.org/wiki/Example_Page',
+      timeStamp: Date.now()
+    };
 
     Sessions.processNavigation(details);
-    expect(window.chrome.tabs.get).toHaveBeenCalledWith(details.tabId, jasmine.any(Function));
+    expect(window.chrome.tabs.get.calledWith(details.tabId, sinon.match.func)).toBe(true);
   });
 
   it('should be able to create a session', function() {
     var newSession;
     var commitData = {
-      tabId: 567
+      tabId: 567,
+      url: 'https://en.wikipedia.org/wiki/Example_Page',
+      timeStamp: Date.now()
     };
 
     Sessions.createNewSession(commitData);
@@ -64,7 +113,11 @@ describe('Session handler', function() {
   });
 
   it('should be able to find an existing session', function() {
-    var commitData = { tabId: 3 };
+    var commitData = {
+      tabId: 3,
+      url: 'https://en.wikipedia.org/wiki/Example_Page',
+      timeStamp: Date.now()
+    };
     var session;
 
     Sessions.activeSessions = [
@@ -85,7 +138,12 @@ describe('Session handler', function() {
     expect(session.id).toEqual(501);
 
     // find a session in a parent tab
-    commitData = { tabId: 8, openerTabId: 5 };
+    commitData = {
+      tabId: 8,
+      openerTabId: 5,
+      url: 'https://en.wikipedia.org/wiki/Example_Page',
+      timeStamp: Date.now()
+    };
     session = Sessions.findSessionOf(commitData);
     expect(session.id).toEqual(650);
   });

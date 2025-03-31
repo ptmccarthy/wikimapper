@@ -5,9 +5,9 @@
 
 WikiMapper creates a historical tree of your Wikipedia browsing so that you can see just exactly how you spontaneously wasted 45 minutes and ended up reading about the history of Agriculture in Uzbekistan.
 
-WikiMapper is available for free in the Chrome Web Store! [Click here.](https://chrome.google.com/webstore/detail/wikimapper/feiheebgoilmbkaddngcoocjbogfchlb?hl=en&gl=US)
+**NEW!** WikiMapper now supports the Chrome manifest v3 standard, hopefully ensuring many more years of functionality! Thank you to everyone who reached out to support modernizing this extension, it was no small task and your encouragement made it happen!
 
-**NEW!** WikiMapper now supports browsing Wikipedia via the [Wikiwand extension!](http://www.wikiwand.com/) When installed, Wikiwand restyles beautifies Wikipedia for you automatically.
+WikiMapper is available for free in the Chrome Web Store! [Click here.](https://chrome.google.com/webstore/detail/wikimapper/feiheebgoilmbkaddngcoocjbogfchlb?hl=en&gl=US)
 
 ![This xkcd comic illustrates the purpose pretty well.](http://imgs.xkcd.com/comics/the_problem_with_wikipedia.png)
 

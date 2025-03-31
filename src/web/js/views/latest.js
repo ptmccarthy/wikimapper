@@ -2,8 +2,6 @@
  * Current Session View
  */
 
-'use strict';
-
 // External
 import Backbone from 'backbone';
 

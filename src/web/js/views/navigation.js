@@ -1,5 +1,3 @@
-'use strict';
-
 // External Dependencies
 import Backbone from 'backbone';
 import $ from 'jquery';

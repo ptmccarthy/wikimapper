@@ -3,8 +3,6 @@
  * Handles initialization and listening for navigation events.
  */
 
-'use strict';
-
 // External Dependencies
 import _ from 'lodash';
 

@@ -2,8 +2,6 @@
  * Front-end Application Object
  */
 
-'use strict';
-
 // External Dependencies
 import $ from 'jquery';
 import Backbone from 'backbone';

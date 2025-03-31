@@ -2,8 +2,6 @@
  * Main History View
  */
 
-'use strict';
-
 // External
 import Backbone from 'backbone';
 

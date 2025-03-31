@@ -2,8 +2,6 @@
  * Data storage and access module.
  */
 
-'use strict';
-
 const Storage = {
 
   /**

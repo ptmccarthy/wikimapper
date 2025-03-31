@@ -1,5 +1,3 @@
-'use strict';
-
 import sinon from 'sinon';
 import Sessions from '../../../src/chrome/session-handler.js';
 

@@ -1,5 +1,3 @@
-'use strict';
-
 export default {
 
   navigation: require('../templates/navigation.hbs'),

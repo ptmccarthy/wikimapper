@@ -1,5 +1,3 @@
-'use strict';
-
 import sinon from 'sinon';
 import Storage from '../../../src/chrome/storage.js';
 import mockSession from '../../resources/mock_session.js';

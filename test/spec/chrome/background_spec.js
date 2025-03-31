@@ -1,5 +1,3 @@
-'use strict';
-
 import sinon from 'sinon';
 import { initialize } from '../../../src/chrome/background.js';
 

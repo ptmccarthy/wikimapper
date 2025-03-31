@@ -2,8 +2,6 @@
  * History Item View
  */
 
-'use strict';
-
 // External
 import Backbone from 'backbone';
 import svgCrowbar from '../../lib/svg-crowbar';

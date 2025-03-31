@@ -2,8 +2,6 @@
  * Session handler module.
  */
 
-'use strict';
-
 // External Dependencies
 import _ from 'lodash';
 

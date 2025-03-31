@@ -2,8 +2,6 @@
  * Collection for interfacing with chrome.storage.local.
  */
 
-'use strict';
-
 import Backbone from 'backbone';
 import _ from 'lodash';
 

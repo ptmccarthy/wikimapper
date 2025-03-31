@@ -1,5 +1,3 @@
-'use strict';
-
 // External
 import Backbone from 'backbone';
 import _ from 'lodash';

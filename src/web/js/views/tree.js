@@ -2,8 +2,6 @@
  * Tree Rendering View
  */
 
-'use strict';
-
 // External
 import Backbone from 'backbone';
 import d3 from 'd3';

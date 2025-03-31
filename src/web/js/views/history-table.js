@@ -2,8 +2,6 @@
  * History Table Child View
  */
 
-'use strict';
-
 // External
 import Backbone from 'backbone';
 

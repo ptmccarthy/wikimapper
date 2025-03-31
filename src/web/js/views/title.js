@@ -2,8 +2,6 @@
  * Index/Title View
  */
 
-'use strict';
-
 // External Dependencies
 import Backbone from 'backbone';
 

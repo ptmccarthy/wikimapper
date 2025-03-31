@@ -2,8 +2,6 @@
  * Router for handling navigation between views.
  */
 
-'use strict';
-
 import Backbone from 'backbone';
 import $ from 'jquery';
 

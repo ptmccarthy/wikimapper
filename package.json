@@ -18,8 +18,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.7.1",
     "lodash": "^4.17.21",
-    "moment": "^2.29.4",
-    "save-svg-as-png": "^1.4.17"
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

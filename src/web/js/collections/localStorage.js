@@ -1,5 +1,5 @@
 /**
- * Collection for interfacing with localStorage.
+ * Collection for interfacing with chrome.storage.local.
  */
 
 'use strict';
@@ -18,34 +18,32 @@ export default Backbone.Collection.extend({
     return -model.get('id');
   },
 
-  initialize: function() {
-    this.localStorage = window.localStorage;
-  },
-
   /**
    * Custom Fetch
-   * Retrieves localStorage and converts it to a Backbone.Collection
+   * Retrieves chrome.storage.local and converts it to a Backbone.Collection
    */
   fetch: function() {
-    var history = [];
-    var session = {};
-    var keys = Object.keys(this.localStorage);
+    chrome.storage.local.get(null, function(result) {
+      var history = [];
+      var session = {};
+      var keys = Object.keys(result);
 
-    for (var i = 0; i < keys.length; i++) {
-      session = {};
-      session.id = keys[i];
-      session.tree = JSON.parse(this.localStorage.getItem(this.localStorage.key(i)));
-      history.push(session);
-    }
+      for (var i = 0; i < keys.length; i++) {
+        session = {};
+        session.id = keys[i];
+        session.tree = result[keys[i]];
+        history.push(session);
+      }
 
-    this.parse(history);
-    this.trigger('sync');
+      this.parse(history);
+      this.trigger('sync');
+    }.bind(this));
   },
 
   /**
    * Custom Parse
-   * Add localStorage objects into the collection
-   * @param history - localStorage parsed into an Array of objects
+   * Add chrome.storage.local objects into the collection
+   * @param history - chrome.storage.local parsed into an Array of objects
    */
   parse: function(history) {
     _.each(history, _.bind(function(session) {
@@ -110,9 +108,9 @@ export default Backbone.Collection.extend({
   },
 
   /**
-   * Remove selected sessions from the collection and from localStorage.
+   * Remove selected sessions from the collection and from chrome.storage.local.
    * BEWARE: do not modify the collection during the .each() iteration!!!
-   * Doing so breaks the iteration! Instead, remove it from localStorage and
+   * Doing so breaks the iteration! Instead, remove it from chrome.storage.local and
    * keep a reference to the model in toRemove for bulk removal at the end.
    */
   deleteChecked: function() {
@@ -123,7 +121,7 @@ export default Backbone.Collection.extend({
       var sessionId = session.get('id');
       if (session.get('checked')) {
         toRemove.push(session);
-        self.localStorage.removeItem(sessionId);
+        chrome.storage.local.remove(sessionId);
       }
     });
 

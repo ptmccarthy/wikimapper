@@ -18,7 +18,8 @@
   },
 
   "permissions": [
-    "webNavigation"
+    "webNavigation",
+    "storage"
   ],
 
   "host_permissions": [

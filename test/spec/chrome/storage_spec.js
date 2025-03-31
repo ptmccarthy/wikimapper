@@ -7,17 +7,36 @@ import commitData from '../../resources/commit_data.js';
 
 describe('Storage API', function() {
   var sandbox;
+  var originalChrome;
+
+  beforeAll(function() {
+    // Store original Chrome object if it exists
+    originalChrome = window.chrome;
+
+    // Create Chrome API stubs for initialization
+    window.chrome = {
+      storage: {
+        local: {
+          get: sinon.stub(),
+          set: sinon.stub(),
+          remove: sinon.stub(),
+          clear: sinon.stub()
+        }
+      }
+    };
+  });
 
   beforeEach(function() {
     sandbox = sinon.createSandbox();
-    sandbox.spy(window.localStorage, 'getItem');
-    sandbox.spy(window.localStorage, 'setItem');
-    sandbox.spy(window.localStorage, 'removeItem');
-    sandbox.spy(window.localStorage, 'clear');
   });
 
   afterEach(function() {
     sandbox.restore();
+  });
+
+  afterAll(function() {
+    // Restore original Chrome object
+    window.chrome = originalChrome;
   });
 
   it('should be able to detect a search results page and name it appropriately', function() {
@@ -59,5 +78,49 @@ describe('Storage API', function() {
     expect(page.children).toEqual([]);
     expect(page.data).toBeDefined();
     expect(page.data.url).toEqual(commitData.url);
+  });
+
+  it('should record root node to chrome.storage.local', function() {
+    var page = {
+      data: {
+        sessionId: 'test-session'
+      }
+    };
+
+    Storage.recordRoot(page);
+    expect(window.chrome.storage.local.set.calledWith({ 'test-session': page })).toBe(true);
+  });
+
+  it('should record child node to chrome.storage.local', function() {
+    var page = {
+      id: 2,
+      data: {
+        sessionId: 'test-session',
+        parentId: 1
+      }
+    };
+
+    var mockTree = {
+      id: 1,
+      children: []
+    };
+
+    window.chrome.storage.local.get.callsFake(function(key, callback) {
+      callback({ 'test-session': mockTree });
+    });
+
+    Storage.recordChild(page);
+    expect(window.chrome.storage.local.get.calledWith('test-session')).toBe(true);
+    expect(window.chrome.storage.local.set.called).toBe(true);
+  });
+
+  it('should delete item from chrome.storage.local', function() {
+    Storage.deleteItem('test-session');
+    expect(window.chrome.storage.local.remove.calledWith('test-session')).toBe(true);
+  });
+
+  it('should clear all items from chrome.storage.local', function() {
+    Storage.deleteAll();
+    expect(window.chrome.storage.local.clear.called).toBe(true);
   });
 });

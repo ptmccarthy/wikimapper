@@ -29,25 +29,27 @@ const Storage = {
   },
 
   /**
-   * Record a root node to localStorage
+   * Record a root node to chrome.storage.local
    * @param page - page object to store
    */
   recordRoot: function(page) {
-    localStorage.setItem(page.data.sessionId, JSON.stringify(page));
+    chrome.storage.local.set({ [page.data.sessionId]: page });
   },
 
   /**
-   * Record a new child node to an existing tree in localStorage
+   * Record a new child node to an existing tree in chrome.storage.local
    * @param page - page object to store
    */
   recordChild: function(page) {
-    var tree = JSON.parse(localStorage.getItem(page.data.sessionId));
-    var parent = this.findNode(tree, page.data.parentId);
+    chrome.storage.local.get(page.data.sessionId, function(result) {
+      var tree = result[page.data.sessionId];
+      var parent = this.findNode(tree, page.data.parentId);
 
-    tree.lastNodeIndex = page.id;
-    parent.children.push(page);
+      tree.lastNodeIndex = page.id;
+      parent.children.push(page);
 
-    localStorage.setItem(page.data.sessionId, JSON.stringify(tree));
+      chrome.storage.local.set({ [page.data.sessionId]: tree });
+    }.bind(this));
   },
 
   /**
@@ -110,18 +112,18 @@ const Storage = {
   },
 
   /**
-   * Delete the given sessionId from the localStorage history.
+   * Delete the given sessionId from the chrome.storage.local history.
    * @param sessionId
    */
   deleteItem: function(sessionId) {
-    localStorage.removeItem(sessionId);
+    chrome.storage.local.remove(sessionId);
   },
 
   /**
-   * Delete all localStorage history.
+   * Delete all chrome.storage.local history.
    */
   deleteAll: function() {
-    localStorage.clear();
+    chrome.storage.local.clear();
   }
 };
 

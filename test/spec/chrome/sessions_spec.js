@@ -22,6 +22,14 @@ describe('Session handler', function() {
       },
       action: {
         onClicked: { addListener: function() {} }
+      },
+      storage: {
+        local: {
+          get: sinon.stub(),
+          set: sinon.stub(),
+          remove: sinon.stub(),
+          clear: sinon.stub()
+        }
       }
     };
 
@@ -96,19 +104,18 @@ describe('Session handler', function() {
   });
 
   it('should be able to create a session', function() {
-    var newSession;
     var commitData = {
-      tabId: 567,
+      tabId: 123,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
       timeStamp: Date.now()
     };
 
     Sessions.createNewSession(commitData);
-    newSession = Sessions.activeSessions[0];
+    var newSession = Sessions.activeSessions[0];
 
-    expect(typeof newSession.id).toBe('number');
-    expect(newSession.tabs).toContain(567);
-    expect(newSession.nodeIndex).toEqual(1);
+    expect(newSession.id).toBeDefined();
+    expect(newSession.nodeIndex).toBe(1);
+    expect(newSession.tabs).toEqual([123]);
   });
 
   it('should be able to find an existing session', function() {

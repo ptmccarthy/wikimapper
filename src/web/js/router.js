@@ -51,7 +51,7 @@ export default Backbone.Router.extend({
   },
 
   historyParser: function(sessionId) {
-    var session = App.StorageCollection.findWhere({ id: sessionId });
+    const session = App.StorageCollection.findWhere({ id: sessionId });
 
     if (session) {
       this.historyItem(session);

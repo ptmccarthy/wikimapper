@@ -66,7 +66,7 @@ export default Backbone.View.extend({
    * @param eventArgs
    */
   onTableItemClick: function(eventArgs) {
-    var id = this.$(eventArgs.currentTarget).parent().attr('sessionId');
+    const id = this.$(eventArgs.currentTarget).parent().attr('sessionId');
 
     if (id) {
       ViewState.Router.navigate('history?=' + id, { trigger: true });
@@ -81,14 +81,14 @@ export default Backbone.View.extend({
    * @param eventArgs
    */
   onSelectTableItem: function(eventArgs) {
-    var el = this.$(eventArgs.currentTarget);
-    var id = el.attr('id');
-    var checkbox = el.children('input');
+    const el = this.$(eventArgs.currentTarget);
+    const id = el.attr('id');
+    const checkbox = el.children('input');
     // since its not a native checkbox, the to-be-set checked state
     // is the *opposite* of its previously-known state
-    var checked = checkbox.is(':not(:checked)');
+    const checked = checkbox.is(':not(:checked)');
 
-    var item = this.collection.findWhere({ id });
+    const item = this.collection.findWhere({ id });
     if (item) {
       item.set('checked', checked);
       checkbox.prop('checked', checked);
@@ -98,7 +98,7 @@ export default Backbone.View.extend({
 
     // if checking, set select all if necessary
     if (checked) {
-      var unselectedItem = this.collection.findWhere({ checked: false, hidden: false });
+      const unselectedItem = this.collection.findWhere({ checked: false, hidden: false });
       if (!unselectedItem) {
         this.collection.selectAll = true;
         this.$(this.domElements.selectAll).prop('checked', true);
@@ -119,7 +119,7 @@ export default Backbone.View.extend({
   onSelectAll: function(eventArgs) {
     // since its not a native checkbox, the to-be-set checked state
     // is the *opposite* of its previously-known state
-    var checked = this.$(eventArgs.currentTarget).children('input').is(':not(:checked)');
+    const checked = this.$(eventArgs.currentTarget).children('input').is(':not(:checked)');
     this.collection.selectAll = checked;
     this.collection.each(function(item) {
       if (!item.get('hidden')) {
@@ -131,9 +131,9 @@ export default Backbone.View.extend({
   },
 
   confirmDelete: function() {
-    var confirmed;
-    var checked = this.collection.where({ checked: true });
-    var pluralString = checked.length === 1 ? 'session' : 'sessions';
+    let confirmed;
+    const checked = this.collection.where({ checked: true });
+    const pluralString = checked.length === 1 ? 'session' : 'sessions';
 
     if (checked.length > 0) {
       confirmed = window.confirm('Are you sure you want to delete ' + checked.length + ' historical ' + pluralString + '?');
@@ -147,8 +147,8 @@ export default Backbone.View.extend({
   },
 
   onSortableClick: function(eventArgs) {
-    var sortableId = this.$(eventArgs.currentTarget).attr('id');
-    var sortBy;
+    const sortableId = this.$(eventArgs.currentTarget).attr('id');
+    let sortBy;
 
     switch (sortableId) {
       case 'header-date':
@@ -166,7 +166,7 @@ export default Backbone.View.extend({
   },
 
   onSearchKeyup: function(eventArgs) {
-    var searchTerm = this.$(eventArgs.currentTarget).val();
+    const searchTerm = this.$(eventArgs.currentTarget).val();
     this.collection.selectAll = false;
     this.collection.filterSearch(searchTerm);
   },

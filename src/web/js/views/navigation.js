@@ -40,7 +40,7 @@ export default Backbone.View.extend({
    * @param state - state to set
    */
   setNavState: function(navId, state) {
-    var id = _.invert(this.domElements)[navId];
+    const id = _.invert(this.domElements)[navId];
 
     if (id) {
       ViewState.setNavState(id, state);
@@ -54,8 +54,8 @@ export default Backbone.View.extend({
    * @param eventArgs - click event object
    */
   onNavClick: function(eventArgs) {
-    var $target = this.$(eventArgs.currentTarget);
-    var index = $target.index();
+    const $target = this.$(eventArgs.currentTarget);
+    const index = $target.index();
 
     switch (index) {
       case 0:

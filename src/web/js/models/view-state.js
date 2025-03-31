@@ -25,8 +25,8 @@ const ViewState = Backbone.Model.extend({
    * @param state - state to set on the model
    */
   setNavState: function(id, state) {
-    var navModel = this.get('nav');
-    var navItemState = navModel.get(id);
+    const navModel = this.get('nav');
+    const navItemState = navModel.get(id);
 
     if (navItemState !== state) {
       this.resetHeaderState();
@@ -38,7 +38,7 @@ const ViewState = Backbone.Model.extend({
    * Reset the state of all header elements to 'enabled'
    */
   resetHeaderState: function() {
-    var navModel = this.get('nav');
+    const navModel = this.get('nav');
 
     _.each(navModel.attributes, function(value, key) {
       navModel.set(key, enums.nav.enabled);

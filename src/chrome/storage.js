@@ -11,7 +11,7 @@ const Storage = {
    * @returns {object} - page object
    */
   createPageObject: function(session, commitData) {
-    var page = {
+    const page = {
       id: session.nodeIndex,
       name: this.shortenURL(commitData.url),
       data: {
@@ -49,12 +49,12 @@ const Storage = {
     }
 
     chrome.storage.local.get({ [page.data.sessionId]: null }, function(result) {
-      var tree = result[page.data.sessionId];
+      const tree = result[page.data.sessionId];
       if (!tree) {
         console.error('No tree found for session:', page.data.sessionId);
         return;
       }
-      var parent = this.findNode(tree, page.data.parentId);
+      const parent = this.findNode(tree, page.data.parentId);
       if (!parent) {
         console.error('No parent found for node:', page.data.parentId);
         return;
@@ -77,9 +77,9 @@ const Storage = {
     if (!tree || !nodeId) return null;
     if (tree.id === nodeId) { return tree; }
 
-    var result;
-    var len = tree.children.length;
-    for (var i = 0; i < len; i++) {
+    let result;
+    const len = tree.children.length;
+    for (let i = 0; i < len; i++) {
       result = this.findNode(tree.children[i], nodeId);
       if (result) { return result; }
     }
@@ -96,15 +96,15 @@ const Storage = {
   findNodeByURL: function(tree, url, ignoreUpdated) {
     if (!tree || !url) return null;
     if (tree.data.url === url) {
-      var ignored = tree.updated === ignoreUpdated;
+      const ignored = tree.updated === ignoreUpdated;
       if (!ignored) {
         return tree;
       }
     }
 
-    var result;
-    var len = tree.children.length;
-    for (var i = 0; i < len; i++) {
+    let result;
+    const len = tree.children.length;
+    for (let i = 0; i < len; i++) {
       result = this.findNodeByURL(tree.children[i], url, ignoreUpdated);
       if (result) { return result; }
     }
@@ -120,8 +120,8 @@ const Storage = {
     if (!url) return '';
     // handle the special case of a search results page
     if (url.indexOf('Special:Search?search=') >= 0) {
-      var split = url.split('Search?search=');
-      var searchTerm = split[1].split('&')[0];
+      const split = url.split('Search?search=');
+      const searchTerm = split[1].split('&')[0];
       return 'Search Results: ' + searchTerm;
     // otherwise, derive the name from the page url
     } else {

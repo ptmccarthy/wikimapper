@@ -26,7 +26,7 @@ export default Backbone.View.extend({
   },
 
   render: function() {
-    var hasValidSession = false;
+    let hasValidSession = false;
 
     // check that this.session is a Backbone model by checking if it has a get method
     if (this.session.get) {

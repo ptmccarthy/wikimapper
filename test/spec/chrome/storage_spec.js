@@ -4,8 +4,8 @@ import mockSession from '../../resources/mock_session.js';
 import commitData from '../../resources/commit_data.js';
 
 describe('Storage API', function() {
-  var sandbox;
-  var originalChrome;
+  let sandbox;
+  let originalChrome;
 
   beforeAll(function() {
     // Store original Chrome object if it exists
@@ -38,21 +38,21 @@ describe('Storage API', function() {
   });
 
   it('should be able to detect a search results page and name it appropriately', function() {
-    var searchURL = 'https://en.wikipedia.org/wiki/Special:Search?search=_&go=Go';
-    var trimmedURL = Storage.shortenURL(searchURL);
+    const searchURL = 'https://en.wikipedia.org/wiki/Special:Search?search=_&go=Go';
+    const trimmedURL = Storage.shortenURL(searchURL);
 
     expect(trimmedURL).toEqual('Search Results: _');
   });
 
   it('should be able to derive the page name from Wikipedia URLs accurately', function() {
-    var untrimmedURL = 'http://en.wikipedia.org/wiki/JavaScript%27s_Foo_bar';
-    var trimmedURL = Storage.shortenURL(untrimmedURL);
+    const untrimmedURL = 'http://en.wikipedia.org/wiki/JavaScript%27s_Foo_bar';
+    const trimmedURL = Storage.shortenURL(untrimmedURL);
 
     expect(trimmedURL).toEqual('JavaScript\'s Foo bar');
   });
 
   it('should be able to search children nodes by their ID', function() {
-    var node = Storage.findNode(mockSession, 8);
+    let node = Storage.findNode(mockSession, 8);
     expect(node.name).toEqual('Dutch language');
     node = Storage.findNode(mockSession, 19);
     expect(node.name).toEqual('Chamber of Regions');
@@ -63,13 +63,13 @@ describe('Storage API', function() {
   });
 
   it('should be able to create page objects', function() {
-    var session = {
+    const session = {
       id: 123456789,
       nodeIndex: 24,
       parentNode: 22
     };
 
-    var page = Storage.createPageObject(session, commitData);
+    const page = Storage.createPageObject(session, commitData);
 
     expect(page.id).toEqual(session.nodeIndex);
     expect(page.name).toEqual('Sooners');
@@ -79,7 +79,7 @@ describe('Storage API', function() {
   });
 
   it('should record root node to chrome.storage.local', function() {
-    var page = {
+    const page = {
       data: {
         sessionId: 'test-session'
       }
@@ -90,7 +90,7 @@ describe('Storage API', function() {
   });
 
   it('should record child node to chrome.storage.local', function() {
-    var page = {
+    const page = {
       id: 2,
       data: {
         sessionId: 'test-session',
@@ -98,7 +98,7 @@ describe('Storage API', function() {
       }
     };
 
-    var mockTree = {
+    const mockTree = {
       id: 1,
       children: []
     };

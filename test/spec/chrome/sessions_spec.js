@@ -2,8 +2,8 @@ import sinon from 'sinon';
 import Sessions from '../../../src/chrome/session-handler.js';
 
 describe('Session handler', function() {
-  var sandbox;
-  var originalChrome;
+  let sandbox;
+  let originalChrome;
 
   beforeAll(function() {
     // Store original Chrome object if it exists
@@ -90,7 +90,7 @@ describe('Session handler', function() {
   });
 
   it('should be able to process navigation events', function() {
-    var details = {
+    const details = {
       tabId: 566,
       openerId: 420,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
@@ -102,14 +102,14 @@ describe('Session handler', function() {
   });
 
   it('should be able to create a session', function() {
-    var commitData = {
+    const commitData = {
       tabId: 123,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
       timeStamp: Date.now()
     };
 
     Sessions.createNewSession(commitData);
-    var newSession = Sessions.activeSessions[0];
+    const newSession = Sessions.activeSessions[0];
 
     expect(newSession.id).toBeDefined();
     expect(newSession.nodeIndex).toBe(1);
@@ -117,12 +117,12 @@ describe('Session handler', function() {
   });
 
   it('should be able to find an existing session', function() {
-    var commitData = {
+    let commitData = {
       tabId: 3,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
       timeStamp: Date.now()
     };
-    var session;
+    let session;
 
     Sessions.activeSessions = [
       { id: 501, tabs: [1, 2, 3] },

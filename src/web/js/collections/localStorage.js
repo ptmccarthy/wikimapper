@@ -22,15 +22,15 @@ export default Backbone.Collection.extend({
    * @returns {Promise} A promise that resolves when the fetch is complete
    */
   fetch: function() {
-    var self = this;
+    const self = this;
     return new Promise(function(resolve, reject) {
       chrome.storage.local.get(null, function(result) {
         try {
-          var history = [];
-          var session = {};
-          var keys = Object.keys(result);
+          const history = [];
+          let session = {};
+          const keys = Object.keys(result);
 
-          for (var i = 0; i < keys.length; i++) {
+          for (let i = 0; i < keys.length; i++) {
             session = {};
             session.id = keys[i];
             session.tree = result[keys[i]];
@@ -65,7 +65,7 @@ export default Backbone.Collection.extend({
    * @returns {Promise<Backbone.Model>} A promise that resolves with the latest session model
    */
   getLatest: function() {
-    var self = this;
+    const self = this;
     return this.fetch().then(function() {
       return _.max(self.models, function(model) {
         return model.id;
@@ -78,7 +78,7 @@ export default Backbone.Collection.extend({
    * @param sortBy
    */
   setSortBy: function(sortBy) {
-    var direction;
+    let direction;
 
     // if the field is not changing, just toggle the direction
     if (sortBy === this.sortingField) {
@@ -123,12 +123,12 @@ export default Backbone.Collection.extend({
    * @returns {Promise} A promise that resolves when deletion is complete
    */
   deleteChecked: function() {
-    var self = this;
-    var toRemove = [];
-    var promises = [];
+    const self = this;
+    const toRemove = [];
+    const promises = [];
 
     self.each(function(session) {
-      var sessionId = session.get('id');
+      const sessionId = session.get('id');
       if (session.get('checked')) {
         toRemove.push(session);
         promises.push(new Promise(function(resolve) {
@@ -155,14 +155,14 @@ export default Backbone.Collection.extend({
     this.searchTerm = searchTerm;
 
     // recursive children search for search term
-    var searchChildren = function(children, searchTerm) {
+    const searchChildren = function(children, searchTerm) {
       if (!children) {
         return false;
       }
 
-      for (var i = 0; i < children.length; i++) {
-        var child = children[i];
-        var name = child.name.toLowerCase();
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        const name = child.name.toLowerCase();
 
         if (name.includes(searchTerm)) {
           return true;
@@ -176,9 +176,9 @@ export default Backbone.Collection.extend({
 
     // search through each session in the collection
     this.each(function(session) {
-      var containsTerm = false;
-      var tree = session.get('tree');
-      var name = tree.name.toLowerCase();
+      let containsTerm = false;
+      const tree = session.get('tree');
+      const name = tree.name.toLowerCase();
 
       if (name.includes(searchTerm)) {
         containsTerm = true;

@@ -18,8 +18,8 @@ const SessionHandler = {
    * @param commitData
    */
   handler: function(commitData) {
-    var session = this.findSessionOf(commitData);
-    var page = Storage.createPageObject(session, commitData);
+    const session = this.findSessionOf(commitData);
+    const page = Storage.createPageObject(session, commitData);
 
     this.setTabStatus(commitData.tabId, page);
 
@@ -66,12 +66,12 @@ const SessionHandler = {
    * @returns {object} - session object
    */
   findSessionOf: function(commitData) {
-    var ret = {
+    const ret = {
       id: null,
       parentNode: '',
       nodeIndex: ''
     };
-    var tabStatus = this.tabStatus;
+    const tabStatus = this.tabStatus;
 
     // Look for an existing session in active sessions list
     this.activeSessions.forEach(function(session) {
@@ -110,7 +110,7 @@ const SessionHandler = {
    * @returns {{id: *, parentNode: null, nodeIndex: number}}
    */
   createNewSession: function(commitData) {
-    var session = {
+    const session = {
       id: _.now(),
       tabs: [commitData.tabId],
       nodeIndex: 1
@@ -127,11 +127,11 @@ const SessionHandler = {
    * @param {object} details - chrome.webNavigation event details
    */
   processForwardBack: function(details) {
-    var commitData = {};
+    let commitData = {};
     // back button
     if (details.url === this.tabStatus[details.tabId].parent.data.url) {
       console.log('back button');
-      var backPage = this.tabStatus[details.tabId].parent;
+      const backPage = this.tabStatus[details.tabId].parent;
 
       commitData = backPage;
       commitData.forwardId = this.tabStatus[details.tabId].id;
@@ -162,8 +162,8 @@ const SessionHandler = {
    * @param {object} details - chrome.webNavigation event details
    */
   processNavigation: function(details) {
-    var self = this;
-    var commitData = details;
+    const self = this;
+    const commitData = details;
 
     chrome.tabs.get(details.tabId, function(tab) {
       if (tab.openerTabId) {
@@ -183,7 +183,7 @@ const SessionHandler = {
    * @param name - cleaned name to update
    */
   updateName: function(tabId, url, name, redirectedFrom) {
-    var session = _.find(this.activeSessions, function(s) {
+    const session = _.find(this.activeSessions, function(s) {
       return _.includes(s.tabs, tabId);
     });
 

@@ -36,7 +36,7 @@ export default Backbone.View.extend({
    * Initialize the d3 tree graph, storing it on the instance of this View.
    */
   initd3: function() {
-    var self = this;
+    const self = this;
     this.width = $(window).width();
     this.height = $(window).height() - this.margin.top;
     this.data.x0 = this.height / 2;
@@ -59,16 +59,16 @@ export default Backbone.View.extend({
    * @param data - JSON data of the tree or sub-tree to be drawn
    */
   draw: function(data) {
-    var self = this;
-    var diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
-    var i = 0;
-    var duration = 500;
+    const self = this;
+    const diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
+    let i = 0;
+    const duration = 500;
     this.lastDepth = this.depth ? this.depth : 0;
     this.depth = 0;
 
     // Compute the tree layout
-    var nodes = this.tree.nodes(this.data).reverse();
-    var links = this.tree.links(nodes);
+    const nodes = this.tree.nodes(this.data).reverse();
+    const links = this.tree.links(nodes);
 
     // Normalize for fixed-depth
     nodes.forEach(function(d) {
@@ -87,13 +87,13 @@ export default Backbone.View.extend({
     }
 
     // Update the nodes
-    var node = this.svg.selectAll('g.node')
+    const node = this.svg.selectAll('g.node')
       .data(nodes, function(d) {
         return d.id || (d.id = ++i);
       });
 
     // Enter any new nodes at the parent's previous position
-    var nodeEnter = node.enter().append('g')
+    const nodeEnter = node.enter().append('g')
       .attr('class', 'node')
       .attr('transform', function() {
         return 'translate(' + data.y0 + ',' + data.x0 + ')';
@@ -115,7 +115,7 @@ export default Backbone.View.extend({
       });
 
     // Transition nodes to their new position
-    var nodeUpdate = node.transition()
+    const nodeUpdate = node.transition()
       .duration(duration)
       .attr('transform', function(d) {
         return 'translate(' + d.y + ',' + d.x + ')';
@@ -128,7 +128,7 @@ export default Backbone.View.extend({
       });
 
     // Transition exiting nodes to the parent's new position
-    var nodeExit = node.exit().transition()
+    const nodeExit = node.exit().transition()
       .duration(duration)
       .attr('transform', function() {
         return 'translate(' + data.y + ',' + data.x + ')';
@@ -139,7 +139,7 @@ export default Backbone.View.extend({
       .attr('r', 1e-6);
 
     // Update the links
-    var link = this.svg.selectAll('path.link')
+    const link = this.svg.selectAll('path.link')
       .data(links, function(d) {
         return d.target.id;
       });
@@ -148,7 +148,7 @@ export default Backbone.View.extend({
     link.enter().insert('path', 'g')
       .attr('class', 'link')
       .attr('d', function() {
-        var o = { x: data.x0, y: data.y0 };
+        const o = { x: data.x0, y: data.y0 };
         return diagonal({ source: o, target: o });
       });
 
@@ -161,7 +161,7 @@ export default Backbone.View.extend({
     link.exit().transition()
       .duration(duration)
       .attr('d', function() {
-        var o = { x: data.x, y: data.y };
+        const o = { x: data.x, y: data.y };
         return diagonal({ source: o, target: o });
       })
       .remove();

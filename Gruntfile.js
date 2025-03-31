@@ -96,7 +96,7 @@ module.exports = function(grunt) {
             expand: true
           },
           {
-            src: '<%= config.src %>/resources/*',
+            src: ['<%= config.src %>/resources/*', '!<%= config.src %>/resources/*.psd'],
             dest: '<%= config.dist %>/resources',
             filter: 'isFile',
             flatten: true,

@@ -1,3 +1,7 @@
+/**
+ * Router for handling navigation between views.
+ */
+
 'use strict';
 
 import Backbone from 'backbone';
@@ -25,11 +29,13 @@ export default Backbone.Router.extend({
   },
 
   checkForLatest: function() {
-    if (App.StorageCollection.getLatest()) {
-      this.latest();
-    } else {
-      this.title();
-    }
+    App.StorageCollection.getLatest().then(function(latestSession) {
+      if (latestSession) {
+        this.latest();
+      } else {
+        this.title();
+      }
+    }.bind(this));
   },
 
   title: function() {
@@ -39,9 +45,11 @@ export default Backbone.Router.extend({
 
   latest: function() {
     this.ensureNav();
-    App.showBody(new LatestView({
-      session: App.StorageCollection.getLatest()
-    }));
+    App.StorageCollection.getLatest().then(function(latestSession) {
+      App.showBody(new LatestView({
+        session: latestSession
+      }));
+    });
   },
 
   historyParser: function(sessionId) {

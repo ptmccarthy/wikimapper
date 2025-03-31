@@ -21,23 +21,32 @@ export default Backbone.Collection.extend({
   /**
    * Custom Fetch
    * Retrieves chrome.storage.local and converts it to a Backbone.Collection
+   * @returns {Promise} A promise that resolves when the fetch is complete
    */
   fetch: function() {
-    chrome.storage.local.get(null, function(result) {
-      var history = [];
-      var session = {};
-      var keys = Object.keys(result);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      chrome.storage.local.get(null, function(result) {
+        try {
+          var history = [];
+          var session = {};
+          var keys = Object.keys(result);
 
-      for (var i = 0; i < keys.length; i++) {
-        session = {};
-        session.id = keys[i];
-        session.tree = result[keys[i]];
-        history.push(session);
-      }
+          for (var i = 0; i < keys.length; i++) {
+            session = {};
+            session.id = keys[i];
+            session.tree = result[keys[i]];
+            history.push(session);
+          }
 
-      this.parse(history);
-      this.trigger('sync');
-    }.bind(this));
+          self.parse(history);
+          self.trigger('sync');
+          resolve(self);
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
   },
 
   /**
@@ -55,13 +64,14 @@ export default Backbone.Collection.extend({
 
   /**
    * Return the most recent session model.
-   * @returns {Backbone.Model}
+   * @returns {Promise<Backbone.Model>} A promise that resolves with the latest session model
    */
   getLatest: function() {
-    this.fetch();
-
-    return _.max(this.models, function(model) {
-      return model.id;
+    var self = this;
+    return this.fetch().then(function() {
+      return _.max(self.models, function(model) {
+        return model.id;
+      });
     });
   },
 
@@ -112,22 +122,27 @@ export default Backbone.Collection.extend({
    * BEWARE: do not modify the collection during the .each() iteration!!!
    * Doing so breaks the iteration! Instead, remove it from chrome.storage.local and
    * keep a reference to the model in toRemove for bulk removal at the end.
+   * @returns {Promise} A promise that resolves when deletion is complete
    */
   deleteChecked: function() {
     var self = this;
     var toRemove = [];
+    var promises = [];
 
     self.each(function(session) {
       var sessionId = session.get('id');
       if (session.get('checked')) {
         toRemove.push(session);
-        chrome.storage.local.remove(sessionId);
+        promises.push(new Promise(function(resolve) {
+          chrome.storage.local.remove(sessionId, resolve);
+        }));
       }
     });
 
-    self.remove(toRemove);
-
-    this.trigger('delete');
+    return Promise.all(promises).then(function() {
+      self.remove(toRemove);
+      self.trigger('delete');
+    });
   },
 
   /**

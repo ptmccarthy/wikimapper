@@ -105,12 +105,12 @@ describe('Storage API', function() {
       children: []
     };
 
-    window.chrome.storage.local.get.callsFake(function(key, callback) {
+    window.chrome.storage.local.get.callsFake(function(keys, callback) {
       callback({ 'test-session': mockTree });
     });
 
     Storage.recordChild(page);
-    expect(window.chrome.storage.local.get.calledWith('test-session')).toBe(true);
+    expect(window.chrome.storage.local.get.calledWith({ 'test-session': null })).toBe(true);
     expect(window.chrome.storage.local.set.called).toBe(true);
   });
 

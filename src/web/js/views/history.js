@@ -142,8 +142,9 @@ export default Backbone.View.extend({
     }
 
     if (confirmed) {
-      this.collection.deleteChecked();
-      this.collection.fetch();
+      this.collection.deleteChecked().then(function() {
+        return this.collection.fetch();
+      }.bind(this));
     }
   },
 

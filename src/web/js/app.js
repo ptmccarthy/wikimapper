@@ -6,8 +6,10 @@
 
 // External Dependencies
 import $ from 'jquery';
+import Backbone from 'backbone';
 
 // Internal Dependencies
+import Router from './router.js';
 import ViewState from './models/view-state.js';
 import StorageCollection from './collections/localStorage.js';
 
@@ -21,7 +23,11 @@ const App = {
     ViewState.initializeHeader();
 
     this.StorageCollection = new StorageCollection();
-    this.StorageCollection.fetch();
+    this.StorageCollection.fetch().then(function() {
+      // Initialize router after data is loaded
+      ViewState.Router = new Router();
+      Backbone.history.start();
+    });
   },
 
   showBody: function(view) {

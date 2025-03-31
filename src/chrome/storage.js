@@ -33,6 +33,10 @@ const Storage = {
    * @param page - page object to store
    */
   recordRoot: function(page) {
+    if (!page || !page.data || !page.data.sessionId) {
+      console.error('Invalid page object for recordRoot:', page);
+      return;
+    }
     chrome.storage.local.set({ [page.data.sessionId]: page });
   },
 
@@ -41,9 +45,22 @@ const Storage = {
    * @param page - page object to store
    */
   recordChild: function(page) {
-    chrome.storage.local.get(page.data.sessionId, function(result) {
+    if (!page || !page.data || !page.data.sessionId) {
+      console.error('Invalid page object for recordChild:', page);
+      return;
+    }
+
+    chrome.storage.local.get({ [page.data.sessionId]: null }, function(result) {
       var tree = result[page.data.sessionId];
+      if (!tree) {
+        console.error('No tree found for session:', page.data.sessionId);
+        return;
+      }
       var parent = this.findNode(tree, page.data.parentId);
+      if (!parent) {
+        console.error('No parent found for node:', page.data.parentId);
+        return;
+      }
 
       tree.lastNodeIndex = page.id;
       parent.children.push(page);
@@ -59,6 +76,7 @@ const Storage = {
    * @returns {*}
    */
   findNode: function(tree, nodeId) {
+    if (!tree || !nodeId) return null;
     if (tree.id === nodeId) { return tree; }
 
     var result;
@@ -78,6 +96,7 @@ const Storage = {
    * @returns {*}
    */
   findNodeByURL: function(tree, url, ignoreUpdated) {
+    if (!tree || !url) return null;
     if (tree.data.url === url) {
       var ignored = tree.updated === ignoreUpdated;
       if (!ignored) {
@@ -100,6 +119,7 @@ const Storage = {
    * @return {string} URL-derived Page Name
    */
   shortenURL: function(url) {
+    if (!url) return '';
     // handle the special case of a search results page
     if (url.indexOf('Special:Search?search=') >= 0) {
       var split = url.split('Search?search=');
@@ -116,6 +136,10 @@ const Storage = {
    * @param sessionId
    */
   deleteItem: function(sessionId) {
+    if (!sessionId) {
+      console.error('Invalid sessionId for deleteItem:', sessionId);
+      return;
+    }
     chrome.storage.local.remove(sessionId);
   },
 

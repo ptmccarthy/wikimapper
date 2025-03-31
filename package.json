@@ -1,6 +1,6 @@
 {
   "name": "wikimapper",
-  "version": "2.0.5",
+  "version": "3.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/ptmccarthy/wikimapper"
@@ -52,7 +52,7 @@
     "load-grunt-tasks": "^5.1.0",
     "morgan": "^1.10.0",
     "sinon": "^7.5.0",
-    "time-grunt": "^2.0.0",
+    "@lodder/time-grunt": "^4.0.0",
     "ts-loader": "^9.5.1",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"

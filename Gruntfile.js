@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
   // use load-grunt-tasks to read dependencies from package.json
   require('load-grunt-tasks')(grunt);
-  require('time-grunt')(grunt);
+  require('@lodder/time-grunt')(grunt);
 
   var config = {
     src: 'src',

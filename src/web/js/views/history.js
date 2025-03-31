@@ -5,17 +5,17 @@
 'use strict';
 
 // External
-var Backbone = require('backbone');
+import Backbone from 'backbone';
 
 // Internal
-var enums = require('wikimapper/enums');
-var templates = require('wikimapper/templates');
-var ViewState = require('wikimapper/viewstate');
+import enums from '../enums';
+import templates from '../templates';
+import ViewState from '../models/view-state';
 
 // Child Views
-var HistoryTableView = require('./history-table');
+import HistoryTableView from './history-table';
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
 
   template: templates.get('history'),
 

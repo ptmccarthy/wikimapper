@@ -1,20 +1,20 @@
 'use strict';
 
-var Backbone = require('backbone');
-var $ = require('jquery');
+import Backbone from 'backbone';
+import $ from 'jquery';
 
-var App = require('./app');
+import App from './app';
+
+// Views
+import NavView from './views/navigation';
+import TitleView from './views/title';
+import LatestView from './views/latest';
+import HistoryItemView from './views/history-item';
+import HistoryListView from './views/history';
 
 Backbone.$ = $;
 
-// Views
-var NavView = require('./views/navigation');
-var TitleView = require('./views/title');
-var LatestView = require('./views/latest');
-var HistoryItemView = require('./views/history-item');
-var HistoryListView = require('./views/history');
-
-module.exports = Backbone.Router.extend({
+export default Backbone.Router.extend({
 
   routes: {
     '': 'checkForLatest',

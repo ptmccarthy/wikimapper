@@ -5,12 +5,12 @@
 'use strict';
 
 // External
-var Backbone = require('backbone');
+import Backbone from 'backbone';
 
 // Internal
-var templates = require('wikimapper/templates');
+import templates from '../templates';
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
 
   template: templates.get('historyTable'),
 

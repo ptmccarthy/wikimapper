@@ -4,10 +4,10 @@
 
 'use strict';
 
-var Backbone = require('backbone');
-var _ = require('lodash');
+import Backbone from 'backbone';
+import _ from 'lodash';
 
-module.exports = Backbone.Collection.extend({
+export default Backbone.Collection.extend({
 
   model: Backbone.Model,
   sortingField: 'id',

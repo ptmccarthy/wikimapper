@@ -4,13 +4,13 @@
  */
 
 // External Dependencies
-var Backbone = require('backbone');
-var $ = require('jquery');
+import Backbone from 'backbone';
+import $ from 'jquery';
 
 // Internal Dependencies
-var App = require('./app');
-var Router = require('./router');
-var ViewState = require('./models/view-state');
+import App from './app';
+import Router from './router';
+import ViewState from './models/view-state';
 
 // Give jQuery to Backbone
 Backbone.$ = $;

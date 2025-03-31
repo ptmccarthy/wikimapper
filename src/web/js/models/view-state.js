@@ -1,13 +1,13 @@
 'use strict';
 
 // External
-var Backbone = require('backbone');
-var _ = require('lodash');
+import Backbone from 'backbone';
+import _ from 'lodash';
 
 // Internal
-var enums = require('wikimapper/enums');
+import enums from '../enums.js';
 
-var ViewState = Backbone.Model.extend({
+const ViewState = Backbone.Model.extend({
 
   /**
    * Initialize the header with a new model to keep track of state.
@@ -49,4 +49,4 @@ var ViewState = Backbone.Model.extend({
 
 });
 
-module.exports = new ViewState();
+export default new ViewState();

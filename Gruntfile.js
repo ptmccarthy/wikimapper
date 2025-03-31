@@ -129,35 +129,18 @@ module.exports = function(grunt) {
       }
     },
 
-    browserify: {
-      app: {
-        src: [
-          '<%= config.src %>/web/js/app.js',
-          '<%= config.src %>/web/js/**/*.js',
-          '<%= config.src %>/web/templates/*.hbs'
-        ],
-        dest: '<%= config.dist %>/js/wikimapper.js',
-        options: {
-          transform: ['hbsfy'],
-          browserifyOptions: {
-            debug: true,
-            standalone: 'WikiMapper'
-          },
-          watch: true
-        }
+    webpack: {
+      options: {
+        stats: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
       },
-      background: {
-        src: [
-          '<%= config.src %>/chrome/**/*.js'
-        ],
-        dest: '<%= config.dist %>/background.js',
-        options: {
-          browserifyOptions: {
-            debug: true,
-            standalone: 'WikiMapperBackground'
-          },
-          watch: true
-        }
+      prod: {
+        ...require('./webpack.config.js'),
+        mode: 'production'
+      },
+      dev: {
+        ...require('./webpack.config.js'),
+        mode: 'development',
+        watch: true
       }
     }
   });
@@ -177,20 +160,23 @@ module.exports = function(grunt) {
     'prepare:bundle',
     'karma:unit',
     'less:app',
-    'browserify:background',
-    'browserify:app'
+    'webpack:prod'
   ]);
 
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [
     'prepare:debug',
     'less:app',
-    'browserify:background',
-    'browserify:app',
+    'webpack:dev',
     'concurrent:dev'
   ]);
 
   // Add a serve task for development
   grunt.registerTask('serve', 'Start development server', [
     'build:debug'
+  ]);
+
+  // Add test task
+  grunt.registerTask('test', 'Run tests', [
+    'karma:unit'
   ]);
 };

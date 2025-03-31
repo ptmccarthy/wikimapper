@@ -5,15 +5,15 @@
 'use strict';
 
 // External
-var Backbone = require('backbone');
+import Backbone from 'backbone';
 
 // Internal
-var enums = require('wikimapper/enums');
-var templates = require('wikimapper/templates');
-var ViewState = require('wikimapper/viewstate');
-var TreeView = require('./tree');
+import enums from '../enums';
+import templates from '../templates';
+import ViewState from '../models/view-state';
+import TreeView from './tree';
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
 
   template: templates.get('latest'),
 

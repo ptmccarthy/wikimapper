@@ -1,21 +1,25 @@
 'use strict';
 
+const webpackConfig = require('./webpack.config.js');
+
 module.exports = function(karma) {
   karma.set({
-    frameworks: ['browserify', 'jasmine', 'sinon'],
+    frameworks: ['jasmine', 'sinon'],
 
     files: [
       {
         pattern: './test/**/*spec.js',
         watched: false,
         included: true,
-        served: true
+        served: true,
+        type: 'module'
       },
       {
         pattern: './src/**/*.js',
         watched: true,
         included: false,
-        served: false
+        served: false,
+        type: 'module'
       }
     ],
 
@@ -27,7 +31,7 @@ module.exports = function(karma) {
     reporters: ['dots', 'kjhtml'],
 
     preprocessors: {
-      'test/**/*spec.js': ['browserify']
+      'test/**/*spec.js': ['webpack']
     },
 
     browsers: ['ChromeHeadless'],
@@ -46,10 +50,9 @@ module.exports = function(karma) {
 
     logLevel: karma.LOG_INFO,
 
-    // browserify config
-    browserify: {
-      debug: true,
-      transform: ['hbsfy']
+    webpack: {
+      ...webpackConfig,
+      mode: 'development'
     },
 
     // Continuous Integration mode

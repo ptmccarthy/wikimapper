@@ -1,8 +1,7 @@
 'use strict';
 
-var sinon = require('sinon');
-var App = require('../../../src/chrome/background');
-var Sessions = require('../../../src/chrome/session-handler');
+import sinon from 'sinon';
+import Sessions from '../../../src/chrome/session-handler.js';
 
 describe('Session handler', function() {
   var sandbox;
@@ -21,12 +20,12 @@ describe('Session handler', function() {
       webNavigation: {
         onCommitted: { addListener: function() {} }
       },
-      browserAction: {
+      action: {
         onClicked: { addListener: function() {} }
       }
     };
 
-    App.initialize();
+    // Initialize is no longer needed as background.js auto-initializes
   });
 
   beforeEach(function() {

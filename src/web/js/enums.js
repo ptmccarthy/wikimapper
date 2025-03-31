@@ -2,7 +2,7 @@
  * Created by pmccarthy on 6/24/15.
  */
 
-module.exports = {
+export default {
 
   nav: {
     active: 'active',

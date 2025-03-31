@@ -4,7 +4,7 @@
 
 'use strict';
 
-module.exports = {
+const Storage = {
 
   /**
    * Create a page object in the format necessary for storing and inserting into a JSON tree
@@ -124,3 +124,5 @@ module.exports = {
     localStorage.clear();
   }
 };
+
+export default Storage;

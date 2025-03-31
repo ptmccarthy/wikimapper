@@ -1,17 +1,17 @@
 'use strict';
 
 // External Dependencies
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('lodash');
+import Backbone from 'backbone';
+import $ from 'jquery';
+import _ from 'lodash';
 
 // Internal Dependencies
-var templates = require('wikimapper/templates');
-var ViewState = require('wikimapper/viewstate');
+import templates from '../templates';
+import ViewState from '../models/view-state';
 
 Backbone.$ = $;
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
 
   template: templates.get('navigation'),
 

@@ -5,17 +5,17 @@
 'use strict';
 
 // External
-var Backbone = require('backbone');
-var saveSvgAsPng = require('save-svg-as-png');
-var svgCrowbar = require('../../lib/svg-crowbar');
+import Backbone from 'backbone';
+import saveSvgAsPng from 'save-svg-as-png';
+import svgCrowbar from '../../lib/svg-crowbar';
 
 // Internal
-var enums = require('wikimapper/enums');
-var templates = require('wikimapper/templates');
-var ViewState = require('wikimapper/viewstate');
-var TreeView = require('./tree');
+import enums from '../enums';
+import templates from '../templates';
+import ViewState from '../models/view-state';
+import TreeView from './tree';
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
 
   template: templates.get('historyItem'),
 

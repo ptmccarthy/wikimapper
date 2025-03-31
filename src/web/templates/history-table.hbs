@@ -15,7 +15,7 @@
           <input type="checkbox" name="cb-{{id}}" {{#if checked}}checked{{/if}}>
           <label for="cb-{{id}}" class="checkbox-label"></label>
         </td>
-        <td class="navigable">{{#parseDate}}{{id}}{{/parseDate}}</td>
+        <td class="navigable">{{parseDate id}}</td>
         <td class="navigable">{{tree.name}}</td>
         <td class="navigable">{{tree.lastNodeIndex}}</td>
       </tr>

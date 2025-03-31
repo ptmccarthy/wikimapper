@@ -5,12 +5,12 @@
 'use strict';
 
 // External
-var Backbone = require('backbone');
-var d3 = require('d3');
-var $ = require('jquery');
-var _ = require('lodash');
+import Backbone from 'backbone';
+import d3 from 'd3';
+import $ from 'jquery';
+import _ from 'lodash';
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
 
   margin: {
     top: 35,

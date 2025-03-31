@@ -1,3 +1,3 @@
-var Background = require('./background');
+import { initialize } from './background';
 
-Background.initialize();
+initialize();

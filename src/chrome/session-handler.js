@@ -5,13 +5,12 @@
 'use strict';
 
 // External Dependencies
-var _ = require('lodash');
+import _ from 'lodash';
 
 // Internal Dependencies
-var Storage = require('./storage');
+import Storage from './storage.js';
 
-module.exports = {
-
+const SessionHandler = {
   tabStatus: {},
   activeSessions: [],
 
@@ -198,14 +197,17 @@ module.exports = {
    * @param sessionId
    */
   clearSession: function(sessionId) {
-    this.activeSessions = _.reject(this.activeSessions, { id: sessionId });
+    _.remove(this.activeSessions, function(session) {
+      return session.id === sessionId;
+    });
   },
 
   /**
-   * Clear all active sessions.
+   * Clear all sessions
    */
   clearAllSessions: function() {
-    this.tabStatus = {};
     this.activeSessions = [];
   }
 };
+
+export default SessionHandler;

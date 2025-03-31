@@ -1,9 +1,9 @@
 'use strict';
 
-var sinon = require('sinon');
-var Storage = require('../../../src/chrome/storage');
-var mockSession = require('../../resources/mock_session');
-var commitData = require('../../resources/commit_data');
+import sinon from 'sinon';
+import Storage from '../../../src/chrome/storage.js';
+import mockSession from '../../resources/mock_session.js';
+import commitData from '../../resources/commit_data.js';
 
 describe('Storage API', function() {
   var sandbox;

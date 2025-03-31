@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+export default {
 
   navigation: require('../templates/navigation.hbs'),
   title: require('../templates/title.hbs'),

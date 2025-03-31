@@ -5,14 +5,13 @@
 'use strict';
 
 // External Dependencies
-var $ = require('jquery');
+import $ from 'jquery';
 
 // Internal Dependencies
-var ViewState = require('wikimapper/viewstate');
-var StorageCollection = require('./collections/localStorage');
+import ViewState from './models/view-state.js';
+import StorageCollection from './collections/localStorage.js';
 
-module.exports = {
-
+const App = {
   domElements: {
     nav: '#navigation-view',
     body: '#body-view'
@@ -44,5 +43,6 @@ module.exports = {
     this.nav.render();
     $(this.domElements.nav).html(this.nav.el);
   }
-
 };
+
+export default App;

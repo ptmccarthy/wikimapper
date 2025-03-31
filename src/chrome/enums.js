@@ -1,11 +1,9 @@
 'use strict';
 
-module.exports = {
-
-  messageTypes: {
-    update: 'update',
-    deleteItem: 'deleteItem',
-    deleteAll: 'deleteAll'
-  }
-
+const messageTypes = {
+  update: 'update',
+  deleteItem: 'deleteItem',
+  deleteAll: 'deleteAll'
 };
+
+export default messageTypes;

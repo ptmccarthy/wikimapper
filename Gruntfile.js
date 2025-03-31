@@ -15,25 +15,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     config: config,
 
-    concurrent: {
-      dev: {
-        tasks: ['karma:watch', 'nodemon:dev'],
-        options: {
-          logConcurrentOutput: true
-        }
-      }
-    },
-
-    nodemon: {
-      dev: {
-        script: 'test/server.js',
-        options: {
-          nodeArgs: ['--inspect'],
-          watch: ['test/server.js', '<%= config.dist %>']
-        }
-      }
-    },
-
     clean: {
       dist: {
         files: [{
@@ -63,11 +44,6 @@ module.exports = function(grunt) {
         configFile: './karma.conf.js',
         singleRun: true,
         autoWatch: false
-      },
-      watch: {
-        configFile: './karma.conf.js',
-        singleRun: false,
-        autoWatch: true
       }
     },
 
@@ -166,16 +142,9 @@ module.exports = function(grunt) {
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [
     'prepare:debug',
     'less:app',
-    'webpack:dev',
-    'concurrent:dev'
+    'webpack:dev'
   ]);
 
-  // Add a serve task for development
-  grunt.registerTask('serve', 'Start development server', [
-    'build:debug'
-  ]);
-
-  // Add test task
   grunt.registerTask('test', 'Run tests', [
     'karma:unit'
   ]);

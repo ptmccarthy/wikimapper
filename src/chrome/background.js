@@ -43,8 +43,7 @@ export function initialize() {
   chrome.webNavigation.onCommitted.addListener(eventFilter, {
     url: [
       { urlContains: '.wikipedia.org/wiki' },
-      { urlContains: '.wiktionary.org/wiki' },
-      { urlMatches: '.wikiwand.com/[A-Za-z]{2}/' }
+      { urlContains: '.wiktionary.org/wiki' }
     ]
   });
 
@@ -78,9 +77,4 @@ export function initialize() {
       chrome.tabs.create({ url: 'index.html' });
     }
   });
-}
-
-// Initialize in production
-if (typeof chrome !== 'undefined' && chrome.webNavigation) {
-  initialize();
 }

@@ -31,12 +31,5 @@
   "action": {
     "default_title": "WikiMapper",
     "default_icon": "resources/wikimapper-38.png"
-  },
-
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "wikimapper@ptmccarthy.github.io",
-      "strict_min_version": "109.0"
-    }
   }
 }

@@ -5,6 +5,7 @@
 
 // External Dependencies
 import _ from 'lodash';
+import browser from 'webextension-polyfill';
 
 // Internal Dependencies
 import Sessions from './session-handler.js';
@@ -19,7 +20,7 @@ const triggers = [
 
 /**
  * Ingest navigation events and filter them by event type.
- * @param {object} details - chrome.webNavigation event details
+ * @param {object} details - webNavigation event details
  */
 function eventFilter(details) {
   if (_.includes(details.transitionQualifiers, 'forward_back')) {
@@ -38,7 +39,7 @@ console.log(_.now() + ': WikiMapper started.');
  */
 export function initialize() {
   // Navigation Event Listeners
-  chrome.webNavigation.onCommitted.addListener(eventFilter, {
+  browser.webNavigation.onCommitted.addListener(eventFilter, {
     url: [
       { urlContains: '.wikipedia.org/wiki' },
       { urlContains: '.wiktionary.org/wiki' }
@@ -46,7 +47,7 @@ export function initialize() {
   });
 
   // Listener for incoming messages
-  chrome.runtime.onMessage.addListener((request, sender) => {
+  browser.runtime.onMessage.addListener((request, sender) => {
     switch (request.type) {
       case (messageTypes.deleteItem): {
         if (request.sessionId) {
@@ -65,14 +66,14 @@ export function initialize() {
   });
 
   // Listener for when the user clicks on the Wikimapper button
-  chrome.action.onClicked.addListener(() => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
+  browser.action.onClicked.addListener(() => {
+    browser.tabs.create({ url: browser.runtime.getURL('index.html') });
   });
 
   // Listener for first install
-  chrome.runtime.onInstalled.addListener((details) => {
+  browser.runtime.onInstalled.addListener((details) => {
     if (details.reason === 'install') {
-      chrome.tabs.create({ url: 'index.html' });
+      browser.tabs.create({ url: 'index.html' });
     }
   });
 }

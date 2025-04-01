@@ -8,8 +8,7 @@ module.exports = {
     wikimapper: './src/web/js/main.js'
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist')
+    filename: '[name].js'
   },
   module: {
     rules: [

@@ -8,6 +8,13 @@ module.exports = function(karma) {
 
     files: [
       {
+        pattern: './test/mocks/**/*.js',
+        watched: false,
+        included: true,
+        served: true,
+        type: 'module'
+      },
+      {
         pattern: './test/**/*spec.js',
         watched: false,
         included: true,
@@ -31,7 +38,8 @@ module.exports = function(karma) {
     reporters: ['dots', 'kjhtml'],
 
     preprocessors: {
-      'test/**/*spec.js': ['webpack']
+      'test/**/*spec.js': ['webpack'],
+      'test/mocks/**/*.js': ['webpack']
     },
 
     browsers: ['ChromeHeadless'],
@@ -52,7 +60,14 @@ module.exports = function(karma) {
 
     webpack: {
       ...webpackConfig,
-      mode: 'development'
+      mode: 'development',
+      resolve: {
+        ...webpackConfig.resolve,
+        alias: {
+          ...webpackConfig.resolve.alias,
+          'webextension-polyfill': require.resolve('./test/mocks/browser-polyfill.js')
+        }
+      }
     },
 
     // Continuous Integration mode

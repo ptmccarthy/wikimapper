@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "grunt build:bundle",
+    "build": "grunt build:all",
     "test": "grunt test",
     "lint": "grunt eslint"
   },
@@ -17,11 +17,13 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.7.1",
     "lodash": "^4.17.21",
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "webextension-polyfill": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
+    "@lodder/time-grunt": "^4.0.0",
     "babel-loader": "^9.1.3",
     "eslint": "^8.56.0",
     "eslint-config-standard": "^17.1.0",
@@ -46,7 +48,6 @@
     "karma-webpack": "^5.0.0",
     "load-grunt-tasks": "^5.1.0",
     "sinon": "^7.5.0",
-    "@lodder/time-grunt": "^4.0.0",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
   },

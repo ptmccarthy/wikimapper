@@ -48,39 +48,70 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      all: {
+      chrome: {
         files: [
           {
-            src: './manifest.json',
-            dest: '<%= config.dist %>/',
+            src: './manifest.chrome.json',
+            dest: '<%= config.dist %>/chrome/',
             filter: 'isFile',
             flatten: true,
-            expand: true
+            expand: true,
+            rename: function(dest, src) {
+              return dest + 'manifest.json';
+            }
           },
           {
             src: '<%= config.src %>/web/index.html',
-            dest: '<%= config.dist %>/',
-            filter: 'isFile',
-            flatten: true,
-            expand: true
-          },
-          {
-            src: '<%= config.src %>/web/img/*',
-            dest: '<%= config.dist %>/img',
+            dest: '<%= config.dist %>/chrome/',
             filter: 'isFile',
             flatten: true,
             expand: true
           },
           {
             src: ['<%= config.src %>/resources/*', '!<%= config.src %>/resources/*.psd'],
-            dest: '<%= config.dist %>/resources',
+            dest: '<%= config.dist %>/chrome/resources',
             filter: 'isFile',
             flatten: true,
             expand: true
           },
           {
             src: '<%= config.nodeModules %>/font-awesome/fonts/*',
-            dest: '<%= config.dist %>/fonts/',
+            dest: '<%= config.dist %>/chrome/fonts/',
+            filter: 'isFile',
+            flatten: true,
+            expand: true
+          }
+        ]
+      },
+      firefox: {
+        files: [
+          {
+            src: './manifest.firefox.json',
+            dest: '<%= config.dist %>/firefox/',
+            filter: 'isFile',
+            flatten: true,
+            expand: true,
+            rename: function(dest, src) {
+              return dest + 'manifest.json';
+            }
+          },
+          {
+            src: '<%= config.src %>/web/index.html',
+            dest: '<%= config.dist %>/firefox/',
+            filter: 'isFile',
+            flatten: true,
+            expand: true
+          },
+          {
+            src: ['<%= config.src %>/resources/*', '!<%= config.src %>/resources/*.psd'],
+            dest: '<%= config.dist %>/firefox/resources',
+            filter: 'isFile',
+            flatten: true,
+            expand: true
+          },
+          {
+            src: '<%= config.nodeModules %>/font-awesome/fonts/*',
+            dest: '<%= config.dist %>/firefox/fonts/',
             filter: 'isFile',
             flatten: true,
             expand: true
@@ -90,17 +121,30 @@ module.exports = function(grunt) {
     },
 
     less: {
-      app: {
+      chrome: {
         options: {
           compress: false,
           sourceMap: true,
-          sourceMapFilename: '<%= config.dist %>/styles/wikimapper.css.map',
+          sourceMapFilename: '<%= config.dist %>/chrome/styles/wikimapper.css.map',
           sourceMapURL: 'wikimapper.css.map',
-          sourceMapBasepath: '<%= config.dist %>',
+          sourceMapBasepath: '<%= config.dist %>/chrome',
           javascriptEnabled: true
         },
         files: {
-          '<%= config.dist %>/styles/wikimapper.css': '<%= config.src %>/web/styles/*.less'
+          '<%= config.dist %>/chrome/styles/wikimapper.css': '<%= config.src %>/web/styles/*.less'
+        }
+      },
+      firefox: {
+        options: {
+          compress: false,
+          sourceMap: true,
+          sourceMapFilename: '<%= config.dist %>/firefox/styles/wikimapper.css.map',
+          sourceMapURL: 'wikimapper.css.map',
+          sourceMapBasepath: '<%= config.dist %>/firefox',
+          javascriptEnabled: true
+        },
+        files: {
+          '<%= config.dist %>/firefox/styles/wikimapper.css': '<%= config.src %>/web/styles/*.less'
         }
       }
     },
@@ -109,39 +153,77 @@ module.exports = function(grunt) {
       options: {
         stats: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
       },
-      prod: {
+      chrome: {
         ...require('./webpack.config.js'),
-        mode: 'production'
+        mode: 'production',
+        output: {
+          ...require('./webpack.config.js').output,
+          path: require('path').resolve(__dirname, 'dist/chrome')
+        }
+      },
+      firefox: {
+        ...require('./webpack.config.js'),
+        mode: 'production',
+        output: {
+          ...require('./webpack.config.js').output,
+          path: require('path').resolve(__dirname, 'dist/firefox')
+        }
       },
       dev: {
         ...require('./webpack.config.js'),
         mode: 'development',
-        watch: true
+        watch: true,
+        output: {
+          ...require('./webpack.config.js').output,
+          path: require('path').resolve(__dirname, 'dist/chrome')
+        }
       }
     }
   });
 
-  grunt.registerTask('prepare:bundle', 'Build preparation steps', [
+  // Common preparation steps
+  grunt.registerTask('prepare', 'Common preparation steps', [
     'clean:dist',
-    'eslint',
-    'copy:all'
+    'eslint'
   ]);
 
-  grunt.registerTask('prepare:debug', 'Build preparation steps', [
-    'clean:dist',
-    'copy:all'
+  // Browser-specific copy tasks
+  grunt.registerTask('copy:all', 'Copy files for all browsers', [
+    'copy:chrome',
+    'copy:firefox'
   ]);
 
-  grunt.registerTask('build:bundle', 'Build WikiMapper extension bundle', [
-    'prepare:bundle',
+  // Build tasks
+  grunt.registerTask('build:chrome', 'Build Chrome extension bundle', [
+    'prepare',
+    'copy:chrome',
     'karma:unit',
-    'less:app',
-    'webpack:prod'
+    'less:chrome',
+    'webpack:chrome'
+  ]);
+
+  grunt.registerTask('build:firefox', 'Build Firefox extension bundle', [
+    'prepare',
+    'copy:firefox',
+    'karma:unit',
+    'less:firefox',
+    'webpack:firefox'
+  ]);
+
+  grunt.registerTask('build:all', 'Build extension bundle for all browsers', [
+    'prepare',
+    'copy:all',
+    'karma:unit',
+    'less:chrome',
+    'less:firefox',
+    'webpack:chrome',
+    'webpack:firefox'
   ]);
 
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [
-    'prepare:debug',
-    'less:app',
+    'prepare',
+    'copy:chrome',
+    'less:chrome',
     'webpack:dev'
   ]);
 

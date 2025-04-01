@@ -110,8 +110,18 @@ export default Backbone.View.extend({
       .attr('transform', 'translate(-100, 5)')
       .attr('height', 60)
       .attr('width', 200)
-      .html(function(d) {
-        return '<div xmlns="http://www.w3.org/1999/xhtml" class="label"><a class="node" target="_blank" href="' + d.data.url + '">' + d.name + '</a></div>';
+      .each(function(d) {
+        const div = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+        div.className = 'label';
+
+        const a = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+        a.className = 'node';
+        a.target = '_blank';
+        a.href = d.data.url;
+        a.textContent = d.name;
+
+        div.appendChild(a);
+        this.appendChild(div);
       });
 
     // Transition nodes to their new position

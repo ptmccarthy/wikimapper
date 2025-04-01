@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "WikiMapper",
   "description": "WikiMapper - Track and graph your adventures down the Wikipedia rabbit hole.",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "icons": {
     "19": "resources/wikimapper-19.png",
     "38": "resources/wikimapper-38.png",
@@ -14,16 +14,28 @@
   "homepage_url": "http://www.github.com/ptmccarthy/wikimapper",
 
   "background": {
-    "scripts": ["background.js"],
-    "persistent": true
+    "scripts": ["background.js"]
   },
 
   "permissions": [
-    "webNavigation"
+    "webNavigation",
+    "storage"
   ],
 
-  "browser_action": {
+  "host_permissions": [
+    "*://*.wikipedia.org/*",
+    "*://*.wiktionary.org/*"
+  ],
+
+  "action": {
     "default_title": "WikiMapper",
     "default_icon": "resources/wikimapper-38.png"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "wikimapper@ptmccarthy.github.io",
+      "strict_min_version": "109.0"
+    }
   }
-}
+} 

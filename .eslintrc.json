@@ -13,7 +13,7 @@
   "rules": {
     "space-before-function-paren": ["error", "never"],
     "comma-dangle": ["error", "never"],
-    "no-var": "off", // TODO: refactor to use const/let
+    "no-var": "error",
     "prefer-const": "error",
     "no-multiple-empty-lines": ["error", { "max": 1 }],
     "import/no-unresolved": "off",

@@ -1,4 +1,4 @@
-var data = {
+const data = {
   "frameId": 0,
   "processId": 3190,
   "tabId": 2537,
@@ -9,4 +9,4 @@ var data = {
   "openerTabId": 2529
 };
 
-module.exports = data;
+export default data;

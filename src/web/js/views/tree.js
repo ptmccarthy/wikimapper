@@ -2,15 +2,13 @@
  * Tree Rendering View
  */
 
-'use strict';
-
 // External
-var Backbone = require('backbone');
-var d3 = require('d3');
-var $ = require('jquery');
-var _ = require('lodash');
+import Backbone from 'backbone';
+import d3 from 'd3';
+import $ from 'jquery';
+import _ from 'lodash';
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
 
   margin: {
     top: 35,
@@ -38,7 +36,7 @@ module.exports = Backbone.View.extend({
    * Initialize the d3 tree graph, storing it on the instance of this View.
    */
   initd3: function() {
-    var self = this;
+    const self = this;
     this.width = $(window).width();
     this.height = $(window).height() - this.margin.top;
     this.data.x0 = this.height / 2;
@@ -61,16 +59,16 @@ module.exports = Backbone.View.extend({
    * @param data - JSON data of the tree or sub-tree to be drawn
    */
   draw: function(data) {
-    var self = this;
-    var diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
-    var i = 0;
-    var duration = 500;
+    const self = this;
+    const diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
+    let i = 0;
+    const duration = 500;
     this.lastDepth = this.depth ? this.depth : 0;
     this.depth = 0;
 
     // Compute the tree layout
-    var nodes = this.tree.nodes(this.data).reverse();
-    var links = this.tree.links(nodes);
+    const nodes = this.tree.nodes(this.data).reverse();
+    const links = this.tree.links(nodes);
 
     // Normalize for fixed-depth
     nodes.forEach(function(d) {
@@ -89,13 +87,13 @@ module.exports = Backbone.View.extend({
     }
 
     // Update the nodes
-    var node = this.svg.selectAll('g.node')
+    const node = this.svg.selectAll('g.node')
       .data(nodes, function(d) {
         return d.id || (d.id = ++i);
       });
 
     // Enter any new nodes at the parent's previous position
-    var nodeEnter = node.enter().append('g')
+    const nodeEnter = node.enter().append('g')
       .attr('class', 'node')
       .attr('transform', function() {
         return 'translate(' + data.y0 + ',' + data.x0 + ')';
@@ -112,12 +110,22 @@ module.exports = Backbone.View.extend({
       .attr('transform', 'translate(-100, 5)')
       .attr('height', 60)
       .attr('width', 200)
-      .html(function(d) {
-        return '<div xmlns="http://www.w3.org/1999/xhtml" class="label"><a class="node" target="_blank" href="' + d.data.url + '">' + d.name + '</a></div>';
+      .each(function(d) {
+        const div = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+        div.className = 'label';
+
+        const a = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+        a.className = 'node';
+        a.target = '_blank';
+        a.href = d.data.url;
+        a.textContent = d.name;
+
+        div.appendChild(a);
+        this.appendChild(div);
       });
 
     // Transition nodes to their new position
-    var nodeUpdate = node.transition()
+    const nodeUpdate = node.transition()
       .duration(duration)
       .attr('transform', function(d) {
         return 'translate(' + d.y + ',' + d.x + ')';
@@ -130,7 +138,7 @@ module.exports = Backbone.View.extend({
       });
 
     // Transition exiting nodes to the parent's new position
-    var nodeExit = node.exit().transition()
+    const nodeExit = node.exit().transition()
       .duration(duration)
       .attr('transform', function() {
         return 'translate(' + data.y + ',' + data.x + ')';
@@ -141,7 +149,7 @@ module.exports = Backbone.View.extend({
       .attr('r', 1e-6);
 
     // Update the links
-    var link = this.svg.selectAll('path.link')
+    const link = this.svg.selectAll('path.link')
       .data(links, function(d) {
         return d.target.id;
       });
@@ -150,7 +158,7 @@ module.exports = Backbone.View.extend({
     link.enter().insert('path', 'g')
       .attr('class', 'link')
       .attr('d', function() {
-        var o = { x: data.x0, y: data.y0 };
+        const o = { x: data.x0, y: data.y0 };
         return diagonal({ source: o, target: o });
       });
 
@@ -163,7 +171,7 @@ module.exports = Backbone.View.extend({
     link.exit().transition()
       .duration(duration)
       .attr('d', function() {
-        var o = { x: data.x, y: data.y };
+        const o = { x: data.x, y: data.y };
         return diagonal({ source: o, target: o });
       })
       .remove();

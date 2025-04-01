@@ -2,16 +2,13 @@
  * Session handler module.
  */
 
-'use strict';
-
 // External Dependencies
-var _ = require('lodash');
+import _ from 'lodash';
 
 // Internal Dependencies
-var Storage = require('./storage');
+import Storage from './storage.js';
 
-module.exports = {
-
+const SessionHandler = {
   tabStatus: {},
   activeSessions: [],
 
@@ -21,8 +18,8 @@ module.exports = {
    * @param commitData
    */
   handler: function(commitData) {
-    var session = this.findSessionOf(commitData);
-    var page = Storage.createPageObject(session, commitData);
+    const session = this.findSessionOf(commitData);
+    const page = Storage.createPageObject(session, commitData);
 
     this.setTabStatus(commitData.tabId, page);
 
@@ -69,12 +66,12 @@ module.exports = {
    * @returns {object} - session object
    */
   findSessionOf: function(commitData) {
-    var ret = {
+    const ret = {
       id: null,
       parentNode: '',
       nodeIndex: ''
     };
-    var tabStatus = this.tabStatus;
+    const tabStatus = this.tabStatus;
 
     // Look for an existing session in active sessions list
     this.activeSessions.forEach(function(session) {
@@ -113,7 +110,7 @@ module.exports = {
    * @returns {{id: *, parentNode: null, nodeIndex: number}}
    */
   createNewSession: function(commitData) {
-    var session = {
+    const session = {
       id: _.now(),
       tabs: [commitData.tabId],
       nodeIndex: 1
@@ -130,11 +127,11 @@ module.exports = {
    * @param {object} details - chrome.webNavigation event details
    */
   processForwardBack: function(details) {
-    var commitData = {};
+    let commitData = {};
     // back button
     if (details.url === this.tabStatus[details.tabId].parent.data.url) {
       console.log('back button');
-      var backPage = this.tabStatus[details.tabId].parent;
+      const backPage = this.tabStatus[details.tabId].parent;
 
       commitData = backPage;
       commitData.forwardId = this.tabStatus[details.tabId].id;
@@ -165,8 +162,8 @@ module.exports = {
    * @param {object} details - chrome.webNavigation event details
    */
   processNavigation: function(details) {
-    var self = this;
-    var commitData = details;
+    const self = this;
+    const commitData = details;
 
     chrome.tabs.get(details.tabId, function(tab) {
       if (tab.openerTabId) {
@@ -186,7 +183,7 @@ module.exports = {
    * @param name - cleaned name to update
    */
   updateName: function(tabId, url, name, redirectedFrom) {
-    var session = _.find(this.activeSessions, function(s) {
+    const session = _.find(this.activeSessions, function(s) {
       return _.includes(s.tabs, tabId);
     });
 
@@ -198,14 +195,17 @@ module.exports = {
    * @param sessionId
    */
   clearSession: function(sessionId) {
-    this.activeSessions = _.reject(this.activeSessions, { id: sessionId });
+    _.remove(this.activeSessions, function(session) {
+      return session.id === sessionId;
+    });
   },
 
   /**
-   * Clear all active sessions.
+   * Clear all sessions
    */
   clearAllSessions: function() {
-    this.tabStatus = {};
     this.activeSessions = [];
   }
 };
+
+export default SessionHandler;

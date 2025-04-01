@@ -1,26 +1,14 @@
 {
   "name": "wikimapper",
-  "version": "2.0.5",
+  "version": "3.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/ptmccarthy/wikimapper"
   },
   "license": "MIT",
-  "browser": {
-    "wikimapper/enums": "./src/web/js/enums.js",
-    "wikimapper/templates": "./src/web/js/templates.js",
-    "wikimapper/resources": "./src/web/js/resources.js",
-    "wikimapper/viewstate": "./src/web/js/models/view-state.js",
-    "timers": "./node_modules/timers-browserify/main.js"
-  },
-  "browserify-shim": {
-    "timers": "global:timers",
-    "process": "global:process"
-  },
   "scripts": {
-    "build": "grunt build:bundle",
+    "build": "grunt build:all",
     "test": "grunt test",
-    "start": "grunt serve",
     "lint": "grunt eslint"
   },
   "dependencies": {
@@ -30,42 +18,40 @@
     "jquery": "^3.7.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "save-svg-as-png": "^1.4.17"
+    "webextension-polyfill": "^0.12.0"
   },
   "devDependencies": {
-    "browserify-shim": "^3.8.14",
-    "errorhandler": "^1.5.1",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@lodder/time-grunt": "^4.0.0",
+    "babel-loader": "^9.1.3",
     "eslint": "^8.56.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.5.1",
     "eslint-plugin-promise": "^6.1.1",
-    "express": "^4.18.2",
     "grunt": "^1.6.1",
-    "grunt-browserify": "^6.0.0",
-    "grunt-concurrent": "^3.0.0",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-less": "^2.0.1",
     "grunt-eslint": "^24.0.1",
     "grunt-karma": "^3.0.0",
-    "grunt-nodemon": "^0.4.2",
+    "grunt-webpack": "^7.0.0",
     "handlebars": "^4.7.8",
-    "hbsfy": "^2.8.1",
+    "handlebars-loader": "^1.7.3",
     "jasmine-core": "^3.8.0",
     "karma": "^4.4.1",
-    "karma-browserify": "^6.1.0",
     "karma-chrome-launcher": "^3.2.0",
     "karma-jasmine": "^3.1.1",
     "karma-jasmine-html-reporter": "^1.7.0",
     "karma-sinon": "^1.0.5",
+    "karma-webpack": "^5.0.0",
     "load-grunt-tasks": "^5.1.0",
-    "morgan": "^1.10.0",
     "sinon": "^7.5.0",
-    "time-grunt": "^2.0.0",
-    "timers-browserify": "^2.0.12"
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   }
 }

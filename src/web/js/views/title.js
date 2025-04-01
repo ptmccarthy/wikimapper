@@ -2,17 +2,15 @@
  * Index/Title View
  */
 
-'use strict';
-
 // External Dependencies
-var Backbone = require('backbone');
+import Backbone from 'backbone';
 
 // Internal Dependencies
-var enums = require('wikimapper/enums');
-var templates = require('wikimapper/templates');
-var ViewState = require('wikimapper/viewstate');
+import enums from '../enums';
+import templates from '../templates';
+import ViewState from '../models/view-state';
 
-module.exports = Backbone.View.extend({
+export default Backbone.View.extend({
 
   template: templates.get('title'),
 

@@ -2,17 +2,16 @@
  * Front-end Application Object
  */
 
-'use strict';
-
 // External Dependencies
-var $ = require('jquery');
+import $ from 'jquery';
+import Backbone from 'backbone';
 
 // Internal Dependencies
-var ViewState = require('wikimapper/viewstate');
-var StorageCollection = require('./collections/localStorage');
+import Router from './router.js';
+import ViewState from './models/view-state.js';
+import StorageCollection from './collections/localStorage.js';
 
-module.exports = {
-
+const App = {
   domElements: {
     nav: '#navigation-view',
     body: '#body-view'
@@ -22,7 +21,11 @@ module.exports = {
     ViewState.initializeHeader();
 
     this.StorageCollection = new StorageCollection();
-    this.StorageCollection.fetch();
+    this.StorageCollection.fetch().then(function() {
+      // Initialize router after data is loaded
+      ViewState.Router = new Router();
+      Backbone.history.start();
+    });
   },
 
   showBody: function(view) {
@@ -44,5 +47,6 @@ module.exports = {
     this.nav.render();
     $(this.domElements.nav).html(this.nav.el);
   }
-
 };
+
+export default App;

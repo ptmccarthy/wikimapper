@@ -1,23 +1,21 @@
-'use strict';
-
-var svgCrowbar = function() {
-  var doctype = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
+const svgCrowbar = function() {
+  const doctype = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
 
   window.URL = (window.URL || window.webkitURL);
 
-  var body = document.body;
+  const body = document.body;
 
-  var prefix = {
+  const prefix = {
     xmlns: 'http://www.w3.org/2000/xmlns/',
     xlink: 'http://www.w3.org/1999/xlink',
     svg: 'http://www.w3.org/2000/svg'
   };
 
   function initialize() {
-    var documents = [window.document];
-    var SVGSources = [];
-    var iframes = document.querySelectorAll('iframe');
-    var objects = document.querySelectorAll('object');
+    const documents = [window.document];
+    const SVGSources = [];
+    const iframes = document.querySelectorAll('iframe');
+    const objects = document.querySelectorAll('object');
 
     [].forEach.call(iframes, function(el) {
       try {
@@ -40,10 +38,10 @@ var svgCrowbar = function() {
     });
 
     documents.forEach(function(doc) {
-      var styles = getStyles(doc);
-      var newSources = getSources(doc, styles);
+      const styles = getStyles(doc);
+      const newSources = getSources(doc, styles);
       // because of prototype on NYT pages
-      for (var i = 0; i < newSources.length; i++) {
+      for (let i = 0; i < newSources.length; i++) {
         SVGSources.push(newSources[i]);
       }
     });
@@ -52,7 +50,7 @@ var svgCrowbar = function() {
     } else if (SVGSources.length > 0) {
       download(SVGSources[0]);
     } else {
-      window.alert('The Crowbar couldn’t find any SVG nodes.');
+      window.alert("The Crowbar couldn't find any SVG nodes.");
     }
   }
 
@@ -70,7 +68,7 @@ var svgCrowbar = function() {
       });
     });
 
-    var buttonsContainer = document.createElement('div');
+    const buttonsContainer = document.createElement('div');
     body.appendChild(buttonsContainer);
 
     buttonsContainer.setAttribute('class', 'svg-crowbar');
@@ -79,7 +77,7 @@ var svgCrowbar = function() {
     buttonsContainer.style.top = 0;
     buttonsContainer.style.left = 0;
 
-    var background = document.createElement('div');
+    const background = document.createElement('div');
     body.appendChild(background);
 
     background.setAttribute('class', 'svg-crowbar');
@@ -91,7 +89,7 @@ var svgCrowbar = function() {
     background.style.height = '100%';
 
     sources.forEach(function(d, i) {
-      var buttonWrapper = document.createElement('div');
+      const buttonWrapper = document.createElement('div');
       buttonsContainer.appendChild(buttonWrapper);
       buttonWrapper.setAttribute('class', 'svg-crowbar');
       buttonWrapper.style.position = 'absolute';
@@ -107,7 +105,7 @@ var svgCrowbar = function() {
       buttonWrapper.style.cursor = 'move';
       buttonWrapper.textContent = 'SVG #' + i + ': ' + (d.id ? '#' + d.id : '') + (d.class ? '.' + d.class : '');
 
-      var button = document.createElement('button');
+      const button = document.createElement('button');
       buttonWrapper.appendChild(button);
       button.setAttribute('data-source-id', i);
       button.style.width = '150px';
@@ -124,7 +122,7 @@ var svgCrowbar = function() {
   }
 
   function cleanup() {
-    var crowbarElements = document.querySelectorAll('.svg-crowbar');
+    const crowbarElements = document.querySelectorAll('.svg-crowbar');
 
     [].forEach.call(crowbarElements, function(el) {
       el.parentNode.removeChild(el);
@@ -132,19 +130,19 @@ var svgCrowbar = function() {
   }
 
   function getSources(doc, styles) {
-    var svgInfo = [];
-    var svgs = doc.querySelectorAll('svg');
+    const svgInfo = [];
+    const svgs = doc.querySelectorAll('svg');
 
     styles = (styles === undefined) ? '' : styles;
 
     [].forEach.call(svgs, function(svg) {
       svg.setAttribute('version', '1.1');
 
-      var defsEl = document.createElement('defs');
+      const defsEl = document.createElement('defs');
       svg.insertBefore(defsEl, svg.firstChild); // TODO   .insert('defs', ':first-child')
       // defsEl.setAttribute('class', 'svg-crowbar');
 
-      var styleEl = document.createElement('style');
+      const styleEl = document.createElement('style');
       defsEl.appendChild(styleEl);
       styleEl.setAttribute('type', 'text/css');
 
@@ -161,8 +159,8 @@ var svgCrowbar = function() {
         svg.setAttributeNS(prefix.xmlns, 'xmlns:xlink', prefix.xlink);
       }
 
-      var source = (new XMLSerializer()).serializeToString(svg).replace('</style>', '<![CDATA[' + styles + ']]></style>');
-      var rect = svg.getBoundingClientRect();
+      const source = (new XMLSerializer()).serializeToString(svg).replace('</style>', '<![CDATA[' + styles + ']]></style>');
+      const rect = svg.getBoundingClientRect();
       svgInfo.push({
         top: rect.top,
         left: rect.left,
@@ -178,7 +176,7 @@ var svgCrowbar = function() {
   }
 
   function download(source) {
-    var filename = 'untitled';
+    let filename = 'untitled';
 
     if (source.id) {
       filename = source.id;
@@ -188,9 +186,9 @@ var svgCrowbar = function() {
       filename = window.document.title.replace(/[^a-z0-9]/gi, '-').toLowerCase();
     }
 
-    var url = window.URL.createObjectURL(new Blob(source.source, { type: 'text/xml' }));
+    const url = window.URL.createObjectURL(new Blob(source.source, { type: 'text/xml' }));
 
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     body.appendChild(a);
     a.setAttribute('class', 'svg-crowbar');
     a.setAttribute('download', filename + '.svg');
@@ -206,8 +204,8 @@ var svgCrowbar = function() {
   function getStyles(doc) {
     function processStyleSheet(ss) {
       if (ss.cssRules) {
-        for (var i = 0; i < ss.cssRules.length; i++) {
-          var rule = ss.cssRules[i];
+        for (let i = 0; i < ss.cssRules.length; i++) {
+          const rule = ss.cssRules[i];
           if (rule.type === 3) {
             // Import Rule
             processStyleSheet(rule.styleSheet);
@@ -223,11 +221,11 @@ var svgCrowbar = function() {
       }
     }
 
-    var styles = '';
-    var styleSheets = doc.styleSheets;
+    let styles = '';
+    const styleSheets = doc.styleSheets;
 
     if (styleSheets) {
-      for (var i = 0; i < styleSheets.length; i++) {
+      for (let i = 0; i < styleSheets.length; i++) {
         processStyleSheet(styleSheets[i]);
       }
     }
@@ -238,4 +236,4 @@ var svgCrowbar = function() {
   initialize();
 };
 
-module.exports = svgCrowbar;
+export default svgCrowbar;

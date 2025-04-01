@@ -1,20 +1,22 @@
-'use strict';
+/**
+ * Router for handling navigation between views.
+ */
 
-var Backbone = require('backbone');
-var $ = require('jquery');
+import Backbone from 'backbone';
+import $ from 'jquery';
 
-var App = require('./app');
+import App from './app';
+
+// Views
+import NavView from './views/navigation';
+import TitleView from './views/title';
+import LatestView from './views/latest';
+import HistoryItemView from './views/history-item';
+import HistoryListView from './views/history';
 
 Backbone.$ = $;
 
-// Views
-var NavView = require('./views/navigation');
-var TitleView = require('./views/title');
-var LatestView = require('./views/latest');
-var HistoryItemView = require('./views/history-item');
-var HistoryListView = require('./views/history');
-
-module.exports = Backbone.Router.extend({
+export default Backbone.Router.extend({
 
   routes: {
     '': 'checkForLatest',
@@ -25,11 +27,13 @@ module.exports = Backbone.Router.extend({
   },
 
   checkForLatest: function() {
-    if (App.StorageCollection.getLatest()) {
-      this.latest();
-    } else {
-      this.title();
-    }
+    App.StorageCollection.getLatest().then(function(latestSession) {
+      if (latestSession) {
+        this.latest();
+      } else {
+        this.title();
+      }
+    }.bind(this));
   },
 
   title: function() {
@@ -39,13 +43,15 @@ module.exports = Backbone.Router.extend({
 
   latest: function() {
     this.ensureNav();
-    App.showBody(new LatestView({
-      session: App.StorageCollection.getLatest()
-    }));
+    App.StorageCollection.getLatest().then(function(latestSession) {
+      App.showBody(new LatestView({
+        session: latestSession
+      }));
+    });
   },
 
   historyParser: function(sessionId) {
-    var session = App.StorageCollection.findWhere({ id: sessionId });
+    const session = App.StorageCollection.findWhere({ id: sessionId });
 
     if (session) {
       this.historyItem(session);

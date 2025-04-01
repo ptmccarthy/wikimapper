@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
   // use load-grunt-tasks to read dependencies from package.json
   require('load-grunt-tasks')(grunt);
-  require('time-grunt')(grunt);
+  require('@lodder/time-grunt')(grunt);
 
   var config = {
     src: 'src',
@@ -14,25 +14,6 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     config: config,
-
-    concurrent: {
-      dev: {
-        tasks: ['karma:watch', 'nodemon:dev'],
-        options: {
-          logConcurrentOutput: true
-        }
-      }
-    },
-
-    nodemon: {
-      dev: {
-        script: 'test/server.js',
-        options: {
-          nodeArgs: ['--inspect'],
-          watch: ['test/server.js', '<%= config.dist %>']
-        }
-      }
-    },
 
     clean: {
       dist: {
@@ -63,48 +44,74 @@ module.exports = function(grunt) {
         configFile: './karma.conf.js',
         singleRun: true,
         autoWatch: false
-      },
-      watch: {
-        configFile: './karma.conf.js',
-        singleRun: false,
-        autoWatch: true
       }
     },
 
     copy: {
-      all: {
+      chrome: {
         files: [
           {
-            src: './manifest.json',
-            dest: '<%= config.dist %>/',
+            src: './manifest.chrome.json',
+            dest: '<%= config.dist %>/chrome/',
             filter: 'isFile',
             flatten: true,
-            expand: true
+            expand: true,
+            rename: function(dest, src) {
+              return dest + 'manifest.json';
+            }
           },
           {
             src: '<%= config.src %>/web/index.html',
-            dest: '<%= config.dist %>/',
+            dest: '<%= config.dist %>/chrome/',
             filter: 'isFile',
             flatten: true,
             expand: true
           },
           {
-            src: '<%= config.src %>/web/img/*',
-            dest: '<%= config.dist %>/img',
-            filter: 'isFile',
-            flatten: true,
-            expand: true
-          },
-          {
-            src: '<%= config.src %>/resources/*',
-            dest: '<%= config.dist %>/resources',
+            src: ['<%= config.src %>/resources/*', '!<%= config.src %>/resources/*.psd'],
+            dest: '<%= config.dist %>/chrome/resources',
             filter: 'isFile',
             flatten: true,
             expand: true
           },
           {
             src: '<%= config.nodeModules %>/font-awesome/fonts/*',
-            dest: '<%= config.dist %>/fonts/',
+            dest: '<%= config.dist %>/chrome/fonts/',
+            filter: 'isFile',
+            flatten: true,
+            expand: true
+          }
+        ]
+      },
+      firefox: {
+        files: [
+          {
+            src: './manifest.firefox.json',
+            dest: '<%= config.dist %>/firefox/',
+            filter: 'isFile',
+            flatten: true,
+            expand: true,
+            rename: function(dest, src) {
+              return dest + 'manifest.json';
+            }
+          },
+          {
+            src: '<%= config.src %>/web/index.html',
+            dest: '<%= config.dist %>/firefox/',
+            filter: 'isFile',
+            flatten: true,
+            expand: true
+          },
+          {
+            src: ['<%= config.src %>/resources/*', '!<%= config.src %>/resources/*.psd'],
+            dest: '<%= config.dist %>/firefox/resources',
+            filter: 'isFile',
+            flatten: true,
+            expand: true
+          },
+          {
+            src: '<%= config.nodeModules %>/font-awesome/fonts/*',
+            dest: '<%= config.dist %>/firefox/fonts/',
             filter: 'isFile',
             flatten: true,
             expand: true
@@ -114,83 +121,113 @@ module.exports = function(grunt) {
     },
 
     less: {
-      app: {
+      chrome: {
         options: {
           compress: false,
           sourceMap: true,
-          sourceMapFilename: '<%= config.dist %>/styles/wikimapper.css.map',
+          sourceMapFilename: '<%= config.dist %>/chrome/styles/wikimapper.css.map',
           sourceMapURL: 'wikimapper.css.map',
-          sourceMapBasepath: '<%= config.dist %>',
+          sourceMapBasepath: '<%= config.dist %>/chrome',
           javascriptEnabled: true
         },
         files: {
-          '<%= config.dist %>/styles/wikimapper.css': '<%= config.src %>/web/styles/*.less'
+          '<%= config.dist %>/chrome/styles/wikimapper.css': '<%= config.src %>/web/styles/*.less'
+        }
+      },
+      firefox: {
+        options: {
+          compress: false,
+          sourceMap: true,
+          sourceMapFilename: '<%= config.dist %>/firefox/styles/wikimapper.css.map',
+          sourceMapURL: 'wikimapper.css.map',
+          sourceMapBasepath: '<%= config.dist %>/firefox',
+          javascriptEnabled: true
+        },
+        files: {
+          '<%= config.dist %>/firefox/styles/wikimapper.css': '<%= config.src %>/web/styles/*.less'
         }
       }
     },
 
-    browserify: {
-      app: {
-        src: [
-          '<%= config.src %>/web/js/app.js',
-          '<%= config.src %>/web/js/**/*.js',
-          '<%= config.src %>/web/templates/*.hbs'
-        ],
-        dest: '<%= config.dist %>/js/wikimapper.js',
-        options: {
-          transform: ['hbsfy'],
-          browserifyOptions: {
-            debug: true,
-            standalone: 'WikiMapper'
-          },
-          watch: true
+    webpack: {
+      options: {
+        stats: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+      },
+      chrome: {
+        ...require('./webpack.config.js'),
+        mode: 'production',
+        output: {
+          ...require('./webpack.config.js').output,
+          path: require('path').resolve(__dirname, 'dist/chrome')
         }
       },
-      background: {
-        src: [
-          '<%= config.src %>/chrome/**/*.js'
-        ],
-        dest: '<%= config.dist %>/background.js',
-        options: {
-          browserifyOptions: {
-            debug: true,
-            standalone: 'WikiMapperBackground'
-          },
-          watch: true
+      firefox: {
+        ...require('./webpack.config.js'),
+        mode: 'production',
+        output: {
+          ...require('./webpack.config.js').output,
+          path: require('path').resolve(__dirname, 'dist/firefox')
+        }
+      },
+      dev: {
+        ...require('./webpack.config.js'),
+        mode: 'development',
+        watch: true,
+        output: {
+          ...require('./webpack.config.js').output,
+          path: require('path').resolve(__dirname, 'dist/chrome')
         }
       }
     }
   });
 
-  grunt.registerTask('prepare:bundle', 'Build preparation steps', [
+  // Common preparation steps
+  grunt.registerTask('prepare', 'Common preparation steps', [
     'clean:dist',
-    'eslint',
-    'copy:all'
+    'eslint'
   ]);
 
-  grunt.registerTask('prepare:debug', 'Build preparation steps', [
-    'clean:dist',
-    'copy:all'
+  // Browser-specific copy tasks
+  grunt.registerTask('copy:all', 'Copy files for all browsers', [
+    'copy:chrome',
+    'copy:firefox'
   ]);
 
-  grunt.registerTask('build:bundle', 'Build WikiMapper extension bundle', [
-    'prepare:bundle',
+  // Build tasks
+  grunt.registerTask('build:chrome', 'Build Chrome extension bundle', [
+    'prepare',
+    'copy:chrome',
     'karma:unit',
-    'less:app',
-    'browserify:background',
-    'browserify:app'
+    'less:chrome',
+    'webpack:chrome'
+  ]);
+
+  grunt.registerTask('build:firefox', 'Build Firefox extension bundle', [
+    'prepare',
+    'copy:firefox',
+    'karma:unit',
+    'less:firefox',
+    'webpack:firefox'
+  ]);
+
+  grunt.registerTask('build:all', 'Build extension bundle for all browsers', [
+    'prepare',
+    'copy:all',
+    'karma:unit',
+    'less:chrome',
+    'less:firefox',
+    'webpack:chrome',
+    'webpack:firefox'
   ]);
 
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [
-    'prepare:debug',
-    'less:app',
-    'browserify:background',
-    'browserify:app',
-    'concurrent:dev'
+    'prepare',
+    'copy:chrome',
+    'less:chrome',
+    'webpack:dev'
   ]);
 
-  // Add a serve task for development
-  grunt.registerTask('serve', 'Start development server', [
-    'build:debug'
+  grunt.registerTask('test', 'Run tests', [
+    'karma:unit'
   ]);
 };

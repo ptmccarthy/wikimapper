@@ -1,51 +1,32 @@
-'use strict';
+import sinon from 'sinon';
+import { initialize } from '../../../src/chrome/background.js';
+import browser from 'webextension-polyfill';
 
-var sinon = require('sinon');
-var App = require('../../../src/chrome/background');
+describe('Background Script', () => {
+  let sandbox;
 
-describe('Background initialization', function() {
-  var sandbox;
-  var originalChrome;
-
-  beforeEach(function() {
+  beforeEach(() => {
     sandbox = sinon.createSandbox();
-    originalChrome = window.chrome;
 
-    // Create Chrome API stubs
-    window.chrome = {
-      runtime: {
-        onInstalled: {
-          addListener: sandbox.stub()
-        },
-        onMessage: {
-          addListener: sandbox.stub()
-        }
-      },
-      webNavigation: {
-        onCommitted: {
-          addListener: sandbox.stub()
-        }
-      },
-      browserAction: {
-        onClicked: {
-          addListener: sandbox.stub()
-        }
-      }
-    };
-
-    App.initialize();
+    // Create spies for all the methods we want to test
+    browser.webNavigation.onCommitted.addListener = sandbox.spy();
+    browser.runtime.onMessage.addListener = sandbox.spy();
+    browser.runtime.onInstalled.addListener = sandbox.spy();
+    browser.action.onClicked.addListener = sandbox.spy();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     sandbox.restore();
-    window.chrome = originalChrome;
   });
 
-  it('should set up event listeners', function() {
-    expect(window.chrome.runtime.onInstalled.addListener.called).toBe(true);
-    expect(window.chrome.runtime.onMessage.addListener.called).toBe(true);
-    expect(window.chrome.webNavigation.onCommitted.addListener.called).toBe(true);
-    expect(window.chrome.browserAction.onClicked.addListener.called).toBe(true);
+  it('should set up all event listeners', () => {
+    initialize();
+
+    // Check that all event listeners are set up
+    expect(browser.webNavigation.onCommitted.addListener.called).toBe(true);
+    expect(browser.runtime.onMessage.addListener.called).toBe(true);
+    expect(browser.runtime.onInstalled.addListener.called).toBe(true);
+    expect(browser.action.onClicked.addListener.called).toBe(true);
   });
 
   // TODO: test event filter

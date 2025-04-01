@@ -2,9 +2,7 @@
  * Data storage and access module.
  */
 
-'use strict';
-
-module.exports = {
+const Storage = {
 
   /**
    * Create a page object in the format necessary for storing and inserting into a JSON tree
@@ -13,7 +11,7 @@ module.exports = {
    * @returns {object} - page object
    */
   createPageObject: function(session, commitData) {
-    var page = {
+    const page = {
       id: session.nodeIndex,
       name: this.shortenURL(commitData.url),
       data: {
@@ -29,25 +27,44 @@ module.exports = {
   },
 
   /**
-   * Record a root node to localStorage
+   * Record a root node to chrome.storage.local
    * @param page - page object to store
    */
   recordRoot: function(page) {
-    localStorage.setItem(page.data.sessionId, JSON.stringify(page));
+    if (!page || !page.data || !page.data.sessionId) {
+      console.error('Invalid page object for recordRoot:', page);
+      return;
+    }
+    chrome.storage.local.set({ [page.data.sessionId]: page });
   },
 
   /**
-   * Record a new child node to an existing tree in localStorage
+   * Record a new child node to an existing tree in chrome.storage.local
    * @param page - page object to store
    */
   recordChild: function(page) {
-    var tree = JSON.parse(localStorage.getItem(page.data.sessionId));
-    var parent = this.findNode(tree, page.data.parentId);
+    if (!page || !page.data || !page.data.sessionId) {
+      console.error('Invalid page object for recordChild:', page);
+      return;
+    }
 
-    tree.lastNodeIndex = page.id;
-    parent.children.push(page);
+    chrome.storage.local.get({ [page.data.sessionId]: null }, function(result) {
+      const tree = result[page.data.sessionId];
+      if (!tree) {
+        console.error('No tree found for session:', page.data.sessionId);
+        return;
+      }
+      const parent = this.findNode(tree, page.data.parentId);
+      if (!parent) {
+        console.error('No parent found for node:', page.data.parentId);
+        return;
+      }
 
-    localStorage.setItem(page.data.sessionId, JSON.stringify(tree));
+      tree.lastNodeIndex = page.id;
+      parent.children.push(page);
+
+      chrome.storage.local.set({ [page.data.sessionId]: tree });
+    }.bind(this));
   },
 
   /**
@@ -57,11 +74,12 @@ module.exports = {
    * @returns {*}
    */
   findNode: function(tree, nodeId) {
+    if (!tree || !nodeId) return null;
     if (tree.id === nodeId) { return tree; }
 
-    var result;
-    var len = tree.children.length;
-    for (var i = 0; i < len; i++) {
+    let result;
+    const len = tree.children.length;
+    for (let i = 0; i < len; i++) {
       result = this.findNode(tree.children[i], nodeId);
       if (result) { return result; }
     }
@@ -76,16 +94,17 @@ module.exports = {
    * @returns {*}
    */
   findNodeByURL: function(tree, url, ignoreUpdated) {
+    if (!tree || !url) return null;
     if (tree.data.url === url) {
-      var ignored = tree.updated === ignoreUpdated;
+      const ignored = tree.updated === ignoreUpdated;
       if (!ignored) {
         return tree;
       }
     }
 
-    var result;
-    var len = tree.children.length;
-    for (var i = 0; i < len; i++) {
+    let result;
+    const len = tree.children.length;
+    for (let i = 0; i < len; i++) {
       result = this.findNodeByURL(tree.children[i], url, ignoreUpdated);
       if (result) { return result; }
     }
@@ -98,10 +117,11 @@ module.exports = {
    * @return {string} URL-derived Page Name
    */
   shortenURL: function(url) {
+    if (!url) return '';
     // handle the special case of a search results page
     if (url.indexOf('Special:Search?search=') >= 0) {
-      var split = url.split('Search?search=');
-      var searchTerm = split[1].split('&')[0];
+      const split = url.split('Search?search=');
+      const searchTerm = split[1].split('&')[0];
       return 'Search Results: ' + searchTerm;
     // otherwise, derive the name from the page url
     } else {
@@ -110,17 +130,23 @@ module.exports = {
   },
 
   /**
-   * Delete the given sessionId from the localStorage history.
+   * Delete the given sessionId from the chrome.storage.local history.
    * @param sessionId
    */
   deleteItem: function(sessionId) {
-    localStorage.removeItem(sessionId);
+    if (!sessionId) {
+      console.error('Invalid sessionId for deleteItem:', sessionId);
+      return;
+    }
+    chrome.storage.local.remove(sessionId);
   },
 
   /**
-   * Delete all localStorage history.
+   * Delete all chrome.storage.local history.
    */
   deleteAll: function() {
-    localStorage.clear();
+    chrome.storage.local.clear();
   }
 };
+
+export default Storage;

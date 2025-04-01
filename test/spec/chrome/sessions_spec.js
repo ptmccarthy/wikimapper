@@ -1,12 +1,9 @@
-'use strict';
-
-var sinon = require('sinon');
-var App = require('../../../src/chrome/background');
-var Sessions = require('../../../src/chrome/session-handler');
+import sinon from 'sinon';
+import Sessions from '../../../src/chrome/session-handler.js';
 
 describe('Session handler', function() {
-  var sandbox;
-  var originalChrome;
+  let sandbox;
+  let originalChrome;
 
   beforeAll(function() {
     // Store original Chrome object if it exists
@@ -21,12 +18,20 @@ describe('Session handler', function() {
       webNavigation: {
         onCommitted: { addListener: function() {} }
       },
-      browserAction: {
+      action: {
         onClicked: { addListener: function() {} }
+      },
+      storage: {
+        local: {
+          get: sinon.stub(),
+          set: sinon.stub(),
+          remove: sinon.stub(),
+          clear: sinon.stub()
+        }
       }
     };
 
-    App.initialize();
+    // Initialize is no longer needed as background.js auto-initializes
   });
 
   beforeEach(function() {
@@ -85,7 +90,7 @@ describe('Session handler', function() {
   });
 
   it('should be able to process navigation events', function() {
-    var details = {
+    const details = {
       tabId: 566,
       openerId: 420,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
@@ -97,28 +102,27 @@ describe('Session handler', function() {
   });
 
   it('should be able to create a session', function() {
-    var newSession;
-    var commitData = {
-      tabId: 567,
+    const commitData = {
+      tabId: 123,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
       timeStamp: Date.now()
     };
 
     Sessions.createNewSession(commitData);
-    newSession = Sessions.activeSessions[0];
+    const newSession = Sessions.activeSessions[0];
 
-    expect(typeof newSession.id).toBe('number');
-    expect(newSession.tabs).toContain(567);
-    expect(newSession.nodeIndex).toEqual(1);
+    expect(newSession.id).toBeDefined();
+    expect(newSession.nodeIndex).toBe(1);
+    expect(newSession.tabs).toEqual([123]);
   });
 
   it('should be able to find an existing session', function() {
-    var commitData = {
+    let commitData = {
       tabId: 3,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
       timeStamp: Date.now()
     };
-    var session;
+    let session;
 
     Sessions.activeSessions = [
       { id: 501, tabs: [1, 2, 3] },

@@ -5,7 +5,6 @@
 
 // External Dependencies
 import _ from 'lodash';
-import browser from 'webextension-polyfill';
 
 // Internal Dependencies
 import Sessions from './session-handler.js';

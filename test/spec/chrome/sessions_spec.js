@@ -4,12 +4,14 @@ import Sessions from '../../../src/chrome/session-handler.js';
 describe('Session handler', function() {
   let sandbox;
   let originalChrome;
+  let originalBrowser;
   let getActiveSessionsStub;
   let updateActiveSessionsStub;
 
   beforeAll(function() {
-    // Store original Chrome object if it exists
+    // Store original Chrome and Browser objects if they exist
     originalChrome = window.chrome;
+    originalBrowser = window.browser;
 
     // Create Chrome API stubs for initialization
     window.chrome = {
@@ -29,7 +31,16 @@ describe('Session handler', function() {
           set: sinon.stub(),
           remove: sinon.stub(),
           clear: sinon.stub()
-        },
+        }
+      },
+      tabs: {
+        get: sinon.stub()
+      }
+    };
+
+    // Create Browser API stubs for initialization
+    window.browser = {
+      storage: {
         session: {
           get: sinon.stub(),
           set: sinon.stub(),
@@ -57,7 +68,7 @@ describe('Session handler', function() {
     };
 
     // Mock session storage
-    window.chrome.storage.session.get = sandbox.stub().callsFake((keys, callback) => {
+    window.browser.storage.session.get = sandbox.stub().callsFake((keys, callback) => {
       const result = {};
       if (Array.isArray(keys)) {
         keys.forEach(key => {
@@ -80,7 +91,7 @@ describe('Session handler', function() {
       return Promise.resolve(result);
     });
 
-    window.chrome.storage.session.set = sandbox.stub().callsFake((items, callback) => {
+    window.browser.storage.session.set = sandbox.stub().callsFake((items, callback) => {
       if (callback) {
         callback();
       }
@@ -93,8 +104,9 @@ describe('Session handler', function() {
   });
 
   afterAll(function() {
-    // Restore original Chrome object
+    // Restore original Chrome and Browser objects
     window.chrome = originalChrome;
+    window.browser = originalBrowser;
   });
 
   it('should initialize with empty tab status and active sessions', async function() {

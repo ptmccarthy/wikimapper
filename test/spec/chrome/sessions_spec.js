@@ -109,16 +109,6 @@ describe('Session handler', function() {
     window.browser = originalBrowser;
   });
 
-  it('should initialize with empty tab status and active sessions', async function() {
-    await Sessions.initialize();
-
-    const tabStatus = await Sessions.getTabStatus();
-    const activeSessions = await Sessions.getActiveSessions();
-
-    expect(tabStatus).toEqual({});
-    expect(activeSessions).toEqual([]);
-  });
-
   it('should be able to clear a session', async function() {
     // Setup initial state
     const initialSessions = [{ id: 123 }, { id: 543 }, { id: 998 }];

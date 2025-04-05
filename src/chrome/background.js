@@ -71,6 +71,18 @@ try {
   console.error('WikiMapper: Failed to add webNavigation listener:', error);
 }
 
+// Listener for when the user clicks on the Wikimapper button
+browser.action.onClicked.addListener(() => {
+  browser.tabs.create({ url: browser.runtime.getURL('index.html') });
+});
+
+// Add listener for service worker state changes
+browser.runtime.onStartup.addListener(() => {
+  console.log('WikiMapper: Service worker started on browser startup');
+  // Reset initialization promise on startup to ensure fresh initialization
+  initializationPromise = null;
+});
+
 /**
  * Initialize the background script by setting up event listeners.
  * This function is exported for testing purposes.
@@ -102,23 +114,11 @@ export async function initialize() {
       }
     });
 
-    // Listener for when the user clicks on the Wikimapper button
-    browser.action.onClicked.addListener(() => {
-      browser.tabs.create({ url: browser.runtime.getURL('index.html') });
-    });
-
     // Listener for first install
     browser.runtime.onInstalled.addListener((details) => {
       if (details.reason === 'install') {
         browser.tabs.create({ url: 'index.html' });
       }
-    });
-
-    // Add listener for service worker state changes
-    browser.runtime.onStartup.addListener(() => {
-      console.log('WikiMapper: Service worker started on browser startup');
-      // Reset initialization promise on startup to ensure fresh initialization
-      initializationPromise = null;
     });
   } catch (error) {
     console.error('WikiMapper: Error during initialization:', error);

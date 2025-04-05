@@ -1,3 +1,6 @@
 import { initialize } from './background';
 
-initialize();
+// Initialize the application
+initialize().catch(error => {
+  console.error('Failed to initialize WikiMapper:', error);
+});

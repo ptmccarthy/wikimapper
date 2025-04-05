@@ -22,11 +22,11 @@ const triggers = [
  * Ingest navigation events and filter them by event type.
  * @param {object} details - webNavigation event details
  */
-function eventFilter(details) {
+async function eventFilter(details) {
   if (_.includes(details.transitionQualifiers, 'forward_back')) {
-    Sessions.processForwardBack(details);
+    await Sessions.processForwardBack(details);
   } else if (_.includes(triggers, details.transitionType)) {
-    Sessions.processNavigation(details);
+    await Sessions.processNavigation(details);
   }
 }
 
@@ -37,7 +37,10 @@ console.log(_.now() + ': WikiMapper started.');
  * Initialize the background script by setting up event listeners.
  * This function is exported for testing purposes.
  */
-export function initialize() {
+export async function initialize() {
+  // Initialize SessionHandler
+  await Sessions.initialize();
+
   // Navigation Event Listeners
   browser.webNavigation.onCommitted.addListener(eventFilter, {
     url: [
@@ -52,6 +55,7 @@ export function initialize() {
       case (messageTypes.deleteItem): {
         if (request.sessionId) {
           Storage.deleteItem(request.sessionId);
+          Sessions.clearSession(request.sessionId);
         } else {
           console.error('Received malformed deleteItem message: ' +
                         JSON.stringify(request) + ', ' + JSON.stringify(sender));
@@ -61,6 +65,7 @@ export function initialize() {
 
       case (messageTypes.deleteAll): {
         Storage.deleteAll();
+        Sessions.clearAllSessions();
       }
     }
   });

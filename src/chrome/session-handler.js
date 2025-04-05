@@ -9,19 +9,74 @@ import _ from 'lodash';
 import Storage from './storage.js';
 
 const SessionHandler = {
-  tabStatus: {},
-  activeSessions: [],
+  // Keys for session storage
+  TAB_STATUS_KEY: 'tabStatus',
+  ACTIVE_SESSIONS_KEY: 'activeSessions',
+
+  /**
+   * Initialize the session handler by loading state from session storage
+   * @returns {Promise} - Resolves when initialization is complete
+   */
+  initialize: async function() {
+    // Load tabStatus and activeSessions from session storage
+    const result = await browser.storage.session.get([this.TAB_STATUS_KEY, this.ACTIVE_SESSIONS_KEY]);
+
+    // Initialize with empty objects/arrays if they don't exist
+    if (!result[this.TAB_STATUS_KEY]) {
+      await browser.storage.session.set({ [this.TAB_STATUS_KEY]: {} });
+    }
+
+    if (!result[this.ACTIVE_SESSIONS_KEY]) {
+      await browser.storage.session.set({ [this.ACTIVE_SESSIONS_KEY]: [] });
+    }
+  },
+
+  /**
+   * Get the current tabStatus from session storage
+   * @returns {Promise<Object>} - The tabStatus object
+   */
+  getTabStatus: async function() {
+    const result = await browser.storage.session.get(this.TAB_STATUS_KEY);
+    return result[this.TAB_STATUS_KEY] || {};
+  },
+
+  /**
+   * Get the current activeSessions from session storage
+   * @returns {Promise<Array>} - The activeSessions array
+   */
+  getActiveSessions: async function() {
+    const result = await browser.storage.session.get(this.ACTIVE_SESSIONS_KEY);
+    return result[this.ACTIVE_SESSIONS_KEY] || [];
+  },
+
+  /**
+   * Update tabStatus in session storage
+   * @param {Object} tabStatus - The new tabStatus object
+   * @returns {Promise} - Resolves when update is complete
+   */
+  updateTabStatus: async function(tabStatus) {
+    await browser.storage.session.set({ [this.TAB_STATUS_KEY]: tabStatus });
+  },
+
+  /**
+   * Update activeSessions in session storage
+   * @param {Array} activeSessions - The new activeSessions array
+   * @returns {Promise} - Resolves when update is complete
+   */
+  updateActiveSessions: async function(activeSessions) {
+    await browser.storage.session.set({ [this.ACTIVE_SESSIONS_KEY]: activeSessions });
+  },
 
   /**
    * Handle new commitData by finding its session (or creating a new one),
    * and determining whether it is a root node or not.
    * @param commitData
    */
-  handler: function(commitData) {
-    const session = this.findSessionOf(commitData);
+  handler: async function(commitData) {
+    const session = await this.findSessionOf(commitData);
     const page = Storage.createPageObject(session, commitData);
 
-    this.setTabStatus(commitData.tabId, page);
+    await this.setTabStatus(commitData.tabId, page);
 
     if (!page.data.parentId) {
       page.lastNodeIndex = 1;
@@ -30,7 +85,7 @@ const SessionHandler = {
       Storage.recordChild(page);
     }
 
-    this.incrementNodeIndex(session);
+    await this.incrementNodeIndex(session);
   },
 
   /**
@@ -38,12 +93,17 @@ const SessionHandler = {
    * This counter keeps track of how many pages (nodes) have been added to a session.
    * @param session - the session to increment
    */
-  incrementNodeIndex: function(session) {
-    _.find(this.activeSessions, function(activeSession) {
+  incrementNodeIndex: async function(session) {
+    const activeSessions = await this.getActiveSessions();
+
+    const updatedSessions = activeSessions.map(activeSession => {
       if (activeSession.id === session.id) {
-        activeSession.nodeIndex += 1;
+        return { ...activeSession, nodeIndex: activeSession.nodeIndex + 1 };
       }
+      return activeSession;
     });
+
+    await this.updateActiveSessions(updatedSessions);
   },
 
   /**
@@ -51,12 +111,15 @@ const SessionHandler = {
    * @param tabId - tabId from commitData
    * @param page - page object to store
    */
-  setTabStatus: function(tabId, page) {
-    if (this.tabStatus[tabId]) {
-      page.parent = this.tabStatus[tabId];
+  setTabStatus: async function(tabId, page) {
+    const tabStatus = await this.getTabStatus();
+
+    if (tabStatus[tabId]) {
+      page.parent = tabStatus[tabId];
     }
 
-    this.tabStatus[tabId] = page;
+    tabStatus[tabId] = page;
+    await this.updateTabStatus(tabStatus);
   },
 
   /**
@@ -65,22 +128,25 @@ const SessionHandler = {
    * @param commitData - commitData from chrome.webNavigation
    * @returns {object} - session object
    */
-  findSessionOf: function(commitData) {
+  findSessionOf: async function(commitData) {
     const ret = {
       id: null,
       parentNode: '',
       nodeIndex: ''
     };
-    const tabStatus = this.tabStatus;
+
+    const tabStatus = await this.getTabStatus();
+    const activeSessions = await this.getActiveSessions();
 
     // Look for an existing session in active sessions list
-    this.activeSessions.forEach(function(session) {
+    for (const session of activeSessions) {
       // First check if this navigation happened in the same tab as its parent
       // by checking our existing sessions & tabs
       if (_.includes(session.tabs, commitData.tabId)) {
         ret.id = session.id;
         ret.parentNode = tabStatus[commitData.tabId].id;
         ret.nodeIndex = session.nodeIndex;
+        break;
       } // eslint-disable-line brace-style
 
       // Otherwise, this is a child tab of an existing parent tab
@@ -90,17 +156,21 @@ const SessionHandler = {
           ret.id = session.id;
           ret.parentNode = tabStatus[commitData.openerTabId].id;
           ret.nodeIndex = session.nodeIndex;
+
+          // Update the session with the new tab
           session.tabs.push(commitData.tabId);
+          await this.updateActiveSessions(activeSessions);
+          break;
         }
       }
-    });
+    }
 
     // If we found a an existing session return it,
     // otherwise create a new session and return it
     if (ret.id) {
       return ret;
     } else {
-      return this.createNewSession(commitData);
+      return await this.createNewSession(commitData);
     }
   },
 
@@ -109,14 +179,17 @@ const SessionHandler = {
    * @param commitData
    * @returns {{id: *, parentNode: null, nodeIndex: number}}
    */
-  createNewSession: function(commitData) {
+  createNewSession: async function(commitData) {
     const session = {
       id: _.now(),
       tabs: [commitData.tabId],
       nodeIndex: 1
     };
 
-    this.activeSessions.push(session);
+    const activeSessions = await this.getActiveSessions();
+    activeSessions.push(session);
+    await this.updateActiveSessions(activeSessions);
+
     return { id: session.id, parentNode: null, nodeIndex: 1 };
   },
 
@@ -126,26 +199,29 @@ const SessionHandler = {
    * type each qualifying event is.
    * @param {object} details - chrome.webNavigation event details
    */
-  processForwardBack: function(details) {
+  processForwardBack: async function(details) {
     let commitData = {};
+    const tabStatus = await this.getTabStatus();
+
     // back button
-    if (details.url === this.tabStatus[details.tabId].parent.data.url) {
+    if (details.url === tabStatus[details.tabId].parent.data.url) {
       console.log('back button');
-      const backPage = this.tabStatus[details.tabId].parent;
+      const backPage = tabStatus[details.tabId].parent;
 
       commitData = backPage;
-      commitData.forwardId = this.tabStatus[details.tabId].id;
-      commitData.forwardChildren = this.tabStatus[details.tabId].children;
+      commitData.forwardId = tabStatus[details.tabId].id;
+      commitData.forwardChildren = tabStatus[details.tabId].children;
 
-      this.tabStatus[details.tabId] = backPage;
+      tabStatus[details.tabId] = backPage;
+      await this.updateTabStatus(tabStatus);
     } // eslint-disable-line brace-style
 
     // forward button
     else {
       console.log('forward button');
-      commitData.id = this.tabStatus[details.tabId].forwardId;
-      commitData.parent = this.tabStatus[details.tabId];
-      commitData.children = this.tabStatus[details.tabId].forwardChildren;
+      commitData.id = tabStatus[details.tabId].forwardId;
+      commitData.parent = tabStatus[details.tabId];
+      commitData.children = tabStatus[details.tabId].forwardChildren;
       commitData.data = {
         tabId: commitData.tabId,
         date: commitData.timeStamp,
@@ -153,7 +229,8 @@ const SessionHandler = {
         parentId: commitData.parent.id,
         sessionId: commitData.parent.data.sessionId
       };
-      this.tabStatus[details.tabId] = commitData;
+      tabStatus[details.tabId] = commitData;
+      await this.updateTabStatus(tabStatus);
     }
   },
 
@@ -161,17 +238,15 @@ const SessionHandler = {
    * Process 'normal' navigation events that matched this.triggers.
    * @param {object} details - chrome.webNavigation event details
    */
-  processNavigation: function(details) {
-    const self = this;
+  processNavigation: async function(details) {
     const commitData = details;
 
-    chrome.tabs.get(details.tabId, function(tab) {
-      if (tab.openerTabId) {
-        commitData.openerTabId = tab.openerTabId;
-      }
+    const tab = await chrome.tabs.get(details.tabId);
+    if (tab.openerTabId) {
+      commitData.openerTabId = tab.openerTabId;
+    }
 
-      self.handler(commitData);
-    });
+    await this.handler(commitData);
   },
 
   /**
@@ -182,29 +257,30 @@ const SessionHandler = {
    * @param url - url of the page to update
    * @param name - cleaned name to update
    */
-  updateName: function(tabId, url, name, redirectedFrom) {
-    const session = _.find(this.activeSessions, function(s) {
-      return _.includes(s.tabs, tabId);
-    });
+  updateName: async function(tabId, url, name, redirectedFrom) {
+    const activeSessions = await this.getActiveSessions();
 
-    Storage.updatePageName(session.id, url, name, redirectedFrom);
+    const session = activeSessions.find(s => _.includes(s.tabs, tabId));
+    if (session) {
+      Storage.updatePageName(session.id, url, name, redirectedFrom);
+    }
   },
 
   /**
    * Clear the given sessionId
    * @param sessionId
    */
-  clearSession: function(sessionId) {
-    _.remove(this.activeSessions, function(session) {
-      return session.id === sessionId;
-    });
+  clearSession: async function(sessionId) {
+    const activeSessions = await this.getActiveSessions();
+    const updatedSessions = activeSessions.filter(session => session.id !== sessionId);
+    await this.updateActiveSessions(updatedSessions);
   },
 
   /**
    * Clear all sessions
    */
-  clearAllSessions: function() {
-    this.activeSessions = [];
+  clearAllSessions: async function() {
+    await this.updateActiveSessions([]);
   }
 };
 

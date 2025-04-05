@@ -1,15 +1,21 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   devtool: 'source-map',
   mode: 'production',
   entry: {
-    background: './src/chrome/main.js',
+    background: ['webextension-polyfill', './src/chrome/main.js'],
     wikimapper: './src/web/js/main.js'
   },
   output: {
     filename: '[name].js'
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      browser: 'webextension-polyfill'
+    })
+  ],
   module: {
     rules: [
       {

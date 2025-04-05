@@ -19,15 +19,15 @@ const SessionHandler = {
    */
   initialize: async function() {
     // Load tabStatus and activeSessions from session storage
-    const result = await chrome.storage.session.get([this.TAB_STATUS_KEY, this.ACTIVE_SESSIONS_KEY]);
+    const result = await browser.storage.session.get([this.TAB_STATUS_KEY, this.ACTIVE_SESSIONS_KEY]);
 
     // Initialize with empty objects/arrays if they don't exist
     if (!result[this.TAB_STATUS_KEY]) {
-      await chrome.storage.session.set({ [this.TAB_STATUS_KEY]: {} });
+      await browser.storage.session.set({ [this.TAB_STATUS_KEY]: {} });
     }
 
     if (!result[this.ACTIVE_SESSIONS_KEY]) {
-      await chrome.storage.session.set({ [this.ACTIVE_SESSIONS_KEY]: [] });
+      await browser.storage.session.set({ [this.ACTIVE_SESSIONS_KEY]: [] });
     }
   },
 
@@ -36,7 +36,7 @@ const SessionHandler = {
    * @returns {Promise<Object>} - The tabStatus object
    */
   getTabStatus: async function() {
-    const result = await chrome.storage.session.get(this.TAB_STATUS_KEY);
+    const result = await browser.storage.session.get(this.TAB_STATUS_KEY);
     return result[this.TAB_STATUS_KEY] || {};
   },
 
@@ -45,7 +45,7 @@ const SessionHandler = {
    * @returns {Promise<Array>} - The activeSessions array
    */
   getActiveSessions: async function() {
-    const result = await chrome.storage.session.get(this.ACTIVE_SESSIONS_KEY);
+    const result = await browser.storage.session.get(this.ACTIVE_SESSIONS_KEY);
     return result[this.ACTIVE_SESSIONS_KEY] || [];
   },
 
@@ -55,7 +55,7 @@ const SessionHandler = {
    * @returns {Promise} - Resolves when update is complete
    */
   updateTabStatus: async function(tabStatus) {
-    await chrome.storage.session.set({ [this.TAB_STATUS_KEY]: tabStatus });
+    await browser.storage.session.set({ [this.TAB_STATUS_KEY]: tabStatus });
   },
 
   /**
@@ -64,7 +64,7 @@ const SessionHandler = {
    * @returns {Promise} - Resolves when update is complete
    */
   updateActiveSessions: async function(activeSessions) {
-    await chrome.storage.session.set({ [this.ACTIVE_SESSIONS_KEY]: activeSessions });
+    await browser.storage.session.set({ [this.ACTIVE_SESSIONS_KEY]: activeSessions });
   },
 
   /**

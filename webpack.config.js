@@ -5,7 +5,7 @@ module.exports = {
   devtool: 'source-map',
   mode: 'production',
   entry: {
-    background: ['webextension-polyfill', './src/chrome/main.js'],
+    background: ['./src/chrome/main.js'],
     wikimapper: './src/web/js/main.js'
   },
   output: {

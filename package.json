@@ -16,7 +16,6 @@
     "d3": "^3.5.17",
     "font-awesome": "^4.7.0",
     "jquery": "^3.7.1",
-    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "webextension-polyfill": "^0.12.0"
   },

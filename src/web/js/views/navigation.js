@@ -1,13 +1,15 @@
 // External Dependencies
 import Backbone from 'backbone';
 import $ from 'jquery';
-import _ from 'lodash';
 
 // Internal Dependencies
 import templates from '../templates';
 import ViewState from '../models/view-state';
 
 Backbone.$ = $;
+
+// Helper function to invert object keys and values
+const invertObject = (obj) => Object.fromEntries(Object.entries(obj).map(([k, v]) => [v, k]));
 
 export default Backbone.View.extend({
 
@@ -40,7 +42,7 @@ export default Backbone.View.extend({
    * @param state - state to set
    */
   setNavState: function(navId, state) {
-    const id = _.invert(this.domElements)[navId];
+    const id = invertObject(this.domElements)[navId];
 
     if (id) {
       ViewState.setNavState(id, state);

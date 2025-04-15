@@ -1,6 +1,5 @@
 // External
 import Backbone from 'backbone';
-import _ from 'lodash';
 
 // Internal
 import enums from '../enums.js';
@@ -40,7 +39,7 @@ const ViewState = Backbone.Model.extend({
   resetHeaderState: function() {
     const navModel = this.get('nav');
 
-    _.each(navModel.attributes, function(value, key) {
+    Object.entries(navModel.attributes).forEach(([key, value]) => {
       navModel.set(key, enums.nav.enabled);
     });
   }

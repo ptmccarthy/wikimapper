@@ -2,9 +2,6 @@
  * Session handler module.
  */
 
-// External Dependencies
-import _ from 'lodash';
-
 // Internal Dependencies
 import Storage from './storage.js';
 
@@ -142,7 +139,7 @@ const SessionHandler = {
     for (const session of activeSessions) {
       // First check if this navigation happened in the same tab as its parent
       // by checking our existing sessions & tabs
-      if (_.includes(session.tabs, commitData.tabId)) {
+      if (session.tabs.includes(commitData.tabId)) {
         ret.id = session.id;
         ret.parentNode = tabStatus[commitData.tabId].id;
         ret.nodeIndex = session.nodeIndex;
@@ -152,7 +149,7 @@ const SessionHandler = {
       // Otherwise, this is a child tab of an existing parent tab
       // (if it has an openerTabId to use)
       else if (commitData.openerTabId) {
-        if (_.includes(session.tabs, commitData.openerTabId)) {
+        if (session.tabs.includes(commitData.openerTabId)) {
           ret.id = session.id;
           ret.parentNode = tabStatus[commitData.openerTabId].id;
           ret.nodeIndex = session.nodeIndex;
@@ -181,7 +178,7 @@ const SessionHandler = {
    */
   createNewSession: async function(commitData) {
     const session = {
-      id: _.now(),
+      id: Date.now(),
       tabs: [commitData.tabId],
       nodeIndex: 1
     };
@@ -260,7 +257,7 @@ const SessionHandler = {
   updateName: async function(tabId, url, name, redirectedFrom) {
     const activeSessions = await this.getActiveSessions();
 
-    const session = activeSessions.find(s => _.includes(s.tabs, tabId));
+    const session = activeSessions.find(s => s.tabs.includes(tabId));
     if (session) {
       Storage.updatePageName(session.id, url, name, redirectedFrom);
     }

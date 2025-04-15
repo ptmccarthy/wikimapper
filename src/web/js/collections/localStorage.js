@@ -3,7 +3,6 @@
  */
 
 import Backbone from 'backbone';
-import _ from 'lodash';
 
 export default Backbone.Collection.extend({
 
@@ -53,11 +52,11 @@ export default Backbone.Collection.extend({
    * @param history - chrome.storage.local parsed into an Array of objects
    */
   parse: function(history) {
-    _.each(history, _.bind(function(session) {
+    history.forEach((session) => {
       session.checked = false;
       session.hidden = false;
       this.add(session);
-    }, this));
+    });
   },
 
   /**
@@ -67,9 +66,10 @@ export default Backbone.Collection.extend({
   getLatest: function() {
     const self = this;
     return this.fetch().then(function() {
-      return _.max(self.models, function(model) {
-        return model.id;
-      });
+      return self.models.reduce((max, model) =>
+        model.id > max.id ? model : max,
+      self.models[0]
+      );
     });
   },
 

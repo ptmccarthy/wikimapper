@@ -2,11 +2,6 @@
  * Background application.
  * Handles initialization and listening for navigation events.
  */
-
-// External Dependencies
-import _ from 'lodash';
-
-// Internal Dependencies
 import Sessions from './session-handler.js';
 import Storage from './storage.js';
 import messageTypes from './enums.js';
@@ -45,9 +40,9 @@ async function eventFilter(details) {
     // Wait for initialization to complete
     await ensureInitialized();
 
-    if (_.includes(details.transitionQualifiers, 'forward_back')) {
+    if (details.transitionQualifiers.includes('forward_back')) {
       await Sessions.processForwardBack(details);
-    } else if (_.includes(triggers, details.transitionType)) {
+    } else if (triggers.includes(details.transitionType)) {
       await Sessions.processNavigation(details);
     }
   } catch (error) {
@@ -56,7 +51,7 @@ async function eventFilter(details) {
 }
 
 // Initialize the application
-console.log(_.now() + ': WikiMapper started.');
+console.log(Date.now() + ': WikiMapper started.');
 
 // Add navigation listener synchronously
 try {

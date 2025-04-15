@@ -6,7 +6,6 @@
 import Backbone from 'backbone';
 import d3 from 'd3';
 import $ from 'jquery';
-import _ from 'lodash';
 
 export default Backbone.View.extend({
 
@@ -83,7 +82,7 @@ export default Backbone.View.extend({
       this.resize();
     // otherwise we're shrinking, wait for transition duration to complete before resize
     } else {
-      setTimeout(_.bind(this.resize, this), duration);
+      setTimeout(() => this.resize(), duration);
     }
 
     // Update the nodes
@@ -104,7 +103,7 @@ export default Backbone.View.extend({
       .style('fill', function(d) {
         return !self.isEmpty(d._children) ? 'lightsteelblue' : '#ffffff';
       })
-      .on('click', _.bind(self.click, self));
+      .on('click', (d) => this.click(d));
 
     nodeEnter.append('foreignObject')
       .attr('transform', 'translate(-100, 5)')

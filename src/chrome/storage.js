@@ -127,25 +127,6 @@ const Storage = {
     } else {
       return decodeURIComponent(/[^/]*$/.exec(url)[0].replace(/_/g, ' '));
     }
-  },
-
-  /**
-   * Delete the given sessionId from the chrome.storage.local history.
-   * @param sessionId
-   */
-  deleteItem: function(sessionId) {
-    if (!sessionId) {
-      console.error('Invalid sessionId for deleteItem:', sessionId);
-      return;
-    }
-    chrome.storage.local.remove(sessionId);
-  },
-
-  /**
-   * Delete all chrome.storage.local history.
-   */
-  deleteAll: function() {
-    chrome.storage.local.clear();
   }
 };
 

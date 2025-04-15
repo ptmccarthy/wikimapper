@@ -3,27 +3,12 @@
  * Handles initialization and listening for navigation events.
  */
 import Sessions from './session-handler.js';
-import Storage from './storage.js';
-import messageTypes from './enums.js';
 
 const triggers = [
   'link',
   'typed',
   'form_submit'
 ];
-
-// Track initialization state
-let initializationPromise = null;
-
-/**
- * Ensure initialization is complete before processing events
- */
-async function ensureInitialized() {
-  if (!initializationPromise) {
-    initializationPromise = initialize();
-  }
-  return initializationPromise;
-}
 
 /**
  * Ingest navigation events and filter them by event type.
@@ -37,9 +22,6 @@ async function eventFilter(details) {
       transitionQualifiers: details.transitionQualifiers
     });
 
-    // Wait for initialization to complete
-    await ensureInitialized();
-
     if (details.transitionQualifiers.includes('forward_back')) {
       await Sessions.processForwardBack(details);
     } else if (triggers.includes(details.transitionType)) {
@@ -49,9 +31,6 @@ async function eventFilter(details) {
     console.error('WikiMapper: Error processing navigation event:', error);
   }
 }
-
-// Initialize the application
-console.log(Date.now() + ': WikiMapper started.');
 
 // Add navigation listener synchronously
 try {
@@ -71,11 +50,11 @@ browser.action.onClicked.addListener(() => {
   browser.tabs.create({ url: browser.runtime.getURL('index.html') });
 });
 
-// Add listener for service worker state changes
-browser.runtime.onStartup.addListener(() => {
-  console.log('WikiMapper: Service worker started on browser startup');
-  // Reset initialization promise on startup to ensure fresh initialization
-  initializationPromise = null;
+// Listener for first install
+browser.runtime.onInstalled.addListener((details) => {
+  if (details.reason === 'install') {
+    browser.tabs.create({ url: 'index.html' });
+  }
 });
 
 /**
@@ -87,38 +66,8 @@ export async function initialize() {
     // Initialize SessionHandler
     await Sessions.initialize();
     console.log('WikiMapper: Initialization complete');
-
-    // Listener for incoming messages
-    browser.runtime.onMessage.addListener((request, sender) => {
-      switch (request.type) {
-        case (messageTypes.deleteItem): {
-          if (request.sessionId) {
-            Storage.deleteItem(request.sessionId);
-            Sessions.clearSession(request.sessionId);
-          } else {
-            console.error('Received malformed deleteItem message: ' +
-                          JSON.stringify(request) + ', ' + JSON.stringify(sender));
-          }
-          break;
-        }
-
-        case (messageTypes.deleteAll): {
-          Storage.deleteAll();
-          Sessions.clearAllSessions();
-        }
-      }
-    });
-
-    // Listener for first install
-    browser.runtime.onInstalled.addListener((details) => {
-      if (details.reason === 'install') {
-        browser.tabs.create({ url: 'index.html' });
-      }
-    });
   } catch (error) {
     console.error('WikiMapper: Error during initialization:', error);
-    // Reset the promise on error to allow retry
-    initializationPromise = null;
     throw error;
   }
 }

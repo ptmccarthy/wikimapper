@@ -111,14 +111,4 @@ describe('Storage API', function() {
     expect(window.chrome.storage.local.get.calledWith({ 'test-session': null })).toBe(true);
     expect(window.chrome.storage.local.set.called).toBe(true);
   });
-
-  it('should delete item from chrome.storage.local', function() {
-    Storage.deleteItem('test-session');
-    expect(window.chrome.storage.local.remove.calledWith('test-session')).toBe(true);
-  });
-
-  it('should clear all items from chrome.storage.local', function() {
-    Storage.deleteAll();
-    expect(window.chrome.storage.local.clear.called).toBe(true);
-  });
 });

@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true,
     "webextensions": true,
-    "jasmine": true
+    "jest": true
   },
   "extends": "standard",
   "parserOptions": {

@@ -10,9 +10,9 @@ module.exports = {
     '^.+\\.js$': 'babel-jest'
   },
   moduleNameMapper: {
-    '^webextension-polyfill$': '<rootDir>/test/mocks/browser-polyfill.js'
+    '^webextension-polyfill$': '<rootDir>/test/mocks/webextension-polyfill.js'
   },
-  setupFiles: ['<rootDir>/test/mocks/setup.js'],
+  setupFiles: ['<rootDir>/test/setup.js'],
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageReporters: ['text'],

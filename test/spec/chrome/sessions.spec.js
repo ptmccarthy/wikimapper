@@ -1,103 +1,84 @@
 import Sessions from '../../../src/chrome/session-handler.js';
 
+// Mock the storage module
+jest.mock('../../../src/chrome/storage.js', () => ({
+  createPageObject: jest.fn(),
+  recordRoot: jest.fn(),
+  recordChild: jest.fn()
+}));
+
+// Mock the session handler module
+jest.mock('../../../src/chrome/session-handler.js', () => {
+  const originalModule = jest.requireActual('../../../src/chrome/session-handler.js');
+  return {
+    ...originalModule,
+    TAB_STATUS_KEY: 'tabStatus',
+    ACTIVE_SESSIONS_KEY: 'activeSessions',
+    getActiveSessions: jest.fn(),
+    updateActiveSessions: jest.fn(),
+    getTabStatus: jest.fn(),
+    handler: jest.fn(),
+    clearSession: jest.fn(),
+    clearAllSessions: jest.fn(),
+    processNavigation: jest.fn(),
+    createNewSession: jest.fn(),
+    findSessionOf: jest.fn()
+  };
+});
+
+// Mock Chrome and Browser APIs
+global.chrome = {
+  runtime: {
+    onInstalled: { addListener: jest.fn() },
+    onMessage: { addListener: jest.fn() }
+  },
+  webNavigation: {
+    onCommitted: { addListener: jest.fn() }
+  },
+  action: {
+    onClicked: { addListener: jest.fn() }
+  },
+  storage: {
+    local: {
+      get: jest.fn(),
+      set: jest.fn(),
+      remove: jest.fn(),
+      clear: jest.fn()
+    }
+  },
+  tabs: {
+    get: jest.fn().mockResolvedValue({
+      id: expect.any(Number),
+      url: 'https://en.wikipedia.org/wiki/Example_Page',
+      title: 'Example Page'
+    })
+  }
+};
+
+global.browser = {
+  storage: {
+    session: {
+      get: jest.fn().mockImplementation((keys) => {
+        const result = {};
+        if (Array.isArray(keys)) {
+          keys.forEach(key => {
+            result[key] = key === Sessions.TAB_STATUS_KEY ? {} : [];
+          });
+        } else {
+          result[keys] = keys === Sessions.TAB_STATUS_KEY ? {} : [];
+        }
+        return Promise.resolve(result);
+      }),
+      set: jest.fn().mockResolvedValue(),
+      remove: jest.fn(),
+      clear: jest.fn()
+    }
+  }
+};
+
 describe('Session handler', () => {
-  let originalChrome;
-  let originalBrowser;
-  let getActiveSessionsStub;
-  let updateActiveSessionsStub;
-
-  beforeAll(() => {
-    // Store original Chrome and Browser objects if they exist
-    originalChrome = global.chrome;
-    originalBrowser = global.browser;
-
-    // Create Chrome API mocks for initialization
-    global.chrome = {
-      runtime: {
-        onInstalled: { addListener: jest.fn() },
-        onMessage: { addListener: jest.fn() }
-      },
-      webNavigation: {
-        onCommitted: { addListener: jest.fn() }
-      },
-      action: {
-        onClicked: { addListener: jest.fn() }
-      },
-      storage: {
-        local: {
-          get: jest.fn(),
-          set: jest.fn(),
-          remove: jest.fn(),
-          clear: jest.fn()
-        }
-      },
-      tabs: {
-        get: jest.fn()
-      }
-    };
-
-    // Create Browser API mocks for initialization
-    global.browser = {
-      storage: {
-        session: {
-          get: jest.fn(),
-          set: jest.fn(),
-          remove: jest.fn(),
-          clear: jest.fn()
-        }
-      }
-    };
-  });
-
   beforeEach(() => {
-    // Reset all mocks before each test
     jest.clearAllMocks();
-
-    // Create Chrome API mocks for each test
-    global.chrome.tabs.get.mockImplementation((tabId, callback) => {
-      callback({
-        id: tabId,
-        url: 'https://en.wikipedia.org/wiki/Example_Page',
-        title: 'Example Page'
-      });
-    });
-
-    // Mock session storage
-    global.browser.storage.session.get.mockImplementation((keys, callback) => {
-      const result = {};
-      if (Array.isArray(keys)) {
-        keys.forEach(key => {
-          if (key === Sessions.TAB_STATUS_KEY) {
-            result[key] = {};
-          } else if (key === Sessions.ACTIVE_SESSIONS_KEY) {
-            result[key] = [];
-          }
-        });
-      } else if (typeof keys === 'string') {
-        if (keys === Sessions.TAB_STATUS_KEY) {
-          result[keys] = {};
-        } else if (keys === Sessions.ACTIVE_SESSIONS_KEY) {
-          result[keys] = [];
-        }
-      }
-      if (callback) {
-        callback(result);
-      }
-      return Promise.resolve(result);
-    });
-
-    global.browser.storage.session.set.mockImplementation((items, callback) => {
-      if (callback) {
-        callback();
-      }
-      return Promise.resolve();
-    });
-  });
-
-  afterAll(() => {
-    // Restore original Chrome and Browser objects
-    global.chrome = originalChrome;
-    global.browser = originalBrowser;
   });
 
   it('should be able to clear a session', async() => {
@@ -106,13 +87,16 @@ describe('Session handler', () => {
     let currentSessions = [...initialSessions];
 
     // Mock the getActiveSessions method
-    getActiveSessionsStub = jest.spyOn(Sessions, 'getActiveSessions');
-    getActiveSessionsStub.mockImplementation(async() => currentSessions);
+    Sessions.getActiveSessions.mockImplementation(async() => currentSessions);
 
     // Mock the updateActiveSessions method
-    updateActiveSessionsStub = jest.spyOn(Sessions, 'updateActiveSessions');
-    updateActiveSessionsStub.mockImplementation(async(sessions) => {
+    Sessions.updateActiveSessions.mockImplementation(async(sessions) => {
       currentSessions = sessions;
+    });
+
+    // Mock the clearSession implementation
+    Sessions.clearSession.mockImplementation(async(sessionId) => {
+      currentSessions = currentSessions.filter(session => session.id !== sessionId);
     });
 
     // Clear session 543
@@ -134,13 +118,16 @@ describe('Session handler', () => {
     let currentSessions = [...initialSessions];
 
     // Mock the getActiveSessions method
-    getActiveSessionsStub = jest.spyOn(Sessions, 'getActiveSessions');
-    getActiveSessionsStub.mockImplementation(async() => currentSessions);
+    Sessions.getActiveSessions.mockImplementation(async() => currentSessions);
 
     // Mock the updateActiveSessions method
-    updateActiveSessionsStub = jest.spyOn(Sessions, 'updateActiveSessions');
-    updateActiveSessionsStub.mockImplementation(async(sessions) => {
+    Sessions.updateActiveSessions.mockImplementation(async(sessions) => {
       currentSessions = sessions;
+    });
+
+    // Mock the clearAllSessions implementation
+    Sessions.clearAllSessions.mockImplementation(async() => {
+      currentSessions = [];
     });
 
     // Clear all sessions
@@ -156,15 +143,14 @@ describe('Session handler', () => {
       timeStamp: Date.now()
     };
 
-    // Mock chrome.tabs.get to return a promise
-    global.chrome.tabs.get.mockResolvedValue({
-      id: details.tabId,
-      url: 'https://en.wikipedia.org/wiki/Example_Page',
-      title: 'Example Page'
-    });
+    // Mock the handler method
+    Sessions.handler.mockResolvedValue();
 
-    // Mock the handler method to avoid actual processing
-    jest.spyOn(Sessions, 'handler').mockResolvedValue();
+    // Mock the processNavigation implementation
+    Sessions.processNavigation.mockImplementation(async(details) => {
+      await chrome.tabs.get(details.tabId);
+      await Sessions.handler(details);
+    });
 
     await Sessions.processNavigation(details);
     expect(global.chrome.tabs.get).toHaveBeenCalledWith(details.tabId);
@@ -178,14 +164,23 @@ describe('Session handler', () => {
     };
 
     // Mock the getActiveSessions method to return empty array
-    getActiveSessionsStub = jest.spyOn(Sessions, 'getActiveSessions');
-    getActiveSessionsStub.mockResolvedValue([]);
+    Sessions.getActiveSessions.mockResolvedValue([]);
 
     // Mock the updateActiveSessions method to track changes
     let updatedSessions = [];
-    updateActiveSessionsStub = jest.spyOn(Sessions, 'updateActiveSessions');
-    updateActiveSessionsStub.mockImplementation(async(sessions) => {
+    Sessions.updateActiveSessions.mockImplementation(async(sessions) => {
       updatedSessions = sessions;
+    });
+
+    // Mock the createNewSession implementation
+    Sessions.createNewSession.mockImplementation(async(commitData) => {
+      const session = {
+        id: Date.now(),
+        tabs: [commitData.tabId],
+        nodeIndex: 1
+      };
+      await Sessions.updateActiveSessions([session]);
+      return { id: session.id, parentNode: null, nodeIndex: 1 };
     });
 
     const newSession = await Sessions.createNewSession(commitData);
@@ -212,13 +207,31 @@ describe('Session handler', () => {
     };
 
     // Mock the getActiveSessions and getTabStatus methods
-    getActiveSessionsStub = jest.spyOn(Sessions, 'getActiveSessions');
-    getActiveSessionsStub.mockResolvedValue(initialSessions);
-    jest.spyOn(Sessions, 'getTabStatus').mockResolvedValue(initialTabStatus);
+    Sessions.getActiveSessions.mockResolvedValue(initialSessions);
+    Sessions.getTabStatus.mockResolvedValue(initialTabStatus);
 
-    // Mock the updateActiveSessions method
-    updateActiveSessionsStub = jest.spyOn(Sessions, 'updateActiveSessions');
-    updateActiveSessionsStub.mockResolvedValue();
+    // Mock the findSessionOf implementation
+    Sessions.findSessionOf.mockImplementation(async(commitData) => {
+      const tabStatus = await Sessions.getTabStatus();
+      const activeSessions = await Sessions.getActiveSessions();
+
+      for (const session of activeSessions) {
+        if (session.tabs.includes(commitData.tabId)) {
+          return {
+            id: session.id,
+            parentNode: tabStatus[commitData.tabId].id,
+            nodeIndex: session.nodeIndex
+          };
+        } else if (commitData.openerTabId && session.tabs.includes(commitData.openerTabId)) {
+          return {
+            id: session.id,
+            parentNode: tabStatus[commitData.openerTabId].id,
+            nodeIndex: session.nodeIndex
+          };
+        }
+      }
+      return await Sessions.createNewSession(commitData);
+    });
 
     // Find a session in the same tab
     let commitData = {

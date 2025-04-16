@@ -2,34 +2,21 @@ import Storage from '../../../src/chrome/storage.js';
 import mockSession from '../../resources/mock_session.js';
 import commitData from '../../resources/commit_data.js';
 
+// Mock Chrome API
+global.chrome = {
+  storage: {
+    local: {
+      get: jest.fn(),
+      set: jest.fn(),
+      remove: jest.fn(),
+      clear: jest.fn()
+    }
+  }
+};
+
 describe('Storage API', () => {
-  let originalChrome;
-
-  beforeAll(() => {
-    // Store original Chrome object if it exists
-    originalChrome = global.chrome;
-
-    // Create Chrome API mocks for initialization
-    global.chrome = {
-      storage: {
-        local: {
-          get: jest.fn(),
-          set: jest.fn(),
-          remove: jest.fn(),
-          clear: jest.fn()
-        }
-      }
-    };
-  });
-
   beforeEach(() => {
-    // Reset all mocks before each test
     jest.clearAllMocks();
-  });
-
-  afterAll(() => {
-    // Restore original Chrome object
-    global.chrome = originalChrome;
   });
 
   it('should be able to detect a search results page and name it appropriately', () => {

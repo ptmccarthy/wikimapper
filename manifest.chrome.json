@@ -23,11 +23,6 @@
     "storage"
   ],
 
-  "host_permissions": [
-    "*://*.wikipedia.org/*",
-    "*://*.wiktionary.org/*"
-  ],
-
   "action": {
     "default_title": "WikiMapper",
     "default_icon": "resources/wikimapper-38.png"

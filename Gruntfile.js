@@ -43,6 +43,9 @@ module.exports = function(grunt) {
       jest: {
         cmd: 'npm',
         args: ['test']
+      },
+      zip: {
+        cmd: './zip_bundles.sh'
       }
     },
 
@@ -218,7 +221,8 @@ module.exports = function(grunt) {
     'less:chrome',
     'less:firefox',
     'webpack:chrome',
-    'webpack:firefox'
+    'webpack:firefox',
+    'run:zip'
   ]);
 
   grunt.registerTask('build:debug', 'Run WikiMapper in debugger/watch mode', [

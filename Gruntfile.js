@@ -39,11 +39,10 @@ module.exports = function(grunt) {
       ]
     },
 
-    karma: {
-      unit: {
-        configFile: './karma.conf.js',
-        singleRun: true,
-        autoWatch: false
+    run: {
+      jest: {
+        cmd: 'npm',
+        args: ['test']
       }
     },
 
@@ -184,7 +183,12 @@ module.exports = function(grunt) {
   // Common preparation steps
   grunt.registerTask('prepare', 'Common preparation steps', [
     'clean:dist',
-    'eslint'
+    'test'
+  ]);
+
+  grunt.registerTask('test', 'Run tests', [
+    'eslint',
+    'run:jest'
   ]);
 
   // Browser-specific copy tasks
@@ -197,7 +201,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build:chrome', 'Build Chrome extension bundle', [
     'prepare',
     'copy:chrome',
-    'karma:unit',
     'less:chrome',
     'webpack:chrome'
   ]);
@@ -205,7 +208,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build:firefox', 'Build Firefox extension bundle', [
     'prepare',
     'copy:firefox',
-    'karma:unit',
     'less:firefox',
     'webpack:firefox'
   ]);
@@ -213,7 +215,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build:all', 'Build extension bundle for all browsers', [
     'prepare',
     'copy:all',
-    'karma:unit',
     'less:chrome',
     'less:firefox',
     'webpack:chrome',
@@ -225,9 +226,5 @@ module.exports = function(grunt) {
     'copy:chrome',
     'less:chrome',
     'webpack:dev'
-  ]);
-
-  grunt.registerTask('test', 'Run tests', [
-    'karma:unit'
   ]);
 };

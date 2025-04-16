@@ -1,74 +1,69 @@
-import sinon from 'sinon';
 import Sessions from '../../../src/chrome/session-handler.js';
 
-describe('Session handler', function() {
-  let sandbox;
+describe('Session handler', () => {
   let originalChrome;
   let originalBrowser;
   let getActiveSessionsStub;
   let updateActiveSessionsStub;
 
-  beforeAll(function() {
+  beforeAll(() => {
     // Store original Chrome and Browser objects if they exist
-    originalChrome = window.chrome;
-    originalBrowser = window.browser;
+    originalChrome = global.chrome;
+    originalBrowser = global.browser;
 
-    // Create Chrome API stubs for initialization
-    window.chrome = {
+    // Create Chrome API mocks for initialization
+    global.chrome = {
       runtime: {
-        onInstalled: { addListener: function() {} },
-        onMessage: { addListener: function() {} }
+        onInstalled: { addListener: jest.fn() },
+        onMessage: { addListener: jest.fn() }
       },
       webNavigation: {
-        onCommitted: { addListener: function() {} }
+        onCommitted: { addListener: jest.fn() }
       },
       action: {
-        onClicked: { addListener: function() {} }
+        onClicked: { addListener: jest.fn() }
       },
       storage: {
         local: {
-          get: sinon.stub(),
-          set: sinon.stub(),
-          remove: sinon.stub(),
-          clear: sinon.stub()
+          get: jest.fn(),
+          set: jest.fn(),
+          remove: jest.fn(),
+          clear: jest.fn()
         }
       },
       tabs: {
-        get: sinon.stub()
+        get: jest.fn()
       }
     };
 
-    // Create Browser API stubs for initialization
-    window.browser = {
+    // Create Browser API mocks for initialization
+    global.browser = {
       storage: {
         session: {
-          get: sinon.stub(),
-          set: sinon.stub(),
-          remove: sinon.stub(),
-          clear: sinon.stub()
+          get: jest.fn(),
+          set: jest.fn(),
+          remove: jest.fn(),
+          clear: jest.fn()
         }
       }
     };
-
-    // Initialize is no longer needed as background.js auto-initializes
   });
 
-  beforeEach(function() {
-    sandbox = sinon.createSandbox();
+  beforeEach(() => {
+    // Reset all mocks before each test
+    jest.clearAllMocks();
 
-    // Create Chrome API stubs for each test
-    window.chrome.tabs = {
-      get: sandbox.stub().callsFake(function(tabId, callback) {
-        callback({
-          id: tabId,
-          url: 'https://en.wikipedia.org/wiki/Example_Page',
-          title: 'Example Page'
-        });
-      })
-    };
+    // Create Chrome API mocks for each test
+    global.chrome.tabs.get.mockImplementation((tabId, callback) => {
+      callback({
+        id: tabId,
+        url: 'https://en.wikipedia.org/wiki/Example_Page',
+        title: 'Example Page'
+      });
+    });
 
     // Mock session storage
-    window.browser.storage.session.get = sandbox.stub().callsFake((keys, callback) => {
+    global.browser.storage.session.get.mockImplementation((keys, callback) => {
       const result = {};
       if (Array.isArray(keys)) {
         keys.forEach(key => {
@@ -91,7 +86,7 @@ describe('Session handler', function() {
       return Promise.resolve(result);
     });
 
-    window.browser.storage.session.set = sandbox.stub().callsFake((items, callback) => {
+    global.browser.storage.session.set.mockImplementation((items, callback) => {
       if (callback) {
         callback();
       }
@@ -99,28 +94,24 @@ describe('Session handler', function() {
     });
   });
 
-  afterEach(function() {
-    sandbox.restore();
-  });
-
-  afterAll(function() {
+  afterAll(() => {
     // Restore original Chrome and Browser objects
-    window.chrome = originalChrome;
-    window.browser = originalBrowser;
+    global.chrome = originalChrome;
+    global.browser = originalBrowser;
   });
 
-  it('should be able to clear a session', async function() {
+  it('should be able to clear a session', async() => {
     // Setup initial state
     const initialSessions = [{ id: 123 }, { id: 543 }, { id: 998 }];
     let currentSessions = [...initialSessions];
 
     // Mock the getActiveSessions method
-    getActiveSessionsStub = sandbox.stub(Sessions, 'getActiveSessions');
-    getActiveSessionsStub.callsFake(async() => currentSessions);
+    getActiveSessionsStub = jest.spyOn(Sessions, 'getActiveSessions');
+    getActiveSessionsStub.mockImplementation(async() => currentSessions);
 
     // Mock the updateActiveSessions method
-    updateActiveSessionsStub = sandbox.stub(Sessions, 'updateActiveSessions');
-    updateActiveSessionsStub.callsFake(async(sessions) => {
+    updateActiveSessionsStub = jest.spyOn(Sessions, 'updateActiveSessions');
+    updateActiveSessionsStub.mockImplementation(async(sessions) => {
       currentSessions = sessions;
     });
 
@@ -137,18 +128,18 @@ describe('Session handler', function() {
     expect(currentSessions).toEqual([]);
   });
 
-  it('should be able to clear all sessions', async function() {
+  it('should be able to clear all sessions', async() => {
     // Setup initial state
     const initialSessions = [{ id: 123 }, { id: 543 }, { id: 998 }];
     let currentSessions = [...initialSessions];
 
     // Mock the getActiveSessions method
-    getActiveSessionsStub = sandbox.stub(Sessions, 'getActiveSessions');
-    getActiveSessionsStub.callsFake(async() => currentSessions);
+    getActiveSessionsStub = jest.spyOn(Sessions, 'getActiveSessions');
+    getActiveSessionsStub.mockImplementation(async() => currentSessions);
 
     // Mock the updateActiveSessions method
-    updateActiveSessionsStub = sandbox.stub(Sessions, 'updateActiveSessions');
-    updateActiveSessionsStub.callsFake(async(sessions) => {
+    updateActiveSessionsStub = jest.spyOn(Sessions, 'updateActiveSessions');
+    updateActiveSessionsStub.mockImplementation(async(sessions) => {
       currentSessions = sessions;
     });
 
@@ -157,7 +148,7 @@ describe('Session handler', function() {
     expect(currentSessions).toEqual([]);
   });
 
-  it('should be able to process navigation events', async function() {
+  it('should be able to process navigation events', async() => {
     const details = {
       tabId: 566,
       openerId: 420,
@@ -166,20 +157,20 @@ describe('Session handler', function() {
     };
 
     // Mock chrome.tabs.get to return a promise
-    window.chrome.tabs.get = sandbox.stub().returns(Promise.resolve({
+    global.chrome.tabs.get.mockResolvedValue({
       id: details.tabId,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
       title: 'Example Page'
-    }));
+    });
 
     // Mock the handler method to avoid actual processing
-    sandbox.stub(Sessions, 'handler').resolves();
+    jest.spyOn(Sessions, 'handler').mockResolvedValue();
 
     await Sessions.processNavigation(details);
-    expect(window.chrome.tabs.get.calledWith(details.tabId)).toBe(true);
+    expect(global.chrome.tabs.get).toHaveBeenCalledWith(details.tabId);
   });
 
-  it('should be able to create a session', async function() {
+  it('should be able to create a session', async() => {
     const commitData = {
       tabId: 123,
       url: 'https://en.wikipedia.org/wiki/Example_Page',
@@ -187,13 +178,13 @@ describe('Session handler', function() {
     };
 
     // Mock the getActiveSessions method to return empty array
-    getActiveSessionsStub = sandbox.stub(Sessions, 'getActiveSessions');
-    getActiveSessionsStub.resolves([]);
+    getActiveSessionsStub = jest.spyOn(Sessions, 'getActiveSessions');
+    getActiveSessionsStub.mockResolvedValue([]);
 
     // Mock the updateActiveSessions method to track changes
     let updatedSessions = [];
-    updateActiveSessionsStub = sandbox.stub(Sessions, 'updateActiveSessions');
-    updateActiveSessionsStub.callsFake(async(sessions) => {
+    updateActiveSessionsStub = jest.spyOn(Sessions, 'updateActiveSessions');
+    updateActiveSessionsStub.mockImplementation(async(sessions) => {
       updatedSessions = sessions;
     });
 
@@ -205,7 +196,7 @@ describe('Session handler', function() {
     expect(updatedSessions[0].tabs).toEqual([123]);
   });
 
-  it('should be able to find an existing session', async function() {
+  it('should be able to find an existing session', async() => {
     // Setup initial state
     const initialSessions = [
       { id: 501, tabs: [1, 2, 3] },
@@ -221,13 +212,13 @@ describe('Session handler', function() {
     };
 
     // Mock the getActiveSessions and getTabStatus methods
-    getActiveSessionsStub = sandbox.stub(Sessions, 'getActiveSessions');
-    getActiveSessionsStub.resolves(initialSessions);
-    sandbox.stub(Sessions, 'getTabStatus').resolves(initialTabStatus);
+    getActiveSessionsStub = jest.spyOn(Sessions, 'getActiveSessions');
+    getActiveSessionsStub.mockResolvedValue(initialSessions);
+    jest.spyOn(Sessions, 'getTabStatus').mockResolvedValue(initialTabStatus);
 
     // Mock the updateActiveSessions method
-    updateActiveSessionsStub = sandbox.stub(Sessions, 'updateActiveSessions');
-    updateActiveSessionsStub.resolves();
+    updateActiveSessionsStub = jest.spyOn(Sessions, 'updateActiveSessions');
+    updateActiveSessionsStub.mockResolvedValue();
 
     // Find a session in the same tab
     let commitData = {
@@ -237,7 +228,7 @@ describe('Session handler', function() {
     };
 
     let session = await Sessions.findSessionOf(commitData);
-    expect(session.id).toEqual(501);
+    expect(session.id).toBe(501);
 
     // Find a session in a parent tab
     commitData = {
@@ -248,6 +239,6 @@ describe('Session handler', function() {
     };
 
     session = await Sessions.findSessionOf(commitData);
-    expect(session.id).toEqual(650);
+    expect(session.id).toBe(650);
   });
 });

@@ -24,3 +24,11 @@ To open the WikiMapper application, after installing it, click on the ![WikiMapp
 ### Privacy
 
 WikiMapper is truly free software (MIT license) and does not serve any ads, collect any personal information, or transmit any data to anyone.
+
+### Development
+
+Steps to create and install developer builds:
+1. `npm install`
+2. `npm run build` creates both unpacked and zipped extensions in `/dist`
+3. For Chrome, load the unpacked extension `/dist/chrome` in chrome://extensions with developer mode enabled
+4. For Firefox, load the zipped extension `/dist/wikimapper-firefox.zip` in the about:addons > debug addons as a temporary add-on.

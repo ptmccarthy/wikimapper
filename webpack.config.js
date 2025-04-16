@@ -33,11 +33,23 @@ module.exports = {
         loader: 'handlebars-loader',
         options: {
           helperDirs: [path.join(__dirname, 'src/web/js/hbs-helpers')],
+          precompileOptions: {
+            noEscape: true,
+            strict: true,
+            preventIndent: true
+          }
         }
       }
     ]
   },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
+    alias: {
+      'handlebars': 'handlebars/runtime'
+    }
+  },
+  optimization: {
+    usedExports: true,
+    sideEffects: true
   }
 }; 

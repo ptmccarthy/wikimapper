@@ -16,9 +16,9 @@
   "dependencies": {
     "backbone": "^1.4.1",
     "d3": "^3.5.17",
+    "dayjs": "^1.11.13",
     "font-awesome": "^4.7.0",
     "jquery": "^3.7.1",
-    "moment": "^2.29.4",
     "webextension-polyfill": "^0.12.0"
   },
   "devDependencies": {

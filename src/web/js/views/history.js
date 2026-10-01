@@ -23,6 +23,9 @@ export default Backbone.View.extend({
     'click td.td-checkbox': 'onSelectTableItem',
     'click th.th-checkbox': 'onSelectAll',
     'click #clear-history': 'confirmDelete',
+    'click #export-history': 'onExportHistory',
+    'click #import-history-button': 'onImportHistoryClick',
+    'change #import-history-file': 'onImportHistoryFile',
     'keyup #history-search': 'onSearchKeyup'
   },
 
@@ -128,6 +131,111 @@ export default Backbone.View.extend({
     });
 
     this.render();
+  },
+
+  onExportHistory: function() {
+    const defaultName = this.defaultExportFilename();
+    const entered = window.prompt('Name this export:', defaultName);
+
+    if (entered === null) {
+      return;
+    }
+
+    const filename = this.buildExportFilename(entered, defaultName);
+
+    this.collection.exportAll().then(function(data) {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }).catch(function(error) {
+      window.alert('Could not export history: ' + error.message);
+    });
+  },
+
+  defaultExportFilename: function() {
+    return 'wikimapper-history-' + new Date().toISOString().slice(0, 10);
+  },
+
+  /**
+   * Turn prompt input into a safe .json download name.
+   * Empty input falls back to the date-based default.
+   * @param {string} name
+   * @param {string} fallback
+   * @returns {string}
+   */
+  buildExportFilename: function(name, fallback) {
+    let filename = (name || '').trim() || fallback;
+    filename = filename.replace(/[<>:"/\\|?*]/g, '-')
+      .split('')
+      .filter(function(character) {
+        return character.charCodeAt(0) >= 32;
+      })
+      .join('')
+      .replace(/\.+$/, '')
+      .trim();
+
+    if (!filename) {
+      filename = fallback;
+    }
+
+    if (!filename.toLowerCase().endsWith('.json')) {
+      filename += '.json';
+    }
+
+    return filename;
+  },
+
+  onImportHistoryClick: function() {
+    this.$('#import-history-file').trigger('click');
+  },
+
+  onImportHistoryFile: function(eventArgs) {
+    const self = this;
+    const file = eventArgs.currentTarget.files && eventArgs.currentTarget.files[0];
+
+    this.$('#import-history-file').val('');
+
+    if (!file) {
+      return;
+    }
+
+    file.text().then(function(text) {
+      let data;
+
+      try {
+        data = JSON.parse(text);
+      } catch (error) {
+        window.alert('That file is not valid JSON.');
+        return;
+      }
+
+      if (!self.collection.isValidHistoryExport(data)) {
+        window.alert('That file does not look like a WikiMapper history export.');
+        return;
+      }
+
+      const sessionCount = Object.keys(data).length;
+      const pluralString = sessionCount === 1 ? 'session' : 'sessions';
+      const confirmed = window.confirm(
+        'Import ' + sessionCount + ' historical ' + pluralString +
+        '? Existing sessions with the same ID will be replaced.'
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      return self.collection.importAll(data);
+    }).catch(function(error) {
+      window.alert('Could not import history: ' + error.message);
+    });
   },
 
   confirmDelete: function() {

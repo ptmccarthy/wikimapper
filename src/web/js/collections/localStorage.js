@@ -144,6 +144,73 @@ export default Backbone.Collection.extend({
   },
 
   /**
+   * Export the raw chrome.storage.local object (sessionId -> tree).
+   * @returns {Promise<object>}
+   */
+  exportAll: function() {
+    return new Promise(function(resolve, reject) {
+      chrome.storage.local.get(null, function(result) {
+        if (chrome.runtime.lastError) {
+          reject(new Error(chrome.runtime.lastError.message));
+          return;
+        }
+        resolve(result || {});
+      });
+    });
+  },
+
+  /**
+   * Merge a history dump into chrome.storage.local, then reload the collection.
+   * Sessions with matching IDs are overwritten.
+   * @param {object} data - sessionId -> tree
+   * @returns {Promise}
+   */
+  importAll: function(data) {
+    const self = this;
+
+    if (!this.isValidHistoryExport(data)) {
+      return Promise.reject(new Error('Invalid WikiMapper history file.'));
+    }
+
+    return new Promise(function(resolve, reject) {
+      chrome.storage.local.set(data, function() {
+        if (chrome.runtime.lastError) {
+          reject(new Error(chrome.runtime.lastError.message));
+          return;
+        }
+        resolve();
+      });
+    }).then(function() {
+      self.searchTerm = '';
+      self.selectAll = false;
+      self.reset();
+      return self.fetch();
+    });
+  },
+
+  /**
+   * A valid export is a plain object of session trees, each with a name.
+   * @param {*} data
+   * @returns {boolean}
+   */
+  isValidHistoryExport: function(data) {
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      return false;
+    }
+
+    const keys = Object.keys(data);
+    if (keys.length === 0) {
+      return false;
+    }
+
+    return keys.every(function(key) {
+      const tree = data[key];
+      return tree && typeof tree === 'object' && !Array.isArray(tree) &&
+        typeof tree.name === 'string';
+    });
+  },
+
+  /**
    * Filter sessions based on search input (case insensitive).
    * Recursively look through the parent node and all its children for the search term.
    * If the search term is not found in any of the session's node names, flag it as hidden.

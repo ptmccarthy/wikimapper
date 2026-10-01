@@ -1,7 +1,12 @@
 <div class="body-content">
   <div class="history-controls">
     <input type="text" id="history-search" placeholder="Search..." {{#if searchTerm}}value="{{searchTerm}}"{{/if}}>
-    <button type="button" class="red-button" id="clear-history">Delete Selected</button>
+    <div class="history-file-actions">
+      <button type="button" class="green-button" id="export-history">Export</button>
+      <button type="button" class="green-button" id="import-history-button">Import</button>
+      <button type="button" class="red-button" id="clear-history">Delete Selected</button>
+    </div>
+    <input type="file" id="import-history-file" accept="application/json,.json">
   </div>
 
   <div id="history-table-container"></div>
